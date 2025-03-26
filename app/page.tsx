@@ -1,103 +1,112 @@
-import Image from "next/image";
+'use client';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Carousel1 from "./comonents/Carousel";
+import CountUp from './comonents/count-up';
+import Stack from './comonents/stack';
+import CelebrationSection from './comonents/CelebrationSection';
+import { Footer } from './comonents/footer';
+import { useEffect, useState } from 'react';
+import { motion } from "framer-motion";
+
+const images = [
+  { id: 1, img: "/image1.jpeg" },
+  { id: 2, img: "/image2.jpeg" }
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [cardDimensions, setCardDimensions] = useState({ width: 500, height: 500 });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (window.innerWidth < 768) {
+        setCardDimensions({ width: 300, height: 300 });
+      } else {
+        setCardDimensions({ width: 500, height: 500 });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  return (
+    <main className="relative">
+      {/* Carousel stays fixed at the top */}
+      <div className="fixed top-0 left-0 w-full h-[90vh] ">
+        <Carousel1 />
+      </div>
+
+      {/* Content starts after the carousel */}
+      <div className="relative z-20 mt-[90vh] bg-[#FeFFF1] ">
+        <motion.div
+          className="bg-cream text-gray-900 px-6 md:px-12 lg:px-24 py-12 min-h-screen flex items-center"
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left Section: Text Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <h1 className="text-3xl md:text-4xl font-serif">
+                Welcome to{" "}
+                <span className="text-green-700 font-bold italic">Chhaya Party Plot</span>
+              </h1>
+              <p className="text-2xl md:text-3xl font-medium mt-4">
+                A premium event destination where elegance meets celebration!
+              </p>
+              <p className="mt-4 text-gray-700">
+                Whether it's a grand wedding or an intimate gathering, we provide the perfect space to create lasting memories.
+              </p>
+
+              {/* Quick Highlights */}
+              <div className="mt-6 space-y-2 text-gray-800">
+                <p>📍 Location: Easily accessible in <span className="font-semibold">[Your City Name]</span></p>
+                <p>🎉 Events Hosted: Weddings, Receptions, Corporate Events, Birthdays & More</p>
+                <p>📖 Capacity: Accommodates  :
+                  <CountUp from={0} to={2000} separator="," direction="up" duration={1} />
+                  + guests
+                </p>
+                <p>🚗 Parking: Spacious parking for over 200 vehicles</p>
+                <p>💡 Customization: Theme-based decorations & event planning available</p>
+              </div>
+
+              {/* Reservation Contact */}
+              <div className="mt-6 text-lg font-semibold">
+                <p>For reservation:</p>
+                <p className="text-xl text-green-700">99999999999999</p>
+              </div>
+            </motion.div>
+
+            {/* Right Section: Image Stack with Animation */}
+            <motion.div
+              className="w-full h-96 md:h-[450px] rounded-lg"
+              initial={{ opacity: 0, x: 100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Stack
+                randomRotation={true}
+                sensitivity={180}
+                sendToBackOnClick={false}
+                cardDimensions={cardDimensions}
+                cardsData={images}
+              />
+            </motion.div>
+          </div>
+        </motion.div>
+        
+        {/* Additional Sections */}
+        <CelebrationSection />
+        <Footer />
+      </div>
+    </main>
   );
 }
