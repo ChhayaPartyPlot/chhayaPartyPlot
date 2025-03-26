@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+'use client'
+import { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const springValues = {
@@ -26,8 +27,6 @@ export default function TiltedCard({
   captionText = "",
   containerHeight = "350px",
   containerWidth = "100%",
-  imageHeight = window.innerWidth < 768 ? "250px" : "350px",
-  imageWidth = window.innerWidth < 768 ? "250px" : "350px",
   scaleOnHover = 1.1,
   rotateAmplitude = 14,
   showMobileWarning = false,
@@ -39,7 +38,24 @@ export default function TiltedCard({
   const rotateY = useSpring(useMotionValue(0), springValues);
   const scale = useSpring(1, springValues);
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
+  const [imageSize, setImageSize] = useState({ width: "350px", height: "350px" });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 768);
+      setImageSize(window.innerWidth < 768 ? { width: "250px", height: "250px" } : { width: "350px", height: "350px" });
+
+      // Listen for window resize
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+        setImageSize(window.innerWidth < 768 ? { width: "250px", height: "250px" } : { width: "350px", height: "350px" });
+      };
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   function handleMouse(e: React.MouseEvent) {
     if (!ref.current || isMobile) return;
@@ -88,8 +104,8 @@ export default function TiltedCard({
       <motion.div
         className="relative"
         style={{
-          width: imageWidth,
-          height: imageHeight,
+          width: imageSize.width,
+          height: imageSize.height,
           rotateX: isMobile ? 0 : rotateX,
           rotateY: isMobile ? 0 : rotateY,
           scale,
@@ -100,8 +116,8 @@ export default function TiltedCard({
           alt={altText}
           className="absolute top-0 left-0 object-cover rounded-lg shadow-lg"
           style={{
-            width: imageWidth,
-            height: imageHeight,
+            width: imageSize.width,
+            height: imageSize.height,
           }}
         />
 
