@@ -18,6 +18,7 @@ function Carousel1() {
     setIsMounted(true);
   }, []);
 
+  
   return (
     <div key={isMounted ? "carousel-mounted" : "carousel-unmounted"}>
       <Carousel 
