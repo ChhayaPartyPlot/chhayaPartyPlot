@@ -4,7 +4,7 @@ import { Instagram, Youtube, Facebook, PinIcon as Pinterest, Phone, Mail } from 
 
 export function Footer() {
   return (
-    <footer className="bg-zinc-900 text-zinc-300 w-full">
+    <footer className="bg-zinc-900 text-zinc-300 w-full relative z-10">
       <div className="container mx-auto px-4 py-12 w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo and About */}

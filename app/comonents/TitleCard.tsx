@@ -26,8 +26,8 @@ export default function TiltedCard({
   captionText = "",
   containerHeight = "350px",
   containerWidth = "100%",
-  imageHeight = "350px",
-  imageWidth = "250px",
+  imageHeight = window.innerWidth < 768 ? "250px" : "350px",
+  imageWidth = window.innerWidth < 768 ? "250px" : "350px",
   scaleOnHover = 1.1,
   rotateAmplitude = 14,
   showMobileWarning = false,
@@ -104,9 +104,14 @@ export default function TiltedCard({
             height: imageHeight,
           }}
         />
-      </motion.div>
 
-      <figcaption className="text-center text-sm mt-2">{captionText}</figcaption>
+        {/* Caption Overlay */}
+        <motion.figcaption
+          className="absolute bottom-0 left-0 w-full bg-black bg-opacity-60 text-white text-center text-xs py-2 rounded-b-lg"
+        >
+          {captionText}
+        </motion.figcaption>
+      </motion.div>
     </figure>
   );
 }

@@ -31,16 +31,16 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="relative">
+    <main className="flex flex-col min-h-screen">
       {/* Carousel stays fixed at the top */}
       <div className="fixed top-0 left-0 w-full h-[90vh] ">
         <Carousel1 />
       </div>
 
       {/* Content starts after the carousel */}
-      <div className="relative z-20 mt-[90vh] bg-[#FeFFF1] ">
+      <div className="flex-grow relative z-20 mt-[90vh] bg-[#FeFFF1] ">
         <motion.div
-          className="bg-cream text-gray-900 px-6 md:px-12 lg:px-24 py-12 min-h-screen flex items-center"
+          className="bg-cream text-gray-900 px-6 md:px-12 lg:px-24 py-12 flex items-center"
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -69,7 +69,7 @@ export default function Home() {
               <div className="mt-6 space-y-2 text-gray-800">
                 <p>📍 Location: Easily accessible in <span className="font-semibold">[Your City Name]</span></p>
                 <p>🎉 Events Hosted: Weddings, Receptions, Corporate Events, Birthdays & More</p>
-                <p>📖 Capacity: Accommodates  :
+                <p>📖 Capacity: Accommodates :
                   <CountUp from={0} to={2000} separator="," direction="up" duration={1} />
                   + guests
                 </p>
@@ -105,8 +105,10 @@ export default function Home() {
         
         {/* Additional Sections */}
         <CelebrationSection />
-        <Footer />
       </div>
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }
