@@ -38,7 +38,7 @@ export default function Home() {
       </div>
 
       {/* Content starts after the carousel */}
-      <div className="flex-grow relative z-20 mt-[90vh] bg-[#FeFFF1] ">
+      <div className="flex-grow relative z-20 mt-[100vh] bg-[#FeFFF1] ">
         <motion.div
           className="bg-cream text-gray-900 px-6 md:px-12 lg:px-24 py-12 flex items-center"
           initial={{ opacity: 0, x: -50 }}
