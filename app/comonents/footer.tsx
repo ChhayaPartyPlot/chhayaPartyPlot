@@ -4,20 +4,18 @@ import { Instagram, Youtube, Facebook, PinIcon as Pinterest, Phone, Mail } from 
 
 export function Footer() {
   return (
-    <footer className="bg-zinc-900 text-zinc-300 w-full relative z-10">
+    <footer className="bg-zinc-900 text-zinc-300 w-full z-50  ">
       <div className="container mx-auto px-4 py-12 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* Logo and About */}
-          <div className="space-y-4">
-            <div className="flex items-center">
-              <Image
-                src="/placeholder.svg?height=60&width=240"
-                alt="Chhaya Party Plot"
-                width={240}
-                height={60}
-                className="mb-4"
-              />
-            </div>
+          <div className="space-y-4 flex flex-col items-center md:items-start">
+            <Image
+              src="/placeholder.svg?height=60&width=240"
+              alt="Chhaya Party Plot"
+              width={240}
+              height={60}
+              className="mb-4"
+            />
             <p className="text-sm leading-relaxed">
               We look forward to helping you create the perfect atmosphere for your event and create a lifetime of
               memories for you and your families.
@@ -31,24 +29,15 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-xl font-medium mb-4">Explore</h3>
             <nav className="flex flex-col space-y-2">
-              <Link href="/" className="hover:text-white transition-colors">
-                Home
-              </Link>
-              <Link href="/about-us" className="hover:text-white transition-colors">
-                About Us
-              </Link>
-              <Link href="/party-plot" className="hover:text-white transition-colors">
-                Party Plot
-              </Link>
-              <Link href="/decoration" className="hover:text-white transition-colors">
-                Decoration
-              </Link>
-              <Link href="/gallery" className="hover:text-white transition-colors">
-                Gallery
-              </Link>
-              <Link href="/contact" className="hover:text-white transition-colors">
-                Contact
-              </Link>
+              {["Home", "About Us", "Party Plot", "Decoration", "Gallery", "Contact"].map((item) => (
+                <Link
+                  key={item}
+                  href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="hover:text-white transition-colors"
+                >
+                  {item}
+                </Link>
+              ))}
             </nav>
           </div>
 
@@ -63,33 +52,26 @@ export function Footer() {
               Surat, Gujarat, India.
             </address>
 
-            <div className="flex items-center gap-2 mt-6">
+            <div className="flex items-center gap-2 mt-6 justify-center md:justify-start">
               <Phone size={20} className="text-zinc-400" />
               <a href="tel:+919898221804" className="hover:text-white transition-colors">
                 +91 98982 21804
               </a>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 justify-center md:justify-start">
               <Mail size={20} className="text-zinc-400" />
               <a href="mailto:info@evergreenpartyplot.com" className="hover:text-white transition-colors underline">
                 info@chhayapartyplot.com
               </a>
             </div>
 
-            <div className="flex gap-4 mt-6">
-              <a href="#" aria-label="Instagram" className="text-zinc-400 hover:text-white transition-colors">
-                <Instagram size={24} />
-              </a>
-              <a href="#" aria-label="YouTube" className="text-zinc-400 hover:text-white transition-colors">
-                <Youtube size={24} />
-              </a>
-              <a href="#" aria-label="Facebook" className="text-zinc-400 hover:text-white transition-colors">
-                <Facebook size={24} />
-              </a>
-              <a href="#" aria-label="Pinterest" className="text-zinc-400 hover:text-white transition-colors">
-                <Pinterest size={24} />
-              </a>
+            <div className="flex gap-4 mt-6 justify-center md:justify-start">
+              {[Instagram, Youtube, Facebook, Pinterest].map((Icon, index) => (
+                <a key={index} href="#" className="text-zinc-400 hover:text-white transition-colors">
+                  <Icon size={24} />
+                </a>
+              ))}
             </div>
           </div>
         </div>

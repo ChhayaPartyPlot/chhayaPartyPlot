@@ -1,13 +1,13 @@
 'use client'
 import Link from "next/link";
 import React, { useState } from "react";
-import { FiMenu, FiX } from "react-icons/fi"; // Import icons for menu
+import { FiMenu, FiX } from "react-icons/fi";  
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className=" sticky top-0 left-0 right-0 z-50  bg-opacity-30 backdrop-blur-md shadow-md">
+    <header className="fixed  top-0 left-0 right-0 z-50  bg-opacity-30 backdrop-blur-md shadow-md w-[100vw] ">
       <nav className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="text-black text-xl font-bold">Chhaya Party Plot</div>
 
@@ -43,8 +43,8 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col space-y-4 p-6 md:hidden">
-            <Link href="#" className="text-black hover:text-green-200 uppercase text-sm tracking-wide">
+          <div className="absolute top-16 left-0 w-full bg-opacity-30 backdrop-blur-md shadow-md flex flex-col space-y-4 p-6 md:hidden ">
+            <Link href="#" className="text-black hover:text-green-200 uppercase text-sm tracking-wide ">
               Home
             </Link>
             <Link href="#" className="text-black hover:text-green-200 uppercase text-sm tracking-wide">

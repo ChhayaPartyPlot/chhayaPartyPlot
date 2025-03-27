@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import TiltedCard from './TitleCard';
 import ChangingText from './changing-text';
 import { useEffect, useRef } from 'react';
@@ -7,24 +7,41 @@ export default function CelebrationSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    
     const scrollElement = scrollRef.current;
     if (!scrollElement) return;
 
-    let scrollAmount = 0;
-    const speed = 2; // Adjust speed here
-    const scrollInterval = setInterval(() => {
-      if (scrollAmount >= scrollElement.scrollWidth - scrollElement.clientWidth) {
-        scrollAmount = 0; // Reset scroll
-      } else {
-        scrollAmount += speed;
-      }
-      scrollElement.scrollTo({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
-    }, 50);
+    const isMobile = window.innerWidth < 640; 
+    if (!isMobile) return;
 
-    return () => clearInterval(scrollInterval);
+    const speed = 1;
+    let isUserScrolling = false;
+    let userScrollTimeout: NodeJS.Timeout;
+
+    const handleUserScroll = () => {
+      isUserScrolling = true;
+      clearTimeout(userScrollTimeout);
+      userScrollTimeout = setTimeout(() => {
+        isUserScrolling = false;
+      }, 1000);
+    };
+
+    scrollElement.addEventListener('scroll', handleUserScroll);
+
+    const scrollInterval = setInterval(() => {
+      if (!scrollElement || isUserScrolling) return;
+
+      if (scrollElement.scrollLeft + scrollElement.clientWidth >= scrollElement.scrollWidth - 1) {
+        scrollElement.scrollTo({ left: 0, behavior: 'auto' });
+      } else {
+        scrollElement.scrollBy({ left: speed, behavior: 'auto' });
+      }
+    }, 30);
+
+    return () => {
+      scrollElement.removeEventListener('scroll', handleUserScroll);
+      clearInterval(scrollInterval);
+    };
   }, []);
 
   return (
@@ -35,9 +52,9 @@ export default function CelebrationSection() {
 
       <div
         ref={scrollRef}
-        className="flex sm:grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 mt-6 p-4 overflow-x-auto sm:overflow-visible whitespace-nowrap scroll-smooth space-x-4 sm:space-x-0"
+        className="flex sm:grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 mt-6 p-4 overflow-x-auto sm:overflow-visible whitespace-nowrap space-x-4 sm:space-x-0 scroll-smooth"
       >
-        <TiltedCard imageSrc="/image1.jpeg" altText="Wedding" captionText="Wedding"  />
+        <TiltedCard imageSrc="/image1.jpeg" altText="Wedding" captionText="Wedding" />
         <TiltedCard imageSrc="/image1.jpeg" altText="Birthday Party" captionText="Birthday Party" />
         <TiltedCard imageSrc="/image1.jpeg" altText="Business Party" captionText="Business Party" />
         <TiltedCard imageSrc="/image1.jpeg" altText="Reception" captionText="Reception" />

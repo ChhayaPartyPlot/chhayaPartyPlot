@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import Link from "next/link";
 
+
 const images = [
   { src: "/image1.jpeg", alt: "First slide", caption: "First slide label", description: "Nulla vitae elit libero, a pharetra augue mollis interdum." },
   { src: "/image2.jpeg", alt: "Second slide", caption: "Second slide label", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
@@ -21,6 +22,7 @@ function Carousel1() {
   
   return (
     <div key={isMounted ? "carousel-mounted" : "carousel-unmounted"}>
+     
       <Carousel 
         data-bs-theme="dark" 
         interval={4000} 
@@ -52,7 +54,7 @@ function Carousel1() {
                   </p>
                   <Link
                     href="#reservation"
-                    className="border border-white relative transition-all duration-300 px-8 py-3 uppercase tracking-wider text-sm font-[400] font-[Barlow_Condensed] bg-transparent text-white leading-none text-[15px] letter-spacing-[3px] before:absolute before:inset-0 before:bg-white before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-black before:mix-blend-difference no-underline"
+                    className="border border-white relative transition-all duration-300 px-8 py-3 uppercase tracking-wider text-sm font-[400] font-[Barlow_Condensed] bg-transparent text-white leading-none text-[15px] letter-spacing-[3px] before:absolute before:inset-0 before:bg-white before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-black before:mix-blend-difference no-underline max-w-full"
                   >
                     Reservation
                   </Link>
