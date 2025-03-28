@@ -21,6 +21,7 @@ const Gallery = () => {
     useEffect(() => {
         setTimeout(() => setFadeIn(true), 400); 
     }, []);
+    
 
     return (
         <main className="pt-20 mb-3 bg-[#FeFFF1] ">
