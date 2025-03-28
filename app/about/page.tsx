@@ -23,9 +23,10 @@ export default function About() {
   };
 
   return (
+    <main>
     <div className="relative min-h-screen bg-[#FeFFF1]">
       {/* Hero Section */}
-      <div className="relative h-[70vh] w-full">
+      <div className="relative h-[60vh] w-full">
         <Image
           src="/image1.jpeg"
           alt="Chhaya Partyplot"
@@ -212,5 +213,6 @@ export default function About() {
       </div>
       <Footer />
     </div>
+    </main>
   );
 }

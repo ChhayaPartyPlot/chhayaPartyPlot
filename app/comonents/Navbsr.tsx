@@ -53,24 +53,28 @@ const Navbar = () => {
             <Link 
               href="/" 
               className="text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
+              onClick={() => setIsOpen(false)}
             >
               Home
             </Link>
             <Link 
               href="/about" 
               className=" reloadDocument text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
+              onClick={() => setIsOpen(false)}
             >
               About Us
             </Link>
             <Link 
               href="/gallery" 
               className="text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
+              onClick={() => setIsOpen(false)}
             >
               Gallery
             </Link>
             <Link 
               href="/contact" 
               className="text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
+              onClick={() => setIsOpen(false)}
             >
               Contact
             </Link>
