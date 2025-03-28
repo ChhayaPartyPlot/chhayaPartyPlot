@@ -1,6 +1,6 @@
-'use client'
+'use client';
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { useTransition, a } from "@react-spring/web";
+import { useTransition, animated as a } from "@react-spring/web";
 
 interface MasonryItem {
   id: string | number;
@@ -24,15 +24,10 @@ function Masonry({ data }: MasonryProps) {
 
   useEffect(() => {
     const updateColumns = () => {
-      if (window.matchMedia("(min-width: 1500px)").matches) {
-        setColumns(5);
-      } else if (window.matchMedia("(min-width: 1000px)").matches) {
-        setColumns(4);
-      } else if (window.matchMedia("(min-width: 600px)").matches) {
-        setColumns(3);
-      } else {
-        setColumns(1); // Mobile devices
-      }
+      if (window.innerWidth >= 1500) setColumns(5);
+      else if (window.innerWidth >= 1000) setColumns(4);
+      else if (window.innerWidth >= 600) setColumns(3);
+      else setColumns(1);
     };
 
     updateColumns();
@@ -45,9 +40,7 @@ function Masonry({ data }: MasonryProps) {
 
   useEffect(() => {
     const handleResize = () => {
-      if (ref.current) {
-        setWidth(ref.current.offsetWidth);
-      }
+      if (ref.current) setWidth(ref.current.offsetWidth);
     };
 
     handleResize();
@@ -72,13 +65,22 @@ function Masonry({ data }: MasonryProps) {
     return [heights, gridItems];
   }, [columns, data, width]);
 
-  const transitions = useTransition<
-    GridItem,
-    { x: number; y: number; width: number; height: number; opacity: number }
-  >(gridItems, {
+  const transitions = useTransition(gridItems, {
     keys: (item) => item.id,
-    from: ({ x, y, width, height }) => ({ x, y, width, height, opacity: 0 }),
-    enter: ({ x, y, width, height }) => ({ x, y, width, height, opacity: 1 }),
+    from: ({ x, y, width, height }) => ({
+      x,
+      y,
+      width,
+      height,
+      opacity: 0,
+    }),
+    enter: ({ x, y, width, height }) => ({
+      x,
+      y,
+      width,
+      height,
+      opacity: 1,
+    }),
     update: ({ x, y, width, height }) => ({ x, y, width, height }),
     leave: { height: 0, opacity: 0 },
     config: { mass: 5, tension: 500, friction: 100 },
@@ -94,7 +96,12 @@ function Masonry({ data }: MasonryProps) {
       {transitions((style, item) => (
         <a.div
           key={item.id}
-          style={style}
+          style={{
+            transform: style.x.to((x) => `translate3d(${x}px, ${style.y.get()}px, 0)`),
+            width: style.width,
+            height: style.height,
+            opacity: style.opacity,
+          }}
           className="absolute p-[15px] [will-change:transform,width,height,opacity]"
         >
           <div
