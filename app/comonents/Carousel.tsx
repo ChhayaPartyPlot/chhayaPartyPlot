@@ -5,9 +5,10 @@ import Link from "next/link";
 
 
 const images = [
-  { src: "/image1.jpeg", alt: "First slide", caption: "First slide label", description: "Nulla vitae elit libero, a pharetra augue mollis interdum." },
-  { src: "/image2.jpeg", alt: "Second slide", caption: "Second slide label", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-  { src: "/image1.jpeg", alt: "Third slide", caption: "Third slide label", description: "Praesent commodo cursus magna, vel scelerisque nisl consectetur." }
+  { src: "/p1.jpeg", alt: "First slide", caption: "First slide label", description: "Nulla vitae elit libero, a pharetra augue mollis interdum." },
+  { src: "/p2.jpeg", alt: "Second slide", caption: "Second slide label", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+  { src: "/p3.jpeg", alt: "Third slide", caption: "Third slide label", description: "Praesent commodo cursus magna, vel scelerisque nisl consectetur." },
+  { src: "/p4.jpeg", alt: "Third slide", caption: "Third slide label", description: "Praesent commodo cursus magna, vel scelerisque nisl consectetur." }
 ];
 
 function Carousel1() {
@@ -43,18 +44,18 @@ function Carousel1() {
               <div className="relative w-full h-screen flex items-center justify-center text-center">
                 <div className="absolute inset-0"></div>
                 <div className="relative z-10 px-6">
-                  <p className="text-white text-sm md:text-lg uppercase tracking-widest font-semibold">
+                  <p className="text-white text-sm md:text-lg uppercase tracking-widest font-semibold drop-shadow-lg">
                     Presenting Chhaya Party Plot
                   </p>
-                  <h1 className="text-white text-2xl md:text-5xl font-poppins font-bold mt-2">
-                    Celebrate in Grandeur, <br className="hidden md:block" /> Create Timeless Memories!
-                  </h1>
-                  <p className="text-white text-xs md:text-lg mt-3">
+                  <h1 className="text-white text-4xl md:text-7xl font-serif tracking-widest text-center font-bold mt-2 drop-shadow-lg">
+                  Celebrate in <span className="text-white">Grandeur</span>, <br className="hidden md:block" /> Create Timeless <span className="text-white">Memories!</span>
+                </h1>
+                   <p className="text-white text-xs md:text-lg mt-3 drop-shadow-lg">
                     Sprawling space, premium decor, and unmatched hospitality – all in one venue!
                   </p>
                   <Link
                     href="/reservation"
-                    className="border border-white relative transition-all duration-300 px-8 py-3 uppercase tracking-wider text-sm font-[400] font-[Barlow_Condensed] bg-transparent text-white leading-none text-[15px] letter-spacing-[3px] before:absolute before:inset-0 before:bg-white before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-black before:mix-blend-difference no-underline max-w-full"
+                    className="border drop-shadow-lg border-white relative transition-all duration-300 px-8 py-3 uppercase tracking-wider text-sm font-[400] font-[Barlow_Condensed] bg-transparent text-white leading-none text-[15px] letter-spacing-[3px] before:absolute before:inset-0 before:bg-white before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-black before:mix-blend-difference no-underline max-w-full"
                   >
                     Reservation
                   </Link>

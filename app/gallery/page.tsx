@@ -5,16 +5,21 @@ import Image from "next/image";
 import { Footer } from '../comonents/footer';
 
 const data = [
-    { id: 1, image: '/image4.jpg', height: 600 },
-    { id: 3, image: '/image3.jpg', height: 400 },
-    { id: 4, image: '/image6.jpg', height: 400 },
-    { id: 2, image: '/image2.jpeg', height: 400 },
-    { id: 5, image: '/image1.jpeg', height: 400 },
-    { id: 6, image: '/image5.jpg', height: 400 },
-    { id: 7, image: '/image4.jpg', height: 300 },
-    { id: 8, image: '/image3.jpg', height: 400 },
-    { id: 9, image: '/image6.jpg', height: 300 },
-    { id: 10, image: '/image2.jpeg', height: 600 }
+    { id: 1, image: '/p1.jpeg', height: 600 },
+    { id: 2, image: '/p2.jpeg', height: 400 },
+    { id: 3, image: '/p3.jpeg', height: 400 },
+    { id: 4, image: '/p4.jpeg', height: 400 },
+    { id: 5, image: '/p1.jpeg', height: 400 },
+    { id: 6, image: '/image4.jpg', height: 600 },
+    { id: 7, image: '/image3.jpg', height: 400 },
+    { id: 8, image: '/image6.jpg', height: 400 },
+    { id: 9, image: '/image2.jpeg', height: 400 },
+    { id: 10, image: '/image1.jpeg', height: 400 },
+    { id: 11, image: '/image5.jpg', height: 400 },
+    { id: 12, image: '/image4.jpg', height: 300 },
+    { id: 13, image: '/image3.jpg', height: 400 },
+    { id: 14, image: '/image6.jpg', height: 300 }
+
 ];
 
 const Gallery = () => {

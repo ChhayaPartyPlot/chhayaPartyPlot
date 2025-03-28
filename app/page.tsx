@@ -10,11 +10,11 @@ import { motion } from "framer-motion";
 import VideoSection from './comonents/VideoSection';
 
 const images = [
-  { id: 1, img: "/image1.jpeg" },
-  { id: 2, img: "/image2.jpeg" },
-  { id: 3, img: "/image3.jpg" },
-  { id: 4, img: "/image4.jpg" },
-  { id: 5, img: "/image5.jpg" }
+  { id: 1, img: "/p1.jpeg" },
+  { id: 2, img: "/p2.jpeg" },
+  { id: 3, img: "/p3.jpeg" },
+  { id: 4, img: "/p4.jpeg" },
+  { id: 5, img: "/p1.jpeg" }
 
 ];
 
@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       {/* Carousel stays fixed at the top */}
-      <div className="fixed top-0 left-0 w-full h-[90vh] ">
+      <div className="fixed top-0 left-0 w-full h-[90vh] z-20 ">
         <Carousel1 />
       </div>
 

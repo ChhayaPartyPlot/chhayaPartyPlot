@@ -15,7 +15,6 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
-    --foreground: #000000;
   }
 }
 @media (max-width: 768px) {
@@ -39,11 +38,6 @@ body {
   overflow-x: hidden;
 }
 
-nav a {
-  text-decoration: none !important;
-  color: inherit !important;
-  transition: color 0.3s ease-in-out;
-}
 
 nav a:hover {
   color: #16a34a !important; 

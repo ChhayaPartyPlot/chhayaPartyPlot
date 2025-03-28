@@ -94,13 +94,13 @@ export default function About() {
               className="order-2 md:order-1 relative"
             >
          <Image
-          src="/image4.jpg"
+          src="/p2.jpeg"
           alt="Enchanting Landscape"
           width={600}
           height={400}
           className="w-full h-auto md:h-[350px] object-cover shadow-md"
             />
-              <div className="absolute bottom-4 left-4 opacity-50">
+              <div className="absolute bottom-4 left-4 ">
                 <Image
                   src="/logo.png" // Replace with your actual logo path
                   alt="Evergreen Party Plot Logo"
@@ -193,13 +193,13 @@ export default function About() {
               className="order-4 md:order-4 relative"
             >
               <Image
-          src="/image5.jpg"
+          src="/p1.jpeg"
           alt="Enchanting Landscape"
           width={600}
           height={400}
           className="w-full h-auto md:h-[350px] object-cover shadow-md"
             />
-              <div className="absolute bottom-4 left-4 opacity-50">
+              <div className="absolute bottom-4 left-4 ">
                 <Image
                   src="/logo.png" // Replace with your actual logo path
                   alt="Evergreen Party Plot Logo"
