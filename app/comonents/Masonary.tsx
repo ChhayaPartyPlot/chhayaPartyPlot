@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { useTransition, animated as a } from "@react-spring/web";
+import { useTransition, animated, SpringValue } from "@react-spring/web";
 
 interface MasonryItem {
   id: string | number;
@@ -15,12 +15,29 @@ interface GridItem extends MasonryItem {
   height: number;
 }
 
+// Define the style type with SpringValue from react-spring
+interface SpringStyle {
+  x: SpringValue<number>;
+  y: SpringValue<number>;
+  width: SpringValue<number>;
+  height: SpringValue<number>;
+  opacity: SpringValue<number>;
+}
+
 interface MasonryProps {
   data: MasonryItem[];
 }
 
-function Masonry({ data }: MasonryProps) {
+// Extend animated.div props to include children
+interface AnimatedDivProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
+  style: SpringStyle;
+  children?: React.ReactNode;
+}
+
+const Masonry: React.FC<MasonryProps> = ({ data }) => {
   const [columns, setColumns] = useState<number>(2);
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState<number>(0);
 
   useEffect(() => {
     const updateColumns = () => {
@@ -34,9 +51,6 @@ function Masonry({ data }: MasonryProps) {
     window.addEventListener("resize", updateColumns);
     return () => window.removeEventListener("resize", updateColumns);
   }, []);
-
-  const ref = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState<number>(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -65,7 +79,7 @@ function Masonry({ data }: MasonryProps) {
     return [heights, gridItems];
   }, [columns, data, width]);
 
-  const transitions = useTransition(gridItems, {
+  const transitions = useTransition<GridItem, SpringStyle>(gridItems, {
     keys: (item) => item.id,
     from: ({ x, y, width, height }) => ({
       x,
@@ -87,21 +101,19 @@ function Masonry({ data }: MasonryProps) {
     trail: 25,
   });
 
+  // Cast animated.div to include children prop
+  const AnimatedDiv = animated.div as React.FC<AnimatedDivProps>;
+
   return (
     <div
       ref={ref}
       className="relative w-full h-full"
       style={{ height: Math.max(...heights) }}
     >
-      {transitions((style, item) => (
-        <a.div
+      {transitions((style: SpringStyle, item: GridItem) => (
+        <AnimatedDiv
+          style={style}
           key={item.id}
-          style={{
-            transform: style.x.to((x) => `translate3d(${x}px, ${style.y.get()}px, 0)`),
-            width: style.width,
-            height: style.height,
-            opacity: style.opacity,
-          }}
           className="absolute p-[15px] [will-change:transform,width,height,opacity]"
         >
           <div
@@ -113,10 +125,10 @@ function Masonry({ data }: MasonryProps) {
               backgroundPosition: "center",
             }}
           />
-        </a.div>
+        </AnimatedDiv>
       ))}
     </div>
   );
-}
+};
 
 export default Masonry;
