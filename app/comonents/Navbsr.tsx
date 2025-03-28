@@ -34,18 +34,6 @@ const Navbar = () => {
             About Us
           </Link>
           <Link 
-            href="/events" 
-            className="text-black hover:text-green-200 uppercase text-sm tracking-wide border-b-2 border-transparent hover:border-green-200 transition duration-300"
-          >
-            Events
-          </Link>
-          <Link 
-            href="/services" 
-            className="text-black hover:text-green-200 uppercase text-sm tracking-wide border-b-2 border-transparent hover:border-green-200 transition duration-300"
-          >
-            Services
-          </Link>
-          <Link 
             href="/gallery" 
             className="text-black hover:text-green-200 uppercase text-sm tracking-wide border-b-2 border-transparent hover:border-green-200 transition duration-300"
           >
@@ -73,18 +61,6 @@ const Navbar = () => {
               className="text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
             >
               About Us
-            </Link>
-            <Link 
-              href="/events" 
-              className="text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
-            >
-              Events
-            </Link>
-            <Link 
-              href="/services" 
-              className="text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
-            >
-              Services
             </Link>
             <Link 
               href="/gallery" 

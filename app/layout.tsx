@@ -31,8 +31,7 @@ export default function RootLayout({
       >
         
         <Navbar/>
-        {children}
-        <Carousel/>
+        {children}   
       </body>
     </html>
   );
