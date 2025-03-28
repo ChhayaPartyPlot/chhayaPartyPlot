@@ -35,7 +35,7 @@ export default function VideoSection() {
         // Desktop: Keep the original settings
         setObserverOptions({
           threshold: 0.3, // Trigger when 30% of the section is in view
-          rootMargin: "-10px", // Start when the section's top is 80px below the viewport's top
+          rootMargin: "10px", // Start when the section's top is 10px below the viewport's top
         });
       }
     };
@@ -79,7 +79,7 @@ export default function VideoSection() {
   return (
     <div
       ref={sectionRef}
-      className="relative w-full min-h-screen flex items-center justify-center text-center bg-[#FeFFF1] py-12"
+      className="relative w-full min-h-[50vh] flex flex-col justify-start items-center text-center bg-[#FeFFF1] pt-16 md:pt-20 py-12"
     >
       {/* Background Video */}
       <video
@@ -110,12 +110,12 @@ export default function VideoSection() {
         <h2 className="text-2xl md:text-4xl font-serif tracking-wider uppercase">
           Evergreen Party Plot
         </h2>
-        <h3 className="text-3xl md:text-5xl font-bold mt-2 uppercase">
+        <h3 className="text-3xl md:text-5xl font-bold mt-4 uppercase">
           Promotional Video
         </h3>
         <button
           onClick={openFullVideo}
-          className="mt-6 px-6 py-2 bg-green-700 text-white rounded-full hover:bg-green-600 transition-colors"
+          className="mt-10 px-6 py-2 bg-green-700 text-white rounded-full hover:bg-green-600 transition-colors"
         >
           Watch Full Video
         </button>
