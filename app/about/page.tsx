@@ -28,7 +28,7 @@ export default function About() {
       {/* Hero Section */}
       <div className="relative h-[60vh] w-full">
         <Image
-          src="/image1.jpeg"
+          src="/image3.jpg"
           alt="Chhaya Partyplot"
           layout="fill"
           objectFit="cover"
@@ -93,13 +93,13 @@ export default function About() {
               variants={slideInLeft}
               className="order-2 md:order-1 relative"
             >
-              <Image
-                src="/image2.jpeg"
-                alt="Enchanting Landscape"
-                width={600}
-                height={400}
-                className=" shadow-md"
-              />
+         <Image
+          src="/image4.jpg"
+          alt="Enchanting Landscape"
+          width={600}
+          height={400}
+          className="w-full h-auto md:h-[350px] object-cover shadow-md"
+            />
               <div className="absolute bottom-4 left-4 opacity-50">
                 <Image
                   src="/logo.png" // Replace with your actual logo path
@@ -193,12 +193,12 @@ export default function About() {
               className="order-4 md:order-4 relative"
             >
               <Image
-                src="/image1.jpeg"
-                alt="Luxury Bride & Groom Room"
-                width={600}
-                height={400}
-                className=" shadow-md"
-              />
+          src="/image5.jpg"
+          alt="Enchanting Landscape"
+          width={600}
+          height={400}
+          className="w-full h-auto md:h-[350px] object-cover shadow-md"
+            />
               <div className="absolute bottom-4 left-4 opacity-50">
                 <Image
                   src="/logo.png" // Replace with your actual logo path

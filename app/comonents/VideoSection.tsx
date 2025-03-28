@@ -7,8 +7,8 @@ export default function VideoSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isInView, setIsInView] = useState(false);
   const [observerOptions, setObserverOptions] = useState({
-    threshold: 0.3,
-    rootMargin: "-80px",
+    threshold: 0.5,
+    rootMargin: "-10px",
   });
 
   // Animation variants for fading in
@@ -108,7 +108,7 @@ export default function VideoSection() {
         className="relative z-10 text-white"
       >
         <h2 className="text-2xl md:text-4xl font-serif tracking-wider uppercase">
-          Evergreen Party Plot
+          Chhaya Party Plot
         </h2>
         <h3 className="text-3xl md:text-5xl font-bold mt-4 uppercase">
           Promotional Video

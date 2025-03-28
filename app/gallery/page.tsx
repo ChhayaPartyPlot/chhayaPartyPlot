@@ -31,7 +31,7 @@ const Gallery = () => {
                   {/* Hero Section */}
                   <div className="relative h-[40vh] w-full">
                     <Image
-                      src="/image1.jpeg"
+                      src="/image6.jpg"
                       alt="Chhaya Partyplot"
                       layout="fill"
                       objectFit="cover"

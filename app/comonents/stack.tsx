@@ -1,39 +1,22 @@
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import { useState } from "react";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { useState, useEffect } from "react";
 
 interface CardRotateProps {
   children: React.ReactNode;
   onSendToBack: () => void;
-  sensitivity: number;
+  sensitivity?: number;
 }
 
-const CardRotate: React.FC<CardRotateProps> = ({ children, onSendToBack, sensitivity }) => {
+const CardRotate: React.FC<CardRotateProps> = ({ children, onSendToBack }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
   const rotateY = useTransform(x, [-100, 100], [-60, 60]);
 
-  function handleDragEnd(_: unknown, info: { offset: { x: number; y: number } }) {
-    if (
-      Math.abs(info.offset.x) > sensitivity ||
-      Math.abs(info.offset.y) > sensitivity
-    ) {
-      onSendToBack();
-    } else {
-      x.set(0);
-      y.set(0);
-    }
-  }
-
   return (
     <motion.div
-      className="absolute cursor-grab"
+      className="absolute"
       style={{ x, y, rotateX, rotateY }}
-      drag
-      dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
-      dragElastic={0.6}
-      whileTap={{ cursor: "grabbing" }}
-      onDragEnd={handleDragEnd}
     >
       {children}
     </motion.div>
@@ -47,6 +30,7 @@ interface StackProps {
   cardsData?: { id: number; img: string }[];
   animationConfig?: { stiffness: number; damping: number };
   sendToBackOnClick?: boolean;
+  autoRotateInterval?: number; // New prop for rotation interval in milliseconds
 }
 
 const Stack: React.FC<StackProps> = ({
@@ -55,7 +39,8 @@ const Stack: React.FC<StackProps> = ({
   cardDimensions = { width: 208, height: 208 },
   cardsData = [],
   animationConfig = { stiffness: 260, damping: 20 },
-  sendToBackOnClick = false
+  sendToBackOnClick = false,
+  autoRotateInterval = 3000 // Default to 3 seconds
 }) => {
   const [cards, setCards] = useState<{ id: number; img: string }[]>(
     cardsData.length
@@ -78,6 +63,19 @@ const Stack: React.FC<StackProps> = ({
     });
   };
 
+  // Add automatic rotation effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Automatically send the top card to back
+      if (cards.length > 0) {
+        sendToBack(cards[cards.length - 1].id);
+      }
+    }, autoRotateInterval);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, [cards, autoRotateInterval]);
+
   return (
     <div
       className="relative"
@@ -89,14 +87,13 @@ const Stack: React.FC<StackProps> = ({
     >
       {cards.map((card, index) => {
         const randomRotate = randomRotation
-          ? Math.random() * 10 - 5 // Random degree between -5 and 5
+          ? Math.random() * 10 - 5
           : 0;
 
         return (
           <CardRotate
             key={card.id}
             onSendToBack={() => sendToBack(card.id)}
-            sensitivity={sensitivity}
           >
             <motion.div
               className="rounded-2xl overflow-hidden border-4 border-white"
@@ -105,12 +102,18 @@ const Stack: React.FC<StackProps> = ({
                 rotateZ: (cards.length - index - 1) * 4 + randomRotate,
                 scale: 1 + index * 0.06 - cards.length * 0.06,
                 transformOrigin: "90% 90%",
+             
               }}
               initial={false}
               transition={{
                 type: "spring",
                 stiffness: animationConfig.stiffness,
                 damping: animationConfig.damping,
+                // Add duration for the y animation
+                y: index === cards.length - 1 ? { 
+                  repeat: Infinity, 
+                  duration: 2 
+                } : undefined
               }}
               style={{
                 width: cardDimensions.width,
@@ -129,4 +132,5 @@ const Stack: React.FC<StackProps> = ({
     </div>
   );
 }
+
 export default Stack;
