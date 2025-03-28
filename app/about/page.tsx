@@ -40,14 +40,14 @@ export default function About() {
       </div>
 
       {/* Content Section */}
-      <div className="flex flex-col min-h-screen p-10 md:p-20 bg-[#FeFFF1]">
+      <div className="flex flex-col min-h-screen bg:p-10 md:p-20 bg-[#FeFFF1]">
         <div className="max-w-6xl mx-auto">
           <motion.h3
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            className="text-sm tracking-widest text-gray-500"
+            className="text-sm tracking-widest text-gray-500 p-4 sm:p-0"
           >
             CHHAYA PARTY PLOT - A Celebration Redefined
           </motion.h3>
@@ -57,7 +57,7 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             transition={{ delay: 0.2 }}
-            className="text-4xl font-bold my-4"
+            className="text-4xl font-bold my-4 p-4 sm:p-0"
           >
             Where Your Love Story Unfolds in Grandeur
           </motion.h1>
@@ -67,7 +67,7 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             transition={{ delay: 0.4 }}
-            className="text-gray-600 leading-relaxed"
+            className="text-gray-600 leading-relaxed p-4 sm:p-0"
           >
             Welcome to Ahmedabad’s most exquisite event destination—Chhaya Partyplot. We craft experiences beyond expectations, where every detail is meticulously designed to leave an everlasting impression. From the grandeur of our entrance to the enchanting landscape and breathtaking décor, we create the perfect setting for a wedding, reception, or any grand celebration.
           </motion.p>
@@ -77,7 +77,7 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             transition={{ delay: 0.6 }}
-            className="mt-6 text-gray-600 leading-relaxed"
+            className="mt-6 text-gray-600 leading-relaxed p-4 sm:p-0"
           >
             Our mission is to embrace your unique story, style, and vision, transforming them into an unforgettable masterpiece. At Chhaya Partyplot, we don’t just host events—we create timeless memories etched in elegance and love.
           </motion.p>
