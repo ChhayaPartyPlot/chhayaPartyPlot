@@ -7,6 +7,7 @@ import CelebrationSection from './comonents/CelebrationSection';
 import { Footer } from './comonents/footer';
 import { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
+import VideoSection from './comonents/VideoSection';
 
 const images = [
   { id: 1, img: "/image1.jpeg" },
@@ -102,9 +103,10 @@ export default function Home() {
             </motion.div>
           </div>
         </motion.div>
-        
+        <VideoSection/>
         {/* Additional Sections */}
         <CelebrationSection />
+        
       </div>
 
       {/* Footer */}

@@ -53,7 +53,7 @@ function Carousel1() {
                     Sprawling space, premium decor, and unmatched hospitality – all in one venue!
                   </p>
                   <Link
-                    href="#reservation"
+                    href="/reservation"
                     className="border border-white relative transition-all duration-300 px-8 py-3 uppercase tracking-wider text-sm font-[400] font-[Barlow_Condensed] bg-transparent text-white leading-none text-[15px] letter-spacing-[3px] before:absolute before:inset-0 before:bg-white before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-black before:mix-blend-difference no-underline max-w-full"
                   >
                     Reservation
