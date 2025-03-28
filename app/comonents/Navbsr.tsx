@@ -27,12 +27,12 @@ const Navbar = () => {
           >
             Home
           </Link>
-          <Link 
+          <a 
             href="/about" 
-            className="text-black hover:text-green-200 uppercase text-sm tracking-wide border-b-2 border-transparent hover:border-green-200 transition duration-300"
+            className="reloadDocument text-black hover:text-green-200 uppercase text-sm tracking-wide border-b-2 border-transparent hover:border-green-200 transition duration-300"
           >
             About Us
-          </Link>
+          </a>
           <Link 
             href="/gallery" 
             className="text-black hover:text-green-200 uppercase text-sm tracking-wide border-b-2 border-transparent hover:border-green-200 transition duration-300"
@@ -58,7 +58,7 @@ const Navbar = () => {
             </Link>
             <Link 
               href="/about" 
-              className="text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
+              className=" reloadDocument text-black hover:text-green-200 uppercase text-sm tracking-wide py-2 border-b border-black"
             >
               About Us
             </Link>
