@@ -39,10 +39,6 @@ body {
 }
 
 
-nav a:hover {
-  color: #16a34a !important; 
-  text-decoration: underline !important; 
-}
 
 footer {
   margin-top: auto;
@@ -57,4 +53,13 @@ footer {
   main {
     height: 100vh;
   }
+}
+
+body a {
+  color:green  !important;
+  text-decoration: none !important;
+}
+
+body a:hover {
+  color: #16a34a !important;
 }

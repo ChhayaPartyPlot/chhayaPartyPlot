@@ -97,7 +97,7 @@ export default function VideoSection() {
         className="relative z-10 text-white"
       >
         <h2 className="text-2xl md:text-4xl font-serif tracking-wider uppercase">
-          Evergreen Party Plot
+          Chhaya Party Plot
         </h2>
         <h3 className="text-3xl md:text-5xl font-bold mt-4 uppercase">
           Promotional Video
