@@ -27,46 +27,51 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8 pl-6">
-          {[
-            { href: "/", label: "Home" },
-            { href: "/about", label: "About Us" },
-            { href: "/gallery", label: "Gallery" },
-            { href: "/contact", label: "Contact" },
-          ].map(({ href, label }) => (
-            <Link 
-              key={href} 
-              href={href} 
-              className={`uppercase text-sm tracking-wide transition duration-300 ${
-                pathname === href 
-                  ? "text-green-500 font-bold" 
-                  : "text-black hover:text-green-200"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
+          <Link 
+            href="/" 
+            className={`uppercase text-sm tracking-wide transition duration-300 ${pathname === "/" ? "text-green-500 font-bold" : "text-black hover:text-green-200"}`}
+          >
+            Home
+          </Link>
+          <Link 
+            href="/about" 
+            className={`uppercase text-sm tracking-wide transition duration-300 ${pathname === "/about" ? "text-green-500 font-bold" : "text-black hover:text-green-200"}`}
+          >
+            About Us
+          </Link>
+          <Link 
+            href="/gallery" 
+            className={`uppercase text-sm tracking-wide transition duration-300 ${pathname === "/gallery" ? "text-green-500 font-bold" : "text-black hover:text-green-200"}`}
+          >
+            Gallery
+          </Link>
+
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="absolute top-16 left-0 w-full bg-white/30 backdrop-blur-lg shadow-md flex flex-col p-6 md:hidden font-bold">
-            {[
-              { href: "/", label: "Home" },
-              { href: "/about", label: "About Us" },
-              { href: "/gallery", label: "Gallery" },
-              { href: "/contact", label: "Contact" },
-            ].map(({ href, label }) => (
-              <Link 
-                key={href} 
-                href={href} 
-                className={`text-black uppercase text-sm tracking-wide py-2 ${
-                  pathname === href ? "text-green-500 font-bold" : "hover:text-green-200"
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {label}
-              </Link>
-            ))}
+            <Link 
+              href="/" 
+              className={`text-black uppercase text-sm tracking-wide py-2 ${pathname === "/" ? "text-green-500 font-bold" : "hover:text-green-200"}`}
+              onClick={() => setIsOpen(false)}
+            >
+              Home
+            </Link>
+            <Link 
+              href="/about" 
+              className={`text-black uppercase text-sm tracking-wide py-2 ${pathname === "/about" ? "text-green-500 font-bold" : "hover:text-green-200"}`}
+              onClick={() => setIsOpen(false)}
+            >
+              About Us
+            </Link>
+            <Link 
+              href="/gallery" 
+              className={`text-black uppercase text-sm tracking-wide py-2 ${pathname === "/gallery" ? "text-green-500 font-bold" : "hover:text-green-200"}`}
+              onClick={() => setIsOpen(false)}
+            >
+              Gallery
+            </Link>
           </div>
         )}
       </nav>

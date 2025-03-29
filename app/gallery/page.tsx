@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Masonry from '../comonents/Masonary';
 import Image from "next/image";
 import { Footer } from '../comonents/footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const data = [
     { id: 1, image: '/p1.jpeg', height: 600 },

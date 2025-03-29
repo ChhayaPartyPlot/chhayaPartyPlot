@@ -8,8 +8,8 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12 w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* Logo and About */}
-          <div className="space-y-4 flex flex-col md:flex-row items-center md:items-start">
-            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <div className="space-y-4 flex flex-row items-center md:items-start">
+            <div className="sm:flex items-center space-x-4">
               <Image
                 src="/logo.png"
                 alt="Chhaya Party Plot"
@@ -17,10 +17,10 @@ export function Footer() {
                 height={60}
                 className="mb-4"
               />
-              <div className="flex flex-col space-y-2">
+              <div className="ml-4 flex flex-col space-y-2">
                 <div className="flex items-center gap-2 justify-center md:justify-start">
                   <Phone size={20} className="text-zinc-400" />
-                  <a href="tel:+919898221804" className="text-white">
+                  <a href="tel:+919898221804" className="text-white ">
                     +91 98982 21804
                   </a>
                 </div>
@@ -32,10 +32,10 @@ export function Footer() {
                   </a>
                 </div>
                 <div className="space-y-4 md:space-y-0">
-                  {/* Contact Information for Mobile */}
+                  {/* Contact Information */}
                   <div className="md:hidden">
                     <h3 className="text-xl font-medium mb-4 text-center">Contact</h3>
-                    <address className="not-italic text-sm leading-relaxed text-center">
+                    <address className="not-italic text-sm leading-relaxed">
                       bla bla bla Road, Opp. abc xyz,
                       <br />
                       hiddenleaf,
@@ -66,16 +66,16 @@ export function Footer() {
           <div className="space-y-4 flex justify-center md:block hidden">
             <nav className="flex flex-col space-y-2">
               <h3 className="text-xl font-medium mb-4 text-center">Explore</h3>
-              <Link href="/" className="text-white">
+              <Link href="/" className="text-white ">
                 Home
               </Link>
-              <Link href="/about" className="text-white">
+              <Link href="/about" className="text-white ">
                 About
               </Link>
-              <Link href="/gallery" className="text-white">
+              <Link href="/gallery" className="text-white ">
                 Gallery
               </Link>
-              <Link href="/contact" className="text-white">
+              <Link href="/contact" className="text-white ">
                 Contact
               </Link>
             </nav>
@@ -84,7 +84,7 @@ export function Footer() {
           {/* Contact Information for Desktop */}
           <div className="space-y-4 md:block hidden">
             <h3 className="text-xl font-medium mb-4 text-center">Contact</h3>
-            <address className="not-italic text-sm leading-relaxed text-center md:text-left">
+            <address className="not-italic text-sm leading-relaxed">
               bla bla bla Road, Opp. abc xyz,
               <br />
               hiddenleaf,

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Footer } from "../comonents/footer";
 import { motion } from "framer-motion";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function About() {
   // Animation variants for sliding in from left
@@ -35,8 +36,8 @@ export default function About() {
           className="brightness-50"
         />
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center">
-          <h1 className="text-sm tracking-widest">A Venue Beyond Your Imagination</h1>
-          <h2 className="text-5xl font-bold mt-2">Discover Our Story</h2>
+          <h1 className="text-sm tracking-widest font-serif italic text-gray-200">A Venue Beyond Your Imagination</h1>
+          <h2 className="text-5xl font-bold mt-2 font-sans text-gray-100">Discover Our Story</h2>
         </div>
       </div>
 
@@ -70,7 +71,7 @@ export default function About() {
             transition={{ delay: 0.4 }}
             className="text-gray-600 leading-relaxed p-4 sm:p-0"
           >
-            Welcome to Ahmedabad’s most exquisite event destination—Chhaya Partyplot. We craft experiences beyond expectations, where every detail is meticulously designed to leave an everlasting impression. From the grandeur of our entrance to the enchanting landscape and breathtaking décor, we create the perfect setting for a wedding, reception, or any grand celebration.
+            Welcome to Surat’s most exquisite event destination—Chhaya Partyplot. We craft experiences beyond expectations, where every detail is meticulously designed to leave an everlasting impression. From the grandeur of our entrance to the enchanting landscape and breathtaking décor, we create the perfect setting for a wedding, reception, or any grand celebration.
           </motion.p>
           <motion.p
             initial="hidden"
@@ -114,7 +115,7 @@ export default function About() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={slideInRight}
-              className="order-1 md:order-2 flex flex-col justify-center p-6 bg-amber-100 "
+              className="order-2 md:order-1 flex flex-col justify-center p-6 bg-amber-100"
             >
               <motion.h3
                 initial="hidden"
@@ -211,8 +212,9 @@ export default function About() {
           </div>
         </div>
       </div>
-      <Footer />
+  
     </div>
+    <Footer />
     </main>
   );
 }
