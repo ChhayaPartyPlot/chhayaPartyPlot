@@ -8,6 +8,35 @@ import { Footer } from './comonents/footer';
 import { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
 import VideoSection from './comonents/VideoSection';
+import Dock from './comonents/connection';
+
+import { FaWhatsapp, FaInstagram, FaPhone } from 'react-icons/fa';
+
+
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text).then(() => {
+    alert(`Phone number ${text} copied to clipboard!`);
+  }).catch(err => console.error('Failed to copy:', err));
+};
+
+const items = [
+  { 
+    icon: <FaWhatsapp size={18} color="#25D366" />, 
+    label: "WhatsApp", 
+    onClick: () => window.open("https://wa.me/919265310320", "_blank") 
+  },
+  { 
+    icon: <FaInstagram size={18} color="#E4405F" />, 
+    label: "Instagram", 
+    onClick: () => window.open("https://www.instagram.com/yourprofile", "_blank") 
+  },
+  { 
+    icon: <FaPhone size={18} color="#34B7F1" />, 
+    label: "Call", 
+    onClick: () => copyToClipboard("+1234567890") 
+  }
+];
+
 
 const images = [
   { id: 1, img: "/p1.jpeg" },
@@ -55,7 +84,7 @@ export default function Home() {
             {/* Left Section: Text Content */}
             <motion.div
               initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              whileInVgi iew={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               viewport={{ once: true }}
             >
@@ -114,6 +143,13 @@ export default function Home() {
 
       {/* Footer */}
       <Footer />
+
+      <Dock 
+    items={items}
+    panelHeight={68}
+    baseItemSize={50}
+    magnification={70}
+  />
     </main>
   );
 }
