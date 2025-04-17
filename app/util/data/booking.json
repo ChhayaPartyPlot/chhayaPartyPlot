@@ -1,0 +1,73 @@
+[
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d48",
+      "user": "60c72b2f9b1e8e5d7e4d2d38",
+      "startDate": "2025-03-10T10:00:00.000Z",
+      "totalBookingDays": 3,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d49",
+      "user": "60c72b2f9b1e8e5d7e4d2d39",
+      "startDate": "2025-03-15T10:00:00.000Z",
+      "totalBookingDays": 4,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d50",
+      "user": "60c72b2f9b1e8e5d7e4d2d40",
+      "startDate": "2025-03-20T10:00:00.000Z",
+      "totalBookingDays": 2,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d51",
+      "user": "60c72b2f9b1e8e5d7e4d2d41",
+      "startDate": "2025-03-25T10:00:00.000Z",
+      "totalBookingDays": 5,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d52",
+      "user": "60c72b2f9b1e8e5d7e4d2d42",
+      "startDate": "2025-04-01T10:00:00.000Z",
+      "totalBookingDays": 6,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d53",
+      "user": "60c72b2f9b1e8e5d7e4d2d43",
+      "startDate": "2025-04-05T10:00:00.000Z",
+      "totalBookingDays": 4,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d54",
+      "user": "60c72b2f9b1e8e5d7e4d2d44",
+      "startDate": "2025-04-10T10:00:00.000Z",
+      "totalBookingDays": 7,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d55",
+      "user": "60c72b2f9b1e8e5d7e4d2d45",
+      "startDate": "2025-04-12T10:00:00.000Z",
+      "totalBookingDays": 3,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d56",
+      "user": "60c72b2f9b1e8e5d7e4d2d46",
+      "startDate": "2025-04-15T10:00:00.000Z",
+      "totalBookingDays": 2,
+      "__v": 0
+    },
+    {
+      "_id": "60c72b2f9b1e8e5d7e4d2d57",
+      "user": "60c72b2f9b1e8e5d7e4d2d47",
+      "startDate": "2025-04-20T10:00:00.000Z",
+      "totalBookingDays": 5,
+      "__v": 0
+    }
+  ]
+  
