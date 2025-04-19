@@ -7,9 +7,22 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 
+// ✅ Define props for DockItem
+type DockItemProps = {
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+  mouseY: any;
+  spring: any;
+  distance: number;
+  magnification: number;
+  baseItemSize: number;
+};
+
+// ✅ DockItem component
 function DockItem({
   children,
   className = "",
@@ -19,8 +32,8 @@ function DockItem({
   distance,
   magnification,
   baseItemSize,
-}) {
-  const ref = useRef(null);
+}: DockItemProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const mouseDistance = useTransform(mouseY, (val) => {
     const rect = ref.current?.getBoundingClientRect() ?? {
@@ -52,6 +65,7 @@ function DockItem({
   );
 }
 
+// ✅ Dock component
 export default function Dock({
   items,
   className = "bg-white/10 backdrop-blur-lg border border-white/20",
@@ -61,18 +75,33 @@ export default function Dock({
   panelWidth = 64,
   dockWidth = 256,
   baseItemSize = 50,
+}: {
+  items: {
+    icon: React.ReactNode;
+    onClick?: () => void;
+    className?: string;
+  }[];
+  className?: string;
+  spring?: any;
+  magnification?: number;
+  distance?: number;
+  panelWidth?: number;
+  dockWidth?: number;
+  baseItemSize?: number;
 }) {
   const mouseY = useMotionValue(Infinity);
   const isHovered = useMotionValue(0);
-  const [isOpen, setIsOpen] = useState(typeof window !== "undefined" ? window.innerWidth >= 1024 : true);
-  const dockRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(
+    typeof window !== "undefined" ? window.innerWidth >= 1024 : true
+  );
+  const dockRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= 1024) {
-        setIsOpen(true); // Always open for larger screens
+        setIsOpen(true);
       } else {
-        setIsOpen(false); // Closed by default on mobile
+        setIsOpen(false);
       }
     }
 
@@ -81,10 +110,9 @@ export default function Dock({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Close dock when clicking outside (only for mobile)
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dockRef.current && !dockRef.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (dockRef.current && !dockRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     }
@@ -97,7 +125,7 @@ export default function Dock({
 
   return (
     <>
-      {/* 🟢 Mobile Toggle Button (Left Center) */}
+      {/* Toggle Button for Mobile */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
