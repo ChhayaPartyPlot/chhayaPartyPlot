@@ -35,14 +35,14 @@ function DockItem({
 }: DockItemProps) {
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const mouseDistance = useTransform(mouseY, (val) => {
+  const mouseDistance = useTransform(mouseY, (val: number) => {
     const rect = ref.current?.getBoundingClientRect() ?? {
       y: 0,
       height: baseItemSize,
     };
     return val - rect.y - baseItemSize / 2;
   });
-
+  
   const targetSize = useTransform(
     mouseDistance,
     [-distance, 0, distance],
