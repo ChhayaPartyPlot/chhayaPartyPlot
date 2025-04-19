@@ -147,9 +147,6 @@ export default function Home() {
 
       <Dock 
     items={items}
-    
-    baseItemSize={50}
-    magnification={70}
   />
     </main>
   );
