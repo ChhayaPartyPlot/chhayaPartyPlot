@@ -13,11 +13,12 @@ import Dock from './comonents/connection';
 import { FaWhatsapp, FaInstagram, FaPhone } from 'react-icons/fa';
 
 
-const copyToClipboard = (text) => {
+const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text).then(() => {
     alert(`Phone number ${text} copied to clipboard!`);
   }).catch(err => console.error('Failed to copy:', err));
 };
+
 
 const items = [
   { 
