@@ -147,7 +147,7 @@ export default function Home() {
 
       <Dock 
     items={items}
-    panelHeight={68}
+    
     baseItemSize={50}
     magnification={70}
   />
