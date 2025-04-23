@@ -85,22 +85,19 @@ export async function GET(req: NextRequest) {
     const endDate = new Date(year, month, 0); // End of the month
 
     //retrive data from database
-    let bookings : BookingDocument[] = await Booking.find({
-        startDate: { $gte: startDate, $lte: endDate } // Filter bookings within the specified month and year
-    }) // Populate user details (name and email) from the User model
-
-    
-    bookings = bookings.filter((booking) => {
-        if(booking.startDate > startDate || booking.startDate < endDate){
-            return true;
-        }
-        let closeDate = new Date(booking.startDate);
-        closeDate.setDate(closeDate.getDate() + booking.totalBookingDays);
-        if(closeDate > startDate || closeDate < endDate){
-            return true;
-        }
-        return false;
-    })
+    let bookings: BookingDocument[] = await Booking.find({
+        $or: [
+          {
+            startDate: { $lte: endDate },
+            $expr: {
+              $gt: [
+                { $add: ["$startDate", { $multiply: ["$totalBookingDays", 86400000] }] },
+                startDate
+              ]
+            }
+          }
+        ]
+      });
 
     const res = NextResponse.json(bookings, { status: 200 });
     return res;

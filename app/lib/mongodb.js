@@ -38,10 +38,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectToDatabase = void 0;
 var mongoose_1 = require("mongoose");
-var MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/chhayaPartyplot';
-if (!MONGO_URI) {
-    throw new Error('Please define the MONGO_URI environment variable');
-}
+// // Load environment variables (optional, as Next.js does this automatically in most cases)
+// loadEnvConfig(process.cwd());
+// // Check if the environment variable is defined
+// console.log(process.env)
+// const MONGO_URI = process.env.MONGO_URL!;
+// if (!MONGO_URI) {
+//   throw new Error('Please define the MONGO_URI environment variable');
+// }
+var MONGO_URI = 'mongodb+srv://mannpatel1207:Mann%40E402@cluster0.j4glnlv.mongodb.net/ChhayaPartyplot?retryWrites=true&w=majority&appName=Cluster0';
 var isConnected = false;
 var connectToDatabase = function () { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
@@ -55,11 +60,10 @@ var connectToDatabase = function () { return __awaiter(void 0, void 0, void 0, f
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, mongoose_1.default.connect(MONGO_URI, {
-                    //   useNewUrlParser: true,
-                    //   useUnifiedTopology: true,
-                    })];
+                // Log the Mongo URI for debugging
+                return [4 /*yield*/, mongoose_1.default.connect(MONGO_URI)];
             case 2:
+                // Log the Mongo URI for debugging
                 _a.sent();
                 isConnected = true;
                 console.log('Connected to MongoDB');

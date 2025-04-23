@@ -8,11 +8,11 @@ async function adduser(){
 
     await connectToDatabase();
 
-    await User.deleteMany({});
+    // await User.deleteMany({});
 
-    // await User.deleteMany({} as FilterQuery<UserDocument>)
-    //     .then(() => console.log("All existing users deleted."))
-    //     .catch((error: any) => console.error("Error deleting users:", error));
+    await User.deleteMany({} as FilterQuery<UserDocument>)
+        .then(() => console.log("All existing users deleted."))
+        .catch((error: any) => console.error("Error deleting users:", error));
 
     fs.readFile('../data/user.json', 'utf8', async (err, data) => {
         if (err) {
