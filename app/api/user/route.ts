@@ -12,11 +12,15 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const mobNumber = Number(searchParams.get('mobNumber'));
-    const email = searchParams.get('email');
+    let email = searchParams.get('email');
+
+    if (!mobNumber && !email) {
+        email = '';
+    }
 
     if (mobNumber && MOB_NUMBER_PATTERN.test(mobNumber.toString())) {
         return await getUserThroughMobNumber(mobNumber);
-    } else if (email && EMAIL_PATTERN.test(email)) {
+    } else if ((email && EMAIL_PATTERN.test(email)) || email === '') {
         return await getUserThroughEmail(email);
     } else {
         return NextResponse.json({ message: 'Invalid or missing parameters' }, { status: 400 });
