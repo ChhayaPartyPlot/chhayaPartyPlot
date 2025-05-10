@@ -41,6 +41,7 @@ export default function About() {
           }
         }
       `}</style>
+      
       <div className="relative min-h-screen bg-[#FeFFF1]">
         {/* Hero Section */}
         <div className="relative h-[60vh] w-full">
@@ -52,6 +53,8 @@ export default function About() {
             className="brightness-50"
           />
           <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center">
+            
+
             <h1 className="text-sm tracking-widest font-serif italic text-gray-200">A Venue Beyond Your Imagination</h1>
             <h2 className="text-5xl font-bold mt-2 font-sans text-gray-100">Discover Our Story</h2>
           </div>
@@ -67,6 +70,7 @@ export default function About() {
               variants={fadeInUp}
               className="text-sm tracking-widest text-gray-500 p-4 sm:p-0"
             >
+              
               CHHAYA PARTY PLOT - A Celebration Redefined
             </motion.h3>
             <motion.h1

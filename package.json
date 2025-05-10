@@ -21,6 +21,7 @@
     "mongodb": "^6.16.0",
     "mongoose": "^8.13.1",
     "next": "15.2.4",
+    "next-cloudinary": "^6.16.0",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.10.1",
     "react": "^18.3.1",

@@ -7,15 +7,16 @@ export async function sendDailyReport() : Promise<void> {
   await connectToDatabase();
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
+  today.setHours(0, 0, 0, 0); // Today at 00:00
+
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1); // Yesterday at 00:00
 
   const submissions = await Inquiry.find({
-    createdAt: { $gte: today, $lt: tomorrow },
+    // createdAt: { $gte: yesterday, $lt: today },
   }).lean();
 
-  
+
 
   if (submissions.length > 0) {
     await sendDailyEmail(submissions);
