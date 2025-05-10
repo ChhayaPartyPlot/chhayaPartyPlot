@@ -42,22 +42,19 @@ var mongoose_1 = require("mongoose");
 var mongodb_1 = require("../../lib/mongodb");
 function adduser() {
     return __awaiter(this, void 0, void 0, function () {
-        var filter;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, (0, mongodb_1.connectToDatabase)()];
                 case 1:
                     _a.sent();
-                    filter = {};
-                    // Delete all existing users in the collection
-                    return [4 /*yield*/, User_1.User.deleteMany({})];
+                    // await User.deleteMany({});
+                    return [4 /*yield*/, User_1.User.deleteMany({})
+                            .then(function () { return console.log("All existing users deleted."); })
+                            .catch(function (error) { return console.error("Error deleting users:", error); })];
                 case 2:
-                    // Delete all existing users in the collection
+                    // await User.deleteMany({});
                     _a.sent();
-                    // await User.deleteMany({} as FilterQuery<UserDocument>)
-                    //     .then(() => console.log("All existing users deleted."))
-                    //     .catch((error: any) => console.error("Error deleting users:", error));
                     fs.readFile('../data/user.json', 'utf8', function (err, data) { return __awaiter(_this, void 0, void 0, function () {
                         var users, _loop_1, _i, users_1, user;
                         return __generator(this, function (_a) {

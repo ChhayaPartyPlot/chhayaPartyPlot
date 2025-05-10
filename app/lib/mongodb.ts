@@ -1,10 +1,19 @@
 import mongoose from 'mongoose';
+import { loadEnvConfig } from '@next/env';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/chhayaPartyplot';
+// // Load environment variables (optional, as Next.js does this automatically in most cases)
+// loadEnvConfig(process.cwd());
+// // Check if the environment variable is defined
 
-if (!MONGO_URI) {
-  throw new Error('Please define the MONGO_URI environment variable');
-}
+
+// console.log(process.env)
+// const MONGO_URI = process.env.MONGO_URL!;
+
+
+// if (!MONGO_URI) {
+//   throw new Error('Please define the MONGO_URI environment variable');
+// }
+const MONGO_URI = 'mongodb+srv://mannpatel1207:Mann%40E402@cluster0.j4glnlv.mongodb.net/ChhayaPartyplot?retryWrites=true&w=majority&appName=Cluster0';
 
 let isConnected = false;
 
@@ -15,10 +24,9 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    await mongoose.connect(MONGO_URI, {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    });
+     // Log the Mongo URI for debugging
+
+    await mongoose.connect(MONGO_URI);
 
     isConnected = true;
     console.log('Connected to MongoDB');

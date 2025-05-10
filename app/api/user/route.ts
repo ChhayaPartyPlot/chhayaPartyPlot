@@ -1,57 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {connectToDatabase} from '@/lib/mongodb';
-import { User } from '@/models/User'; // Adjust the path to your actual User model
+import { connectToDatabase } from '@/app/lib/mongodb';
+import { User } from '@/app/models/User';
+import { getUserThroughMobNumber } from '@/app/util/functions/getUserThroughMobNumber';
+import { getUserThroughEmail } from '@/app/util/functions/getUserThroughEmail';
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
-
-async function getUserThroughMobNumber(mobNumber: Number): Promise<NextResponse> {
-    const user = await User.findOne({ mobNumber: mobNumber });
-    if (!user) {
-        return NextResponse.json('User Not Found',{ status: 404 });
-    }
-    return NextResponse.json('User Found',{ status: 200 });
-}
-
-async function getUserThroughEmail(email: string): Promise<NextResponse> {
-    const user = await User.findOne({ email: email });
-    if (!user) {
-        return NextResponse.json('User Not Found',{ status: 404 });
-    }
-    return NextResponse.json('User Found',{ status: 200 });
-}
 
 export async function GET(req: NextRequest) {
     await connectToDatabase();
 
     const { searchParams } = new URL(req.url);
-
     const mobNumber = Number(searchParams.get('mobNumber'));
     const email = searchParams.get('email');
 
     if (mobNumber && MOB_NUMBER_PATTERN.test(mobNumber.toString())) {
-        let res = await getUserThroughMobNumber(mobNumber);
-        return res;
+        return await getUserThroughMobNumber(mobNumber);
     } else if (email && EMAIL_PATTERN.test(email)) {
-        let res = await getUserThroughEmail(email);
-        return res;
+        return await getUserThroughEmail(email);
     } else {
-        return NextResponse.json({ message: 'No parameters provided' }, { status: 400 });
+        return NextResponse.json({ message: 'Invalid or missing parameters' }, { status: 400 });
     }
-
 }
 
 export async function POST(req: NextRequest) {
     await connectToDatabase();
 
-    const { name, mobNumber, email } = await req.json();
-    const user = new User({ name, mobNumber, email });
-
     try {
+        const { name, mobNumber, email } = await req.json();
+        const user = new User({ name, mobNumber, email });
         await user.save();
-        return NextResponse.json('User Created', { status: 201 });
+
+        return NextResponse.json({ message: 'User Created', user }, { status: 201 });
     } catch (error) {
-        return NextResponse.json('User Not Created', { status: 500 });
+        return NextResponse.json({ message: 'User Not Created', error }, { status: 500 });
     }
-    
 }

@@ -1,4 +1,4 @@
-import {transporter} from '@/lib/mailer'
+import {transporter} from '../../lib/mailer'
 
 export async function sendDailyEmail(submissions: any[]) {
     const formattedRows = submissions.map((s, i) => `
