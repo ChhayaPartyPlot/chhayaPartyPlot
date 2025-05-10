@@ -13,7 +13,7 @@ export async function sendDailyReport() : Promise<void> {
   yesterday.setDate(today.getDate() - 1); // Yesterday at 00:00
 
   const submissions = await Inquiry.find({
-    // createdAt: { $gte: yesterday, $lt: today },
+    createdAt: { $gte: yesterday, $lt: today },
   }).lean();
 
 
