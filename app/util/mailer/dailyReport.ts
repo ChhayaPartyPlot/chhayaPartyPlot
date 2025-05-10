@@ -1,8 +1,9 @@
-import { connectToDatabase } from '@/lib/mongodb';
-import {Inquiry} from '@/models/Inquiry';
-import { sendDailyEmail } from '@/util/mailer/mailer';
+import { connectToDatabase } from '../../lib/mongodb';
+import {Inquiry} from '../../models/Inquiry';
+import { sendDailyEmail } from '../../util/mailer/mailer';
 
-export async function sendDailyReport() {
+export async function sendDailyReport() : Promise<void> {
+  console.log('Running daily report');  
   await connectToDatabase();
 
   const today = new Date();
@@ -13,6 +14,8 @@ export async function sendDailyReport() {
   const submissions = await Inquiry.find({
     createdAt: { $gte: today, $lt: tomorrow },
   }).lean();
+
+  
 
   if (submissions.length > 0) {
     await sendDailyEmail(submissions);
