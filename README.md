@@ -45,3 +45,12 @@ Admin validation in all api
 Add date validation
 
 ```
+
+form for add image 
+```
+<form action="/api/image" method="POST" encType="multipart/form-data">
+                <input type="file" name="file" />
+                <input type="text" name="eventType" placeholder="eventType" />
+                <button type="submit">Upload</button>
+              </form>
+```

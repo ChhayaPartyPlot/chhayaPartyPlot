@@ -1,5 +1,12 @@
 import {transporter} from '../../lib/mailer'
 
+function formatDate(date: Date): string {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
 export async function sendDailyEmail(submissions: any[]) {
     const formattedRows = submissions.map((s, i) => `
       <tr>
@@ -7,8 +14,8 @@ export async function sendDailyEmail(submissions: any[]) {
         <td>${s.name}</td>
         <td>${s.email}</td>
         <td>${s.phone || ''}</td>
-        <td>${s.message}</td>
-        <td>${s.time}</td>
+        <td>${formatDate(s.startingDate)}</td>
+        <td>${s.totalBookingDays}</td>
       </tr>
     `).join('');
   
@@ -21,8 +28,8 @@ export async function sendDailyEmail(submissions: any[]) {
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Message</th>
-            <th>Time</th>
+            <th>Starting Date</th>
+            <th>Total Booking Days</th>
           </tr>
         </thead>
         <tbody>${formattedRows}</tbody>

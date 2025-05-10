@@ -5,5 +5,12 @@
     "phone": "1111111111",
     "startingDate": "12-01-2025",
     "totalBookingDays": 5
+  },
+  {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "phone": "9876543210",
+    "startingDate": "2025-06-01",
+    "totalBookingDays": 3
   }
 ]
