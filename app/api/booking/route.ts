@@ -49,11 +49,12 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
     await connectToDatabase();
 
-    const { searchParams } = new URL(req.url);
-    const mobNumber = Number(searchParams.get('mobNumber'));
-    const email = searchParams.get('email');
-    const startDate = new Date(searchParams.get('startDate') || new Date());
-    const totalBookingDays = Number(searchParams.get('totalBookingDays')) || 1;
+    const body = await req.json();
+    const mobNumber = body.mobNumber;
+    const email = body.email;
+    const startDate = new Date(body.startDate || new Date());
+    const totalBookingDays = Number(body.totalBookingDays) || 1;
+
 
     if (mobNumber && MOB_NUMBER_PATTERN.test(mobNumber.toString())) {
         return await addBookingThroughMobNumber(mobNumber, startDate, totalBookingDays);

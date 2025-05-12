@@ -27,7 +27,6 @@ const userSchema = new Schema<UserDocument>({
   },
   email: { 
     type: String,
-    required: true,
     unique: true, 
     match: /^\S+@\S+\.\S+$/
   },

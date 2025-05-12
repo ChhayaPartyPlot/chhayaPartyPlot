@@ -1,4 +1,6 @@
 import { User } from "@/app/models/User";
+import { UserDocument } from "@/app/models/User";
+
 import { NextResponse } from "next/server";
 import { validateDate } from "./validateDate";
 import { Booking } from "@/app/models/Booking";
@@ -11,7 +13,7 @@ export async function addBookingThroughMobNumber(
     startDate: Date,
     totalBookingDays: number
 ): Promise<NextResponse> {
-    const user = await User.findOne({ mobNumber });
+    const user: UserDocument | null = await User.findOne({ mobNumber });
 
     if (!user) {
         return NextResponse.json({ message: 'User Not Found' }, { status: 404 });
@@ -24,9 +26,10 @@ export async function addBookingThroughMobNumber(
 
     const newBooking = new Booking({
         user: user._id,
-        startDate,
-        totalBookingDays,
+        startDate:startDate,
+        totalBookingDays:totalBookingDays,
     });
+
 
     try {
         await newBooking.save();
