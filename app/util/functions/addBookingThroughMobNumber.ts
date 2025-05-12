@@ -12,11 +12,10 @@ export async function addBookingThroughMobNumber(
     totalBookingDays: number
 ): Promise<NextResponse> {
     const user = await User.findOne({ mobNumber });
-
     if (!user) {
         return NextResponse.json({ message: 'User Not Found' }, { status: 404 });
     }
-
+    console.log(user)
     const isValid = await validateDate(startDate, totalBookingDays);
     if (!isValid) {
         return NextResponse.json({ message: 'Date conflicts with existing booking' }, { status: 409 });
@@ -28,10 +27,13 @@ export async function addBookingThroughMobNumber(
         totalBookingDays,
     });
 
+    console.log(newBooking)
+
     try {
         await newBooking.save();
         return NextResponse.json({ message: 'Booking Saved' }, { status: 200 });
     } catch (error) {
+        console.log(error)
         return NextResponse.json({ message: 'Error in Booking', error }, { status: 500 });
     }
 }
