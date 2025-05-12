@@ -1,15 +1,16 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 
 interface BookingDocument extends Document {
-  user: Types.ObjectId;        // Reference to User model (_id)
+  // _id: mongoose.Types.ObjectId;  // Unique identifier for the booking
+  user: mongoose.Types.ObjectId;        // Reference to User model (_id)
   startDate: Date;              // Booking start date
   totalBookingDays: number;     // Total number of booking days
 }
 
 const bookingSchema = new Schema<BookingDocument>({
-  _id:{
-    type : mongoose.Schema.Types.ObjectId,
-  },
+  // _id:{
+  //   type : mongoose.Schema.Types.ObjectId,
+  // },
   user: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User', 

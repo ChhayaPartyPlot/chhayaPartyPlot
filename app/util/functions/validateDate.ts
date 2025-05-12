@@ -5,7 +5,7 @@ import { Booking, BookingDocument } from "@/app/models/Booking";
  */
 export async function validateDate(startDate: Date, totalBookingDays: number): Promise<boolean> {
     const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + totalBookingDays);
+    endDate.setDate(endDate.getDate() + totalBookingDays - 1);
 
     const bookingStartDate = new Date(startDate.getFullYear(), startDate.getMonth() - 1, 1);
 
