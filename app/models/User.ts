@@ -25,11 +25,18 @@ const userSchema = new Schema<UserDocument>({
       message: 'Mobile number must be 10 digits long.',
     }
   },
-  email: { 
-    type: String,
-    unique: true, 
-    match: /^\S+@\S+\.\S+$/
+  email: {
+  type: String,
+  default: null,
+  unique: true,
+  sparse: true, // 👈 IMPORTANT to allow multiple nulls
+  validate: {
+    validator: function (v) {
+      return v === null || v === '' || /^\S+@\S+\.\S+$/.test(v);
+    },
+    message: props => `${props.value} is not a valid email!`
   },
+},
 });
 
 // Create the User model based on the schema and interface
