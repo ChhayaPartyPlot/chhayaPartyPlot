@@ -4,7 +4,7 @@ import { User } from '@/app/models/User';
 import { getUserThroughMobNumber } from '@/app/util/functions/getUserThroughMobNumber';
 import { getUserThroughEmail } from '@/app/util/functions/getUserThroughEmail';
 
-const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
+// const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
 
 export async function GET(req: NextRequest) {
@@ -12,16 +12,16 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const mobNumber = Number(searchParams.get('mobNumber'));
-    let email = searchParams.get('email');
+    // let email = searchParams.get('email');
 
-    if (!mobNumber && !email) {
-        email = '';
-    }
+    // if (!mobNumber && !email) {
+    //     email = '';
+    // }
 
     if (mobNumber && MOB_NUMBER_PATTERN.test(mobNumber.toString())) {
         return await getUserThroughMobNumber(mobNumber);
-    } else if ((email && EMAIL_PATTERN.test(email)) || email === '') {
-        return await getUserThroughEmail(email);
+    // } else if ((email && EMAIL_PATTERN.test(email)) || email === '') {
+    //     return await getUserThroughEmail(email);
     } else {
         return NextResponse.json({ message: 'Invalid or missing parameters' }, { status: 400 });
     }
@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
 
     try {
-        const { name, mobNumber, email } = await req.json();
-        const user = new User({ name, mobNumber, email });
+        const { name, mobNumber } = await req.json();
+        const user = new User({ name, mobNumber });
         await user.save();
 
         return NextResponse.json({ message: 'User Created', user }, { status: 200 });

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { addBookingThroughMobNumber } from '@/app/util/functions/addBookingThroughMobNumber';
 import { addBookingThroughEmail } from '@/app/util/functions/addBookingThroughEmail';
 
-const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
+// const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
 
 
@@ -51,15 +51,15 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
     const mobNumber = body.mobNumber;
-    const email = body.email;
+    // const email = body.email;
     const startDate = new Date(body.startDate || new Date());
     const totalBookingDays = Number(body.totalBookingDays) || 1;
 
 
     if (mobNumber && MOB_NUMBER_PATTERN.test(mobNumber.toString())) {
         return await addBookingThroughMobNumber(mobNumber, startDate, totalBookingDays);
-    } else if (email && EMAIL_PATTERN.test(email)) {
-        return await addBookingThroughEmail(email, startDate, totalBookingDays);
+    // } else if (email && EMAIL_PATTERN.test(email)) {
+    //     return await addBookingThroughEmail(email, startDate, totalBookingDays);
     } else {
         return NextResponse.json({ message: 'Invalid or missing parameters' }, { status: 400 });
     }
