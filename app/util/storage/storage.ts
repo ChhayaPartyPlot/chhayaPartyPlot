@@ -4,7 +4,7 @@ import path from 'path';
 const dataFilePath = path.resolve(process.cwd(), 'contactData.json');
 
 interface InquiryData {
-    name:String, email:String, phone:String, startingDate:String , totalBookingDays?:Number
+    name:String, phone:String, startingDate:String , totalBookingDays?:Number
 }
 
 export function saveContactSubmission(data: InquiryData) {
