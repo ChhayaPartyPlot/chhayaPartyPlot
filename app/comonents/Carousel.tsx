@@ -45,7 +45,7 @@ function Carousel1() {
               <div className="relative w-full h-screen flex items-center justify-center text-center">
                 <div className="absolute inset-0"></div>
                 <div className="relative z-10 px-6">
-                  <p className="text-white text-sm md:text-lg uppercase tracking-widest font-semibold drop-shadow-lg">
+                  <p className=" text-sm md:text-lg uppercase tracking-widest font-semibold drop-shadow-lg">
                     Presenting Chhaya Party Plot
                   </p>
                   <h1 className="text-white text-4xl md:text-7xl font-serif tracking-widest text-center font-bold mt-2 drop-shadow-lg">

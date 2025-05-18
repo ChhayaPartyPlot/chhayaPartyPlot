@@ -45,6 +45,12 @@ const Navbar = () => {
           >
             Gallery
           </Link>
+              <Link 
+            href="/reservation" 
+            className={`uppercase text-sm tracking-wide transition duration-300 ${pathname === "/gallery" ? "text-green-500 font-bold" : "text-black hover:text-green-200"}`}
+          >
+            Reservation
+          </Link>
 
         </div>
 
@@ -71,6 +77,13 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Gallery
+            </Link>
+             <Link 
+              href="/reservation" 
+              className={`text-black uppercase text-sm tracking-wide py-2 ${pathname === "/gallery" ? "text-green-500 font-bold" : "hover:text-green-200"}`}
+              onClick={() => setIsOpen(false)}
+            >
+              Reservation
             </Link>
           </div>
         )}
