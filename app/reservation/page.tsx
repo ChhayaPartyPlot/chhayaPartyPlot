@@ -13,12 +13,21 @@ const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
 
 export default function Reservation() {
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
-  const [value, setValue] = useState<Date | null>(null);
   const [activeStartDate, setActiveStartDate] = useState(new Date());
+
+  const [showForm, setShowForm] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [bookingDays, setBookingDays] = useState<number>(1);
 
   const [name, setName] = useState('');
   const [mobNumber, setMobNumber] = useState('');
   const [email, setEmail] = useState('');
+
+  // Inquiry Form States
+  const [inquiryName, setInquiryName] = useState('');
+  const [inquiryPhone, setInquiryPhone] = useState('');
+  const [inquiryDate, setInquiryDate] = useState('');
+  const [inquiryDays, setInquiryDays] = useState<number>(1);
 
   useEffect(() => {
     fetchBookings();
@@ -37,7 +46,6 @@ export default function Reservation() {
       data.forEach((booking: any) => {
         const start = new Date(booking.startDate);
         const days = booking.totalBookingDays;
-
         for (let i = 0; i < days; i++) {
           const bookedDate = new Date(start);
           bookedDate.setDate(bookedDate.getDate() + i);
@@ -49,6 +57,20 @@ export default function Reservation() {
     } catch (error) {
       console.error('Error fetching bookings:', error);
     }
+  };
+
+  const handleDateClick = (date: Date) => {
+    const isReserved = reservedDates.some(
+      d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
+    );
+
+    if (isReserved) {
+      alert("Sorry, this date is already reserved!");
+      return;
+    }
+
+    setSelectedDate(date);
+    setShowForm(true);
   };
 
   const handleMobNumberChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,94 +95,101 @@ export default function Reservation() {
     }
   };
 
-  async function handleDateClick(date: Date) {
-    const isReserved = reservedDates.some(
-      d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
-    );
+  const handleReservationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedDate) return;
 
-    if (isReserved) {
-      alert("Sorry, this date is already reserved!");
+    if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
+      alert("Please enter a valid 10-digit mobile number.");
       return;
     }
 
-if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
-  alert("Please enter a valid 10-digit mobile number.");
-  return;
-}
-
-let finalName = name;
-
-if (!finalName) {
-  const inputName = prompt("Enter your name:");
-  if (!inputName) {
-    alert("Name is required.");
-    return;
-  }
-  finalName = inputName;
-  setName(finalName);
-}
-
-// Save user if not exists
-try {
-  const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
-  if (res.status === 404) {
-    console.log("User not found, creating new user...");
-    await fetch('/api/user', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: finalName, mobNumber}),
-    });
-  }
-} catch (error) {
-  console.error('Error while verifying/creating user:', error);
-}
-
-
-    const daysInput = prompt("How many days do you want to reserve?");
-    const totalBookingDays = Number(daysInput);
-
-    if (isNaN(totalBookingDays) || totalBookingDays <= 0) {
-      alert("Invalid number of days.");
+    if (!name) {
+      alert("Name is required.");
       return;
     }
 
     try {
-      const startDateParam = encodeURIComponent(format(date, 'yyyy-MM-dd'));
-  const res = await fetch('/api/booking', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      mobNumber,
-      startDate: format(date, 'yyyy-MM-dd'),
-      totalBookingDays,
-    }),
-  });
+      const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
+      if (res.status === 404) {
+        await fetch('/api/user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, mobNumber, email }),
+        });
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+
+    try {
+      const res = await fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mobNumber,
+          startDate: format(selectedDate, 'yyyy-MM-dd'),
+          totalBookingDays: bookingDays,
+        }),
+      });
 
       if (res.ok) {
         alert("Reservation successful!");
-        fetchBookings(); // Refresh calendar
+        setShowForm(false);
+        setSelectedDate(null);
+        fetchBookings();
       } else {
         const error = await res.json();
         alert(`Reservation failed: ${error.message}`);
       }
     } catch (err) {
-      console.error("Error sending booking:", err);
-      alert("Failed to make reservation.");
+      console.error("Error making reservation:", err);
+      alert("Reservation failed.");
     }
-  }
+  };
 
-  function tileDisabled({ date }: { date: Date }) {
-    return reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
-  }
-
-  function tileClassName({ date }: { date: Date }) {
-    if (reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'))) {
-      return 'reserved-date';
+  const handleInquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inquiryName || !inquiryPhone || !inquiryDate) {
+      alert("Please fill in all required fields.");
+      return;
     }
-    return '';
-  }
+
+    try {
+      const res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: inquiryName,
+          phone: inquiryPhone,
+          startingDate: inquiryDate,
+          totalBookingDays: inquiryDays,
+        }),
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        alert("Inquiry submitted successfully.");
+        setInquiryName('');
+        setInquiryPhone('');
+        setInquiryDate('');
+        setInquiryDays(1);
+      } else {
+        alert(`Inquiry failed: ${result.error}`);
+      }
+    } catch (err) {
+      console.error("Inquiry submission error:", err);
+      alert("Error submitting inquiry.");
+    }
+  };
+
+  const tileDisabled = ({ date }: { date: Date }) =>
+    reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
+
+  const tileClassName = ({ date }: { date: Date }) =>
+    reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'))
+      ? 'reserved-date'
+      : '';
 
   return (
     <main>
@@ -176,6 +205,78 @@ try {
       `}</style>
 
       <div className="relative min-h-screen bg-[#FeFFF1]">
+        {/* Form Popup */}
+        {showForm && (
+          <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
+            <h3 className="text-xl font-bold mb-4 text-center">Complete Your Reservation</h3>
+            <form onSubmit={handleReservationSubmit}>
+              {selectedDate && (
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Starting Date</label>
+                  <div className="w-full border rounded p-2 bg-gray-100">
+                    {format(selectedDate, 'yyyy-MM-dd')}
+                  </div>
+                </div>
+              )}
+              <div className="mb-3">
+                <label className="block text-sm font-medium mb-1">Mobile Number</label>
+                <input
+                  type="text"
+                  value={mobNumber}
+                  onChange={handleMobNumberChange}
+                  className="w-full border rounded p-2"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="block text-sm font-medium mb-1">Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full border rounded p-2"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="block text-sm font-medium mb-1">Email (optional)</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full border rounded p-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">Number of Days</label>
+                <input
+                  type="number"
+                  value={bookingDays}
+                  min={1}
+                  onChange={(e) => setBookingDays(parseInt(e.target.value))}
+                  className="w-full border rounded p-2"
+                  required
+                />
+              </div>
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+                  onClick={() => setShowForm(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white px-4 py-2 rounded"
+                >
+                  Reserve
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
         {/* Hero Section */}
         <div className="relative h-[60vh] w-full">
           <Image
@@ -191,36 +292,9 @@ try {
           </div>
         </div>
 
-        {/* User Info Inputs */}
-        <div className="flex justify-center mt-10">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-96">
-            <h3 className="text-2xl font-semibold mb-4 text-center">Enter Your Details</h3>
-            <input
-              type="text"
-              placeholder="Mobile Number"
-              value={mobNumber}
-              onChange={handleMobNumberChange}
-              className="w-full border rounded p-2 mb-3"
-            />
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full border rounded p-2 mb-3"
-            />
-            <input
-              type="email"
-              placeholder="Email (optional)"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border rounded p-2 mb-3"
-            />
-          </div>
-        </div>
-
-        {/* Calendar Section */}
-        <div className="flex justify-center items-center mt-6">
+        {/* Calendar and Inquiry Form */}
+        <div className="flex flex-col md:flex-row justify-center items-start gap-8 mt-10 px-4">
+          {/* Calendar */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             <h3 className="text-2xl font-semibold mb-4 text-center">Reserve Your Date</h3>
             <Calendar
@@ -230,6 +304,56 @@ try {
               onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
             />
             <p className="mt-4 text-center text-sm text-gray-500">Red dates are already reserved</p>
+          </div>
+
+          {/* Inquiry Form */}
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
+            <h3 className="text-2xl font-semibold mb-4 text-center">Make an Inquiry</h3>
+            <form onSubmit={handleInquirySubmit}>
+              <div className="mb-3">
+                <label className="block text-sm font-medium mb-1">Name</label>
+                <input
+                  type="text"
+                  value={inquiryName}
+                  onChange={(e) => setInquiryName(e.target.value)}
+                  className="w-full border rounded p-2"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="block text-sm font-medium mb-1">Phone Number</label>
+                <input
+                  type="text"
+                  value={inquiryPhone}
+                  onChange={(e) => setInquiryPhone(e.target.value)}
+                  className="w-full border rounded p-2"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="block text-sm font-medium mb-1">Starting Date</label>
+                <input
+                  type="date"
+                  value={inquiryDate}
+                  onChange={(e) => setInquiryDate(e.target.value)}
+                  className="w-full border rounded p-2"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="block text-sm font-medium mb-1">Number of Days</label>
+                <input
+                  type="number"
+                  value={inquiryDays}
+                  onChange={(e) => setInquiryDays(Number(e.target.value))}
+                  className="w-full border rounded p-2"
+                  min={1}
+                />
+              </div>
+              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded w-full">
+                Submit Inquiry
+              </button>
+            </form>
           </div>
         </div>
       </div>

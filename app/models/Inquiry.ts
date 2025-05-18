@@ -15,7 +15,7 @@ const inquirySchema = new Schema<InquiryDocument>({
   },
   email:{
     type: String,
-    required: true,
+    // required: true,
   },
   phone:{
     type: String,
