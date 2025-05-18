@@ -13,7 +13,7 @@ import { loadEnvConfig } from '@next/env';
 // if (!MONGO_URI) {
 //   throw new Error('Please define the MONGO_URI environment variable');
 // }
-const MONGO_URI = process.env.MONGO_URL || 'mongodb://localhost:27017/chhayapartyplot'; 
+const MONGO_URI = process.env.MONGO_URL !; 
 
 
 let isConnected = false;
