@@ -11,6 +11,13 @@ import { format } from 'date-fns';
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
 
+// Helper to read cookie by name
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+}
+
 export default function Reservation() {
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
   const [activeStartDate, setActiveStartDate] = useState(new Date());
@@ -28,6 +35,15 @@ export default function Reservation() {
   const [inquiryPhone, setInquiryPhone] = useState('');
   const [inquiryDate, setInquiryDate] = useState('');
   const [inquiryDays, setInquiryDays] = useState<number>(1);
+
+  // State for login status
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check login status by reading session_token cookie
+    const token = getCookie('session_token');
+    setLoggedIn(!!token);
+  }, []);
 
   useEffect(() => {
     fetchBookings();
@@ -60,12 +76,18 @@ export default function Reservation() {
   };
 
   const handleDateClick = (date: Date) => {
+    const formattedDate = format(date, 'yyyy-MM-dd');
     const isReserved = reservedDates.some(
-      d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
+      d => format(d, 'yyyy-MM-dd') === formattedDate
     );
 
     if (isReserved) {
       alert("Sorry, this date is already reserved!");
+      return;
+    }
+
+    if (!loggedIn) {
+      alert('Please log in to make a reservation.');
       return;
     }
 
@@ -183,16 +205,18 @@ export default function Reservation() {
     }
   };
 
+  // Disable tiles if date is reserved (for all users)
   const tileDisabled = ({ date }: { date: Date }) =>
     reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
 
+  // Style reserved dates for all users
   const tileClassName = ({ date }: { date: Date }) =>
     reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'))
       ? 'reserved-date'
       : '';
 
   return (
-    <main>
+    <main className=" pt-15 mb-3 ">
       <style jsx global>{`
         .react-calendar {
           border: none;
@@ -206,7 +230,7 @@ export default function Reservation() {
 
       <div className="relative min-h-screen bg-[#FeFFF1]">
         {/* Form Popup */}
-        {showForm && (
+        {showForm && loggedIn && (
           <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
             <h3 className="text-xl font-bold mb-4 text-center">Complete Your Reservation</h3>
             <form onSubmit={handleReservationSubmit}>
@@ -248,12 +272,12 @@ export default function Reservation() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">Number of Days</label>
+                <label className="block text-sm font-medium mb-1">Total Booking Days</label>
                 <input
                   type="number"
                   value={bookingDays}
                   min={1}
-                  onChange={(e) => setBookingDays(parseInt(e.target.value))}
+                  onChange={(e) => setBookingDays(Number(e.target.value))}
                   className="w-full border rounded p-2"
                   required
                 />
@@ -261,101 +285,108 @@ export default function Reservation() {
               <div className="flex justify-between">
                 <button
                   type="button"
-                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
                   onClick={() => setShowForm(false)}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-4 py-2 rounded"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
-                  Reserve
+                  Reserve Now
                 </button>
               </div>
             </form>
           </div>
         )}
 
-        {/* Hero Section */}
-        <div className="relative h-[60vh] w-full">
-          <Image
-            src="/image3.jpg"
-            alt="Chhaya Partyplot"
-            layout="fill"
-            objectFit="cover"
-            className="brightness-50"
-          />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center">
-            <h1 className="text-sm tracking-widest font-serif italic text-gray-200">A Venue Beyond Your Imagination</h1>
-            <h2 className="text-5xl font-bold mt-2 font-sans text-gray-100">Discover Our Story</h2>
-          </div>
-        </div>
+        <section className="flex flex-col items-center justify-center py-12">
+          <motion.div
+            initial={{ y: -40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mb-8 text-center"
+          >
+            <h1 className="text-4xl font-bold mb-3">Reserve Your Party Plot</h1>
+            <p className="text-lg text-gray-700">Select your desired date from the calendar</p>
+          </motion.div>
 
-        {/* Calendar and Inquiry Form */}
-        <div className="flex flex-col md:flex-row justify-center items-start gap-8 mt-10 px-4">
-          {/* Calendar */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-2xl font-semibold mb-4 text-center">Reserve Your Date</h3>
-            <Calendar
-              onClickDay={handleDateClick}
-              tileDisabled={tileDisabled}
-              tileClassName={tileClassName}
-              onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
-            />
-            <p className="mt-4 text-center text-sm text-gray-500">Red dates are already reserved</p>
-          </div>
+          <div className="flex flex-col md:flex-row justify-center items-start gap-8 mt-10 px-4">
+            {/* Calendar section (always visible) */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-2xl font-semibold mb-4 text-center">Reservation Calendar</h3>
+              <Calendar
+                onClickDay={handleDateClick}
+                tileDisabled={tileDisabled}
+                tileClassName={tileClassName}
+                onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
+              />
+              <p className="mt-4 text-center text-sm text-gray-500">
+                Dates in <span className="font-bold text-red-600">red</span> are already reserved.
+              </p>
+              {!loggedIn && (
+                <p className="mt-1 text-center text-sm text-gray-600">
+                  Log in to make reservations.
+                </p>
+              )}
+            </div>
 
-          {/* Inquiry Form */}
-          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
-            <h3 className="text-2xl font-semibold mb-4 text-center">Make an Inquiry</h3>
-            <form onSubmit={handleInquirySubmit}>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Name</label>
-                <input
-                  type="text"
-                  value={inquiryName}
-                  onChange={(e) => setInquiryName(e.target.value)}
-                  className="w-full border rounded p-2"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Phone Number</label>
-                <input
-                  type="text"
-                  value={inquiryPhone}
-                  onChange={(e) => setInquiryPhone(e.target.value)}
-                  className="w-full border rounded p-2"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Starting Date</label>
-                <input
-                  type="date"
-                  value={inquiryDate}
-                  onChange={(e) => setInquiryDate(e.target.value)}
-                  className="w-full border rounded p-2"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Number of Days</label>
-                <input
-                  type="number"
-                  value={inquiryDays}
-                  onChange={(e) => setInquiryDays(Number(e.target.value))}
-                  className="w-full border rounded p-2"
-                  min={1}
-                />
-              </div>
-              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded w-full">
-                Submit Inquiry
-              </button>
-            </form>
+            {/* Inquiry Form */}
+            <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
+              <h3 className="text-2xl font-semibold mb-4 text-center">Inquiry Form</h3>
+              <form onSubmit={handleInquirySubmit}>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Name</label>
+                  <input
+                    type="text"
+                    value={inquiryName}
+                    onChange={(e) => setInquiryName(e.target.value)}
+                    className="w-full border rounded p-2"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={inquiryPhone}
+                    onChange={(e) => setInquiryPhone(e.target.value)}
+                    className="w-full border rounded p-2"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="block text-sm font-medium mb-1">Starting Date</label>
+                  <input
+                    type="date"
+                    value={inquiryDate}
+                    onChange={(e) => setInquiryDate(e.target.value)}
+                    className="w-full border rounded p-2"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Total Booking Days</label>
+                  <input
+                    type="number"
+                    value={inquiryDays}
+                    min={1}
+                    onChange={(e) => setInquiryDays(Number(e.target.value))}
+                    className="w-full border rounded p-2"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Submit Inquiry
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
 
       <Footer />

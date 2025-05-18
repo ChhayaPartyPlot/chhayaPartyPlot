@@ -1,13 +1,26 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../src/context/AuthContext'; 
+import Cookies from 'js-cookie'; // <-- import js-cookie
 
 const Page = () => {
   const router = useRouter();
+  const { setLoggedIn } = useAuth();
+
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Check cookie on mount
+  useEffect(() => {
+    const token = Cookies.get('session_token'); // Change 'token' to whatever your cookie name is
+    if (token) {
+      setLoggedIn(true);
+      router.push('/reservation');
+    }
+  }, [router, setLoggedIn]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,14 +28,9 @@ const Page = () => {
     try {
       const res = await fetch('/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({
-          username: name,
-          password,
-        }),
+        body: JSON.stringify({ username: name, password }),
       });
 
       const data = await res.json();
@@ -33,13 +41,10 @@ const Page = () => {
       } else {
         setSuccess(data.message);
         setError('');
-        console.log('Logged in user:', data.user);
-
-        // ✅ Redirect to /reservation
+        setLoggedIn(true);
         router.push('/reservation');
       }
     } catch (err) {
-      console.error('Error logging in:', err);
       setError('Something went wrong');
       setSuccess('');
     }
