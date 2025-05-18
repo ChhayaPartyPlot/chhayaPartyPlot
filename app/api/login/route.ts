@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
   // For demo, just set a dummy token; replace with real JWT or session id in prod
   response.cookies.set('session_token', 'valid-session-token', {
-    httpOnly: true,
+    httpOnly: false,
     path: '/',
     maxAge: 60 * 60 * 1, // 1 hr
   });
