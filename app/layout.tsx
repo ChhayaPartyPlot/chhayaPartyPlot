@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./comonents/Navbsr";
-import { Carousel } from "react-bootstrap";
+import { AuthProvider } from "./src/context/AuthContext"; // Adjust the import path as necessary
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +29,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+            <AuthProvider>
         
         <Navbar/>
         {children}   
+        </AuthProvider>
       </body>
     </html>
   );
