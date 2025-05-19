@@ -22,11 +22,6 @@ const gallerySchema = new Schema<GalleryDocument>({
         type:String,
         required:true,
     },
-    eventType:{
-        type:String,
-        enum:['Birthday', 'Marriage', 'Corporate Meeting', 'Interior', 'Other'],
-        required:true,
-    },
 });
 
 const Gallery = mongoose.models.Gallery || mongoose.model<GalleryDocument>('Gallery', gallerySchema);
