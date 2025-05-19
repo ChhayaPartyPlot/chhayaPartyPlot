@@ -87,7 +87,7 @@ export default function Reservation() {
     }
 
     if (!loggedIn) {
-      alert('Please log in to make a reservation.');
+      
       return;
     }
 
@@ -323,7 +323,7 @@ export default function Reservation() {
                 onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
               />
               <p className="mt-4 text-center text-sm text-gray-500">
-                Dates in <span className="font-bold text-red-600">red</span> are already reserved.
+                Dates in <span className="font-bold text-red-600">red</span> are already booked.
               </p>
               {!loggedIn && (
                 <p className="mt-1 text-center text-sm text-gray-600">
