@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import cloudinary from '@/app/lib/cloudinary';
 import { CloudinaryUploadResult } from '@/app/util/interfaces/cludinaryObj';
-import {Gallery, VALID_EVENT_TYPES, EventType} from '@/app/models/Gallary';
+import {Gallery} from '@/app/models/Gallary';
 import { connectToDatabase } from '@/app/lib/mongodb';
 
 
