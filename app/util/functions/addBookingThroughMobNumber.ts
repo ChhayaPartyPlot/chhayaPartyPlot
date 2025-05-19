@@ -13,11 +13,16 @@ export async function addBookingThroughMobNumber(
     startDate: Date,
     totalBookingDays: number
 ): Promise<NextResponse> {
-    const user: UserDocument | null = await User.findOne({ mobNumber });
+    const user = await User.findOne({
+        $or: [
+            { mobNumber: mobNumber },
+            { altNumber: mobNumber }
+        ]
+    });
     if (!user) {
         return NextResponse.json({ message: 'User Not Found' }, { status: 404 });
+
     }
-    console.log(user)
     const isValid = await validateDate(startDate, totalBookingDays);
     if (!isValid) {
         return NextResponse.json({ message: 'Date conflicts with existing booking' }, { status: 409 });

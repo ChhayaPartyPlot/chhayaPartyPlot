@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import cloudinary from '@/app/lib/cloudinary';
 import { CloudinaryUploadResult } from '@/app/util/interfaces/cludinaryObj';
-import {Gallery, VALID_EVENT_TYPES, EventType} from '@/app/models/Gallary';
+import {Gallery} from '@/app/models/Gallary';
 import { connectToDatabase } from '@/app/lib/mongodb';
 
 
 // Helper to convert Node stream to Buffer
-const addImageToDb = async (url : string, eventType : string) : Promise<NextResponse> => {
+const addImageToDb = async (url : string) : Promise<NextResponse> => {
   try {
     await connectToDatabase();
-    const newImage = new Gallery({ url, eventType });
+    const newImage = new Gallery({ url});
     await newImage.save();
     return NextResponse.json({ message: 'Image added to database successfully' }, { status: 200 });
   } catch (error) {
@@ -21,18 +21,13 @@ const addImageToDb = async (url : string, eventType : string) : Promise<NextResp
 
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const eventType = searchParams.get('eventType'); // can be null
 
   try {
     await connectToDatabase();
 
     let images;
-    if (eventType) {
-      images = await Gallery.find({ eventType });
-    } else {
-      images = await Gallery.find(); // No filter = get all
-    }
+   
+    images = await Gallery.find();
 
     return NextResponse.json(images, { status: 200 });
   } catch (error) {
@@ -52,17 +47,11 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File;
-    const eventType = (formData.get('eventType') as string)?.trim();
 
     if (!file) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    console.log(eventType);
-
-    if (!VALID_EVENT_TYPES.includes(eventType as EventType)) {
-      return NextResponse.json({ error: 'Invalid event type' }, { status: 400 });
-    }
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -78,7 +67,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Add image and eventType to DB
-    return await addImageToDb(result.secure_url, eventType);
+    return await addImageToDb(result.secure_url);
   } catch (error: any) {
     console.error('Upload error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });

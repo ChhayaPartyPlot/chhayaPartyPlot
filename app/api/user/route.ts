@@ -31,12 +31,14 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
 
     try {
-        const { name, mobNumber } = await req.json();
-        const user = new User({ name, mobNumber });
+        const { name, mobNumber, altNumber } = await req.json();
+        console.log(name, mobNumber, altNumber);
+        const user = new User({ name, mobNumber, altNumber });
         await user.save();
 
         return NextResponse.json({ message: 'User Created', user }, { status: 200 });
     } catch (error) {
+        console.error(error);
         return NextResponse.json({ message: 'User Not Created', error }, { status: 500 });
     }
 }
