@@ -7,6 +7,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
+import { FaWhatsapp, FaPhone } from "react-icons/fa";
+
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
@@ -29,6 +31,9 @@ export default function Reservation() {
   const [name, setName] = useState('');
   const [mobNumber, setMobNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [mobNumber2, setMobNumber2] = useState('');
+
+
 
   // Inquiry Form States
   const [inquiryName, setInquiryName] = useState('');
@@ -145,15 +150,17 @@ export default function Reservation() {
     }
 
     try {
-      const res = await fetch('/api/booking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mobNumber,
-          startDate: format(selectedDate, 'yyyy-MM-dd'),
-          totalBookingDays: bookingDays,
-        }),
-      });
+const res = await fetch('/api/booking', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    mobNumber,
+    mobNumber2,
+    startDate: format(selectedDate, 'yyyy-MM-dd'),
+    totalBookingDays: bookingDays,
+  }),
+});
+
 
       if (res.ok) {
         alert("Reservation successful!");
@@ -251,6 +258,15 @@ export default function Reservation() {
                   className="w-full border rounded p-2"
                   required
                 />
+                <div className="mb-3">
+  <label className="block text-sm font-medium mb-1">Alternate Mobile Number (optional)</label>
+  <input
+    type="text"
+    value={mobNumber2}
+    onChange={(e) => setMobNumber2(e.target.value)}
+    className="w-full border rounded p-2"
+  />
+</div>
               </div>
               <div className="mb-3">
                 <label className="block text-sm font-medium mb-1">Name</label>
@@ -308,7 +324,7 @@ export default function Reservation() {
             transition={{ duration: 0.5 }}
             className="mb-8 text-center"
           >
-            <h1 className="text-4xl font-bold mb-3">Reserve Your Party Plot</h1>
+            <h1 className="text-4xl font-bold mb-3">"Let’s Lock in Your Celebration Date!"</h1>
             <p className="text-lg text-gray-700">Select your desired date from the calendar</p>
           </motion.div>
 
@@ -327,14 +343,14 @@ export default function Reservation() {
               </p>
               {!loggedIn && (
                 <p className="mt-1 text-center text-sm text-gray-600">
-                  Log in to make reservations.
+                  
                 </p>
               )}
             </div>
 
             {/* Inquiry Form */}
             <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
-              <h3 className="text-2xl font-semibold mb-4 text-center">Inquiry Form</h3>
+              <h2 className="text-lg font-semibold mb-4 text-center">"Booking Your Date Starts Here – Let’s Go!"</h2>
               <form onSubmit={handleInquirySubmit}>
                 <div className="mb-3">
                   <label className="block text-sm font-medium mb-1">Name</label>
@@ -377,12 +393,46 @@ export default function Reservation() {
                     required
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Submit Inquiry
-                </button>
+<button
+  type="submit"
+  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-3"
+>
+  Submit Inquiry
+</button>
+
+{/* Divider with OR */}
+<div className="flex items-center my-4">
+  <hr className="flex-grow border-gray-300" />
+  <span className="mx-3 text-gray-500 font-semibold">or</span>
+  <hr className="flex-grow border-gray-300" />
+</div>
+
+{/* Alternate Contact Buttons with Icons */}
+<div className="flex flex-col gap-2">
+  <button
+    type="button"
+    onClick={() => window.open(`https://wa.me/9265310320`, "_blank")}
+    className="flex items-center justify-center gap-2 w-full bg-white border border-[#25D366] hover:bg-[#e6fff0] text-[#25D366] font-semibold py-2 px-4 rounded"
+  >
+    <FaWhatsapp size={18} />
+    WhatsApp
+  </button>
+
+  <button
+    type="button"
+    onClick={() => {
+      navigator.clipboard.writeText(`+91 9265310320`);
+     
+    }}
+    className="flex items-center justify-center gap-2 w-full bg-white border border-[#34B7F1] hover:bg-[#e6f7ff] text-[#34B7F1] font-semibold py-2 px-4 rounded"
+  >
+    <FaPhone size={18} />
+    Call
+  </button>
+</div>
+
+
+
               </form>
             </div>
           </div>
