@@ -13,6 +13,7 @@ import Link from 'next/link';
 
 
 import { FaWhatsapp, FaInstagram, FaPhone } from 'react-icons/fa';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text).then(() => {
@@ -35,7 +36,17 @@ const items = [
     icon: <FaPhone size={18} color="#34B7F1" />, 
     label: "Call", 
     onClick: () => copyToClipboard("+919999999999") 
-  }
+  },
+  {
+  icon: <FaMapMarkerAlt size={18} color="#d9534f" />,
+  label: "Map",
+  onClick: () =>
+    window.open(
+      "https://www.google.com/maps/place/Chhaya+Party+Plot/@20.7288678,73.0306851,17z/data=!3m1!4b1!4m6!3m5!1s0x3be0ed1aac0027a3:0xa2d6c4b636ce3d7f!8m2!3d20.7288678!4d73.0306851!16s%2Fg%2F11v0y548kr?entry=ttu&g_ep=EgoyMDI1MDUxMy4xIKXMDSoASAFQAw%3D%3D",
+  
+      "_blank"
+    ),
+}
 ];
 
 const images = [

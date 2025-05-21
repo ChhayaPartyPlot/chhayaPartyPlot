@@ -83,7 +83,7 @@ Contact
 </nav>
 </div>
 
-<div className="space-y-4 md:block hidden">
+<div className="space-y-4 md:block ">
   <h3 className="text-xl font-medium mb-4 text-center text-black">Location</h3>
 
   <div className="w-full h-64 mt-4 relative group">
