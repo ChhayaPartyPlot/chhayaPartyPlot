@@ -4,15 +4,28 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Footer } from '../comonents/footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+}
 
-const VALID_EVENT_TYPES = ['wedding', 'Birthday', 'party', 'festival']; // Example types - adjust per your backend
+//const VALID_EVENT_TYPES = ['wedding', 'Birthday', 'party', 'festival']; // Example types - adjust per your backend
 
 const Gallery = () => {
   const [fadeIn, setFadeIn] = useState(false);
   const [images, setImages] = useState<{ _id: string; url: string; width: number; height: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [eventType, setEventType] = useState(VALID_EVENT_TYPES[0]);
+  // State for login status
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check login status by reading session_token cookie
+    const token = getCookie('session_token');
+    setLoggedIn(!!token);
+  }, []);
+  //const [eventType, setEventType] = useState(VALID_EVENT_TYPES[0]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -48,7 +61,7 @@ const Gallery = () => {
         // Prepare form data
         const formData = new FormData();
         formData.append('file', files[0]);  // Upload one file at a time for now
-        formData.append('eventType', eventType);
+       // formData.append('eventType', eventType);
 
         const res = await fetch('/api/image', {
           method: 'POST',
@@ -102,9 +115,9 @@ const Gallery = () => {
 
         {/* Upload Section */}
         <div className="p-4 max-w-7xl mx-auto flex items-center justify-end gap-3">
-          <select
-            value={eventType}
-            onChange={(e) => setEventType(e.target.value)}
+          {/* <select
+            //value={eventType}
+            //onChange={(e) => setEventType(e.target.value)}
             className="border border-gray-300 rounded px-3 py-2"
           >
             {VALID_EVENT_TYPES.map((type) => (
@@ -112,24 +125,29 @@ const Gallery = () => {
                 {type.charAt(0).toUpperCase() + type.slice(1)}
               </option>
             ))}
-          </select>
+          </select> */}
 
-          <button
-            onClick={handleUploadClick}
-            disabled={uploading}
-            className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow ${
-              uploading ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-          >
-            {uploading ? 'Uploading...' : 'Upload Image'}
-          </button>
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
+          {loggedIn && (
+  <>
+    <button
+      onClick={handleUploadClick}
+      disabled={uploading}
+      className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow ${
+        uploading ? 'opacity-50 cursor-not-allowed' : ''
+      }`}
+    >
+      {uploading ? 'Uploading...' : 'Upload Image'}
+    </button>
+    <input
+      type="file"
+      accept="image/*"
+      ref={fileInputRef}
+      onChange={handleFileChange}
+      className="hidden"
+    />
+  </>
+)}
+
         </div>
 
         {/* Gallery */}

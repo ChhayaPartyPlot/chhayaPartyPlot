@@ -110,10 +110,10 @@ export default function Home() {
   </p>
   <p>
     📖 <span className="font-semibold text-green-700">Capacity:</span> Comfortably hosting up to{" "}
-    <CountUp from={0} to={2000} separator="," duration={1} />+ guests.
+    <span className='text-green-700 font-bold'><CountUp from={0} to={2000} separator="," duration={1} />+</span>  guests.
   </p>
   <p>
-    🚗 <span className="font-semibold text-green-700">Parking:</span> Ample parking space to accommodate over 200 vehicles hassle-free.
+    🚗 <span className="font-semibold text-green-700">Parking:</span> Ample parking space to accommodate over <span className='text-green-700 font-bold'><CountUp from={0} to={200} separator="," duration={1} /></span> vehicles hassle-free.
   </p>
   <p>
     🌦️ <span className="font-semibold text-green-700">Weather-Proof:</span> Enjoy your event in our large, fully air-conditioned banquet hall — perfect for rain, summer heat, or winter chill. Comfort guaranteed!
