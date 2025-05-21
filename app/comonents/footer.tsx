@@ -33,9 +33,9 @@ info@chhayapartyplot.com
 </div>
 <div className="space-y-4 md:space-y-0">
                   {/* Contact Information for Mobile */}
-<div className="md:hidden">
-<h3 className="text-xl font-medium mb-4 text-center">Contact</h3>
-                    <address className="not-italic text-sm leading-relaxed text-center">
+<div className="md:hidden text-[#2c1f17]">
+<h3 className="text-xl  font-medium text-[#2c1f17] mb-4 text-center">Contact</h3>
+                    <address className="not-italic text-[#2c1f17] text-sm leading-relaxed text-center">
 bla bla bla Road, Opp. abc xyz,
 <br />
 hiddenleaf,
@@ -53,9 +53,9 @@ Surat, Gujarat, India.
 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-black">
 <Facebook size={24} />
 </a>
-<a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" className="text-black">
+{/* <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" className="text-black">
 <Pinterest size={24} />
-</a>
+</a> */}
 </div>
 </div>
 </div>

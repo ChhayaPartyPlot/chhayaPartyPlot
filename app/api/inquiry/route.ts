@@ -3,6 +3,7 @@ import { connectToDatabase } from '@/app/lib/mongodb';
 import { Inquiry } from '@/app/models/Inquiry';
 import { saveContactSubmission } from '@/app/util/storage/storage';
 import { z } from 'zod';
+import {sendDailyEmail} from '../../util/mailer/mailer';
 
 const InquiryValidationSchema = z.object({
   name: z.string(),
@@ -18,10 +19,19 @@ export async function POST(req: NextRequest) {
     const { name, phone, startingDate, totalBookingDays } = InquiryValidationSchema.parse(body);
 
     await connectToDatabase();
-    await Inquiry.create({ name, phone, startingDate, totalBookingDays });
+    let inq = await Inquiry.create({ name, phone, startingDate, totalBookingDays });
+
 
     // saveContactSubmission?.({ name, phone, startingDate, totalBookingDays }); // optional
+
+    // console.log(inq);
+    await sendDailyEmail([inq]);
+
     return NextResponse.json({ success: true });
+
+    
+
+
   } catch (err: any) {
     if (err.name === 'ZodError') {
       return NextResponse.json({ error: 'Validation failed', details: err.errors }, { status: 400 });

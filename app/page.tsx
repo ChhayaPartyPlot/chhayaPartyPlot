@@ -9,16 +9,16 @@ import { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
 import VideoSection from './comonents/VideoSection';
 import Dock from './comonents/connection';
+import Link from 'next/link';
+
 
 import { FaWhatsapp, FaInstagram, FaPhone } from 'react-icons/fa';
-
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text).then(() => {
     alert(`Phone number ${text} copied to clipboard!`);
   }).catch(err => console.error('Failed to copy:', err));
 };
-
 
 const items = [
   { 
@@ -29,15 +29,14 @@ const items = [
   { 
     icon: <FaInstagram size={18} color="#E4405F" />, 
     label: "Instagram", 
-    onClick: () => window.open("https://www.instagram.com/yourprofile", "_blank") 
+    onClick: () => window.open("https://www.instagram.com/chhaya_partyplot", "_blank") 
   },
   { 
     icon: <FaPhone size={18} color="#34B7F1" />, 
     label: "Call", 
-    onClick: () => copyToClipboard("+1234567890") 
+    onClick: () => copyToClipboard("+919999999999") 
   }
 ];
-
 
 const images = [
   { id: 1, img: "/p1.jpeg" },
@@ -45,7 +44,6 @@ const images = [
   { id: 3, img: "/p3.jpeg" },
   { id: 4, img: "/p4.jpeg" },
   { id: 5, img: "/p1.jpeg" }
-
 ];
 
 export default function Home() {
@@ -73,7 +71,7 @@ export default function Home() {
       </div>
 
       {/* Content starts after the carousel */}
-      <div className="flex-grow relative z-20 mt-[100vh] bg-[#FeFFF1] ">
+      <div className="flex-grow relative z-20 mt-[100vh] bg-[#FEFFF1] ">
         <motion.div
           className="bg-cream text-gray-900 px-6 md:px-12 lg:px-24 py-12 flex items-center"
           initial={{ opacity: 0, x: -50 }}
@@ -89,35 +87,71 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <h1 className="text-3xl md:text-4xl font-serif">
+              <h1 className="text-3xl md:text-5xl font-serif text-[#5a4a31] tracking-wide leading-tight">
                 Welcome to{" "}
-                <span className="text-green-700 font-bold italic">Chhaya Party Plot</span>
+                <span className="text-green-800 font-extrabold italic drop-shadow-lg">
+                  Chhaya Party Plot
+                </span>
               </h1>
-              <p className="text-2xl md:text-3xl font-medium mt-4">
-                A premium event destination where elegance meets celebration!
+
+              <p className="text-2xl md:text-3xl font-semibold mt-4 text-[#4e4b42] italic">
+                A premium event destination where timeless elegance meets grand celebration.
               </p>
-              <p className="mt-4 text-gray-700">
-                Whether it's a grand wedding or an intimate gathering, we provide the perfect space to create lasting memories.
-              </p>
+
 
               {/* Quick Highlights */}
-              <div className="mt-6 space-y-2 text-gray-800">
-                <p>📍 Location: Easily accessible in <span className="font-semibold">[Your City Name]</span></p>
-                <p>🎉 Events Hosted: Weddings, Receptions, Corporate Events, Birthdays & More</p>
-                <p>📖 Capacity: Accommodates :
-                  <CountUp from={0} to={2000} separator="," direction="up" duration={1} />
-                  + guests
-                </p>
-                <p>🚗 Parking: Spacious parking for over 200 vehicles</p>
-                <p>💡 Customization: Theme-based decorations & event planning available</p>
-              </div>
+<div className="mt-8 space-y-3 text-gray-800 text-base md:text-md max-w-xl font-medium">
+  <p>
+    📍 <span className="font-semibold text-green-700">Location:</span> Conveniently located in{" "}
+    <span className="font-semibold text-green-700">[Your City Name]</span> for easy access.
+  </p>
+  <p>
+    🎉 <span className="font-semibold text-green-700">Events Hosted:</span> From elegant weddings to lively birthdays, corporate gatherings, and more.
+  </p>
+  <p>
+    📖 <span className="font-semibold text-green-700">Capacity:</span> Comfortably hosting up to{" "}
+    <span className='text-green-700 font-bold'><CountUp from={0} to={2000} separator="," duration={1} />+</span>  guests.
+  </p>
+  <p>
+    🚗 <span className="font-semibold text-green-700">Parking:</span> Ample parking space to accommodate over <span className='text-green-700 font-bold'><CountUp from={0} to={200} separator="," duration={1} /></span> vehicles hassle-free.
+  </p>
+  <p>
+    🌦️ <span className="font-semibold text-green-700">Weather-Proof:</span> Enjoy your event in our large, fully air-conditioned banquet hall — perfect for rain, summer heat, or winter chill. Comfort guaranteed!
+  </p>
+  <p>
+    💡 <span className="font-semibold text-green-700">Customization:</span> Personalized event themes and professional planning tailored just for you.
+  </p>
+</div>
 
-              {/* Reservation Contact */}
-              <div className="mt-6 text-lg font-semibold">
-                <p>For reservation:</p>
-                <p className="text-xl text-green-700">99999999999999</p>
-              </div>
-            </motion.div>
+
+{/* Updated Reservation Contact */}
+          <div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
+            <div>
+              <p className="text-lg md:text-xl font-semibold mb-1">
+                For exclusive reservations and inquiries:
+              </p>
+              <p
+                onClick={() => copyToClipboard("+91 99999 99999")}
+                className="text-2xl md:text-3xl font-semibold cursor-pointer select-text underline decoration-green-600 decoration-2 hover:decoration-green-800 transition"
+                role="button"
+                tabIndex={0}
+                onKeyPress={e => { if (e.key === 'Enter') copyToClipboard("+91 99999 99999"); }}
+                aria-label="Copy phone number to clipboard"
+              >
+                +91 99999 99999
+              </p>
+            </div>
+
+<Link
+  href="/reservation"
+  className="bg-gradient-to-r from-green-700 to-green-500 text-white text-lg md:text-xl font-semibold px-8 py-3 rounded-full shadow-lg hover:from-green-800 hover:to-green-600 transition duration-300 ease-in-out font-cormorant"
+  aria-label="Reserve Now"
+>
+  Reserve Now
+</Link>
+
+          </div>
+        </motion.div>
 
             {/* Right Section: Image Stack with Animation */}
             <motion.div
@@ -139,15 +173,12 @@ export default function Home() {
         <VideoSection/>
         {/* Additional Sections */}
         <CelebrationSection />
-        
       </div>
 
       {/* Footer */}
       <Footer />
 
-      <Dock 
-    items={items}
-  />
+      <Dock items={items} />
     </main>
   );
 }
