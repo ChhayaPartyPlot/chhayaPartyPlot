@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
     await Inquiry.create({ name, phone, startingDate, totalBookingDays });
 
-    saveContactSubmission?.({ name, phone, startingDate, totalBookingDays }); // optional
+    // saveContactSubmission?.({ name, phone, startingDate, totalBookingDays }); // optional
     return NextResponse.json({ success: true });
   } catch (err: any) {
     if (err.name === 'ZodError') {
