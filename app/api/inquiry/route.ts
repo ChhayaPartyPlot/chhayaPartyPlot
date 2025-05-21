@@ -21,9 +21,10 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
     let inq = await Inquiry.create({ name, phone, startingDate, totalBookingDays });
 
-    saveContactSubmission?.({ name, phone, startingDate, totalBookingDays }); // optional
 
-    console.log(inq);
+    // saveContactSubmission?.({ name, phone, startingDate, totalBookingDays }); // optional
+
+    // console.log(inq);
     await sendDailyEmail([inq]);
 
     return NextResponse.json({ success: true });
