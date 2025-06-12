@@ -1,6 +1,6 @@
 'use client';
 import Image from "next/image";
-import { Footer } from "../comonents/footer";
+import { Footer } from "../components/footer";
 import { motion } from "framer-motion";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
