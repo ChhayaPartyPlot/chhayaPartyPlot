@@ -122,60 +122,64 @@ export default function Reservation() {
     }
   };
 
-  const handleReservationSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedDate) return;
+const handleReservationSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!selectedDate) return;
 
-    if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
-      alert("Please enter a valid 10-digit mobile number.");
-      return;
+  if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
+    alert("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  if (!name) {
+    alert("Name is required.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
+    if (res.status === 404) {
+      await fetch('/api/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          mobNumber,
+          email,
+          altNumber: mobNumber2, // <-- ✅ Include alternate number
+        }),
+      });
     }
+  } catch (error) {
+    console.error('Error creating user:', error);
+  }
 
-    if (!name) {
-      alert("Name is required.");
-      return;
+  try {
+    const res = await fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mobNumber,
+        mobNumber2,
+        startDate: format(selectedDate, 'yyyy-MM-dd'),
+        totalBookingDays: bookingDays,
+      }),
+    });
+
+    if (res.ok) {
+      alert("Reservation successful!");
+      setShowForm(false);
+      setSelectedDate(null);
+      fetchBookings();
+    } else {
+      const error = await res.json();
+      alert(`Reservation failed: ${error.message}`);
     }
-
-    try {
-      const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
-      if (res.status === 404) {
-        await fetch('/api/user', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, mobNumber, email }),
-        });
-      }
-    } catch (error) {
-      console.error('Error creating user:', error);
-    }
-
-    try {
-const res = await fetch('/api/booking', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    mobNumber,
-    mobNumber2,
-    startDate: format(selectedDate, 'yyyy-MM-dd'),
-    totalBookingDays: bookingDays,
-  }),
-});
-
-
-      if (res.ok) {
-        alert("Reservation successful!");
-        setShowForm(false);
-        setSelectedDate(null);
-        fetchBookings();
-      } else {
-        const error = await res.json();
-        alert(`Reservation failed: ${error.message}`);
-      }
-    } catch (err) {
-      console.error("Error making reservation:", err);
-      alert("Reservation failed.");
-    }
-  };
+  } catch (err) {
+    console.error("Error making reservation:", err);
+    alert("Reservation failed.");
+  }
+};
 
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
