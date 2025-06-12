@@ -110,58 +110,45 @@ export default function Home() {
               </p>
 
 
-              {/* Quick Highlights */}
+ {/* Quick Highlights */}
 <div className="mt-8 space-y-3 text-gray-800 text-base md:text-md max-w-xl font-medium">
-  <p>
-    📍 <span className="font-semibold text-green-700">Location:</span> Conveniently located in{" "}
-    <span className="font-semibold text-green-700">[Your City Name]</span> for easy access.
-  </p>
-  <p>
-    🎉 <span className="font-semibold text-green-700">Events Hosted:</span> From elegant weddings to lively birthdays, corporate gatherings, and more.
-  </p>
-  <p>
-    📖 <span className="font-semibold text-green-700">Capacity:</span> Comfortably hosting up to{" "}
-    <span className='text-green-700 font-bold'><CountUp from={0} to={2000} separator="," duration={1} />+</span>  guests.
-  </p>
-  <p>
-    🚗 <span className="font-semibold text-green-700">Parking:</span> Ample parking space to accommodate over <span className='text-green-700 font-bold'><CountUp from={0} to={200} separator="," duration={1} /></span> vehicles hassle-free.
-  </p>
-  <p>
-    🌦️ <span className="font-semibold text-green-700">Weather-Proof:</span> Enjoy your event in our large, fully air-conditioned banquet hall — perfect for rain, summer heat, or winter chill. Comfort guaranteed!
-  </p>
-  <p>
-    💡 <span className="font-semibold text-green-700">Customization:</span> Personalized event themes and professional planning tailored just for you.
-  </p>
+  <p>🌿 <span className="font-semibold text-green-700">Lawn Area:</span> Sprawling 30,000 sq. ft. lawn – Ideal for grand weddings, receptions, and cultural events.</p>
+  <p>❄️ <span className="font-semibold text-green-700">Banquet Hall:</span> Centralized AC banquet hall – Perfect for indoor functions, dining, or ceremonies in all seasons.</p>
+  <p>🚗 <span className="font-semibold text-green-700">Parking:</span> 300+ car parking space – Spacious parking for guest convenience and smooth event flow.</p>
+  <p>🛠️ <span className="font-semibold text-green-700">Amenities:</span> Modern amenities and infrastructure – Ensures a comfortable and well-organized experience.</p>
+  <p>🎨 <span className="font-semibold text-green-700">Customization:</span> Customizable décor and setup options – Tailored to match your event theme and vision.</p>
+  <p>🌸 <span className="font-semibold text-green-700">Ambience:</span> Serene and green surroundings – Adds charm and elegance to your celebration.</p>
+  <p>📍 <span className="font-semibold text-green-700">Location:</span> Prime location and easy access – Convenient for guests arriving from any part of the city.</p>
 </div>
 
-
 {/* Updated Reservation Contact */}
-          <div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
-            <div>
-              <p className="text-lg md:text-xl font-semibold mb-1">
-                For exclusive reservations and inquiries:
-              </p>
-              <p
-                onClick={() => copyToClipboard("+91 99999 99999")}
-                className="text-2xl md:text-3xl font-semibold cursor-pointer select-text underline decoration-green-600 decoration-2 hover:decoration-green-800 transition"
-                role="button"
-                tabIndex={0}
-                onKeyPress={e => { if (e.key === 'Enter') copyToClipboard("+91 99999 99999"); }}
-                aria-label="Copy phone number to clipboard"
-              >
-                +91 99999 99999
-              </p>
-            </div>
+<div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
+  <div>
+    <p className="text-lg md:text-xl font-semibold mb-1">
+      For exclusive reservations and inquiries:
+    </p>
+    <p
+      onClick={() => copyToClipboard("+91 99999 99999")}
+      className="text-2xl md:text-3xl font-semibold cursor-pointer select-text underline decoration-green-600 decoration-2 hover:decoration-green-800 transition"
+      role="button"
+      tabIndex={0}
+      onKeyPress={e => {
+        if (e.key === 'Enter') copyToClipboard("+91 99999 99999");
+      }}
+      aria-label="Copy phone number to clipboard"
+    >
+      7600616660
+    </p>
+  </div>
 
 <Link
   href="/reservation"
-  className="bg-gradient-to-r from-green-700 to-green-500 text-white text-lg md:text-xl font-semibold px-8 py-3 rounded-full shadow-lg hover:from-green-800 hover:to-green-600 transition duration-300 ease-in-out font-cormorant"
+  className="whitespace-nowrap bg-gradient-to-r from-green-700 to-green-500 text-white text-lg md:text-xl font-semibold px-8 py-3 rounded-full shadow-lg hover:from-green-800 hover:to-green-600 transition duration-300 ease-in-out font-cormorant"
   aria-label="Reserve Now"
 >
   Reserve Now
 </Link>
-
-          </div>
+</div>
         </motion.div>
 
             {/* Right Section: Image Stack with Animation */}
@@ -183,7 +170,7 @@ export default function Home() {
         </motion.div>
         <VideoSection/>
         {/* Additional Sections */}
-        <CelebrationSection />
+        {/*  <CelebrationSection />*/}
       </div>
 
       {/* Footer */}
