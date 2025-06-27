@@ -44,7 +44,7 @@ function Carousel1() {
     />
 
     {/* Overlay on image only */}
-    <div className="absolute inset-0 bg-black/40 z-[1] pointer-events-none"></div>
+    <div className="absolute inset-0 bg-black/30 z-[1] pointer-events-none"></div>
 
     {/* Carousel Caption */}
     <Carousel.Caption className="absolute inset-0 z-[2] flex items-center justify-center text-center">
@@ -52,7 +52,7 @@ function Carousel1() {
     <p className="text-sm md:text-lg uppercase tracking-[0.3em] font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
       Presenting Chhaya Party Plot
     </p>
-    <h1 className=" text-white text-7xl md:text-7xl font-cormorant tracking-wider font-bold mt-2 drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]">
+    <h1 className=" text-white text-7xl md:text-7xl font-playfair tracking-wider font-bold mt-2 drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]">
       Celebrate in <span className="text-white">Grandeur</span>,<br className="hidden md:block" />
       Create Timeless <span className="text-white">Memories!</span>
     </h1>

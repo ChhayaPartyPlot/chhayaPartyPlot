@@ -1,6 +1,6 @@
 'use client';
 import Image from "next/image";
-import { Footer } from "../comonents/footer";
+import { Footer } from "../components/footer";
 import { motion } from "framer-motion";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
@@ -122,19 +122,20 @@ export default function Reservation() {
     }
   };
 
-  const handleReservationSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedDate) return;
+const handleReservationSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!selectedDate) return;
 
-    if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
-      alert("Please enter a valid 10-digit mobile number.");
-      return;
-    }
+  if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
+    alert("Please enter a valid 10-digit mobile number.");
+    return;
+  }
 
-    if (!name) {
-      alert("Name is required.");
-      return;
-    }
+  if (!name) {
+    alert("Name is required.");
+    return;
+  }
+
 
     try {
       const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
@@ -148,34 +149,36 @@ export default function Reservation() {
     } catch (error) {
       console.error('Error creating user:', error);
     }
+  } catch (error) {
+    console.error('Error creating user:', error);
+  }
 
-    try {
-const res = await fetch('/api/booking', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    mobNumber,
-    mobNumber2,
-    startDate: format(selectedDate, 'yyyy-MM-dd'),
-    totalBookingDays: bookingDays,
-  }),
-});
+  try {
+    const res = await fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mobNumber,
+        mobNumber2,
+        startDate: format(selectedDate, 'yyyy-MM-dd'),
+        totalBookingDays: bookingDays,
+      }),
+    });
 
-
-      if (res.ok) {
-        alert("Reservation successful!");
-        setShowForm(false);
-        setSelectedDate(null);
-        fetchBookings();
-      } else {
-        const error = await res.json();
-        alert(`Reservation failed: ${error.message}`);
-      }
-    } catch (err) {
-      console.error("Error making reservation:", err);
-      alert("Reservation failed.");
+    if (res.ok) {
+      alert("Reservation successful!");
+      setShowForm(false);
+      setSelectedDate(null);
+      fetchBookings();
+    } else {
+      const error = await res.json();
+      alert(`Reservation failed: ${error.message}`);
     }
-  };
+  } catch (err) {
+    console.error("Error making reservation:", err);
+    alert("Reservation failed.");
+  }
+};
 
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();

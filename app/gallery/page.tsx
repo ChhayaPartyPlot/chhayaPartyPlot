@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Footer } from '../comonents/footer';
+import { Footer } from '../components/footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function getCookie(name: string) {
   const value = `; ${document.cookie}`;
