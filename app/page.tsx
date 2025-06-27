@@ -1,19 +1,26 @@
 'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Carousel1 from "./comonents/Carousel";
-import CountUp from './comonents/count-up';
-import Stack from './comonents/stack';
-import CelebrationSection from './comonents/CelebrationSection';
-import { Footer } from './comonents/footer';
+import Carousel1 from "./components/Carousel";
+import CountUp from './components/count-up';
+import Stack from './components/stack';
+import CelebrationSection from './components/CelebrationSection';
+import { Footer } from './components/footer';
 import { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
-import VideoSection from './comonents/VideoSection';
-import Dock from './comonents/connection';
+import VideoSection from './components/VideoSection';
+import Dock from './components/connection';
 import Link from 'next/link';
 
 
 import { FaWhatsapp, FaInstagram, FaPhone } from 'react-icons/fa';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+
+
+
+
+
+
+
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text).then(() => {
@@ -25,7 +32,7 @@ const items = [
   { 
     icon: <FaWhatsapp size={18} color="#25D366" />, 
     label: "WhatsApp", 
-    onClick: () => window.open("https://wa.me/919265310320", "_blank") 
+    onClick: () => window.open("https://wa.me/917600616660", "_blank") 
   },
   { 
     icon: <FaInstagram size={18} color="#E4405F" />, 
@@ -35,7 +42,7 @@ const items = [
   { 
     icon: <FaPhone size={18} color="#34B7F1" />, 
     label: "Call", 
-    onClick: () => copyToClipboard("+919999999999") 
+    onClick: () => copyToClipboard("+91 76006 16660") 
   },
   {
   icon: <FaMapMarkerAlt size={18} color="#d9534f" />,
@@ -110,58 +117,80 @@ export default function Home() {
               </p>
 
 
-              {/* Quick Highlights */}
-<div className="mt-8 space-y-3 text-gray-800 text-base md:text-md max-w-xl font-medium">
-  <p>
-    📍 <span className="font-semibold text-green-700">Location:</span> Conveniently located in{" "}
-    <span className="font-semibold text-green-700">[Your City Name]</span> for easy access.
-  </p>
-  <p>
-    🎉 <span className="font-semibold text-green-700">Events Hosted:</span> From elegant weddings to lively birthdays, corporate gatherings, and more.
-  </p>
-  <p>
-    📖 <span className="font-semibold text-green-700">Capacity:</span> Comfortably hosting up to{" "}
-    <span className='text-green-700 font-bold'><CountUp from={0} to={2000} separator="," duration={1} />+</span>  guests.
-  </p>
-  <p>
-    🚗 <span className="font-semibold text-green-700">Parking:</span> Ample parking space to accommodate over <span className='text-green-700 font-bold'><CountUp from={0} to={200} separator="," duration={1} /></span> vehicles hassle-free.
-  </p>
-  <p>
-    🌦️ <span className="font-semibold text-green-700">Weather-Proof:</span> Enjoy your event in our large, fully air-conditioned banquet hall — perfect for rain, summer heat, or winter chill. Comfort guaranteed!
-  </p>
-  <p>
-    💡 <span className="font-semibold text-green-700">Customization:</span> Personalized event themes and professional planning tailored just for you.
-  </p>
+ {/* Quick Highlights */}
+<div className="mt-8 space-y-2 text-gray-800 text-base md:text-md max-w-xl font-medium">
+    <p>📍 <span className="font-semibold text-green-700">Location:</span> Prime, easily accessible spot in [Your City Name].</p>
+
+  <p>🌿 <span className="font-semibold text-green-700">Lawn Area:</span> 
+  <span className="font-semibold text-green-800">
+  
+  <CountUp
+  from={1000}
+  to={3000}
+  separator=","
+  direction="up"
+  duration={2}
+  className="count-up-text"
+/> sq. ft. 
+</span>
+lawn –Ideal for weddings, receptions, and cultural events.</p>
+  <p>❄️ <span className="font-semibold text-green-700">Banquet Hall:</span> Spacious, fully air-conditioned hall – Perfect for all-season Rain-Winter-Summer indoor events.</p>
+  <p>🚗 <span className="font-semibold text-green-700">Parking:</span> Accommodates   <span className="font-semibold text-green-800">
+  
+  <CountUp
+  from={0}
+  to={300}
+  separator=","
+  direction="up"
+  duration={2}
+  className="count-up-text"
+/> sq. ft. 
+</span>+ Hassle-free for all your guests</p>
+  <p>🛠️ <span className="font-semibold text-green-700">Amenities:</span> Modern infrastructure – For a comfortable and seamless experience.</p>
+  <p>🎨 <span className="font-semibold text-green-700">Customization:</span> Tailored décor, themes, and planning – Aligned with your event vision.</p>
+  <p>🎉 <span className="font-semibold text-green-700">Events:</span> Weddings, birthdays, corporate events & more – Hosted with style.</p>
+  <p>👥 <span className="font-semibold text-green-700">Capacity:</span> Seats   <span className="font-semibold text-green-800">
+  
+  <CountUp
+  from={100}
+  to={2000}
+  separator=","
+  direction="up"
+  duration={2}
+  className="count-up-text"
+/> sq. ft. 
+</span>+ guests – Ideal for both grand and intimate gatherings.</p>
 </div>
 
 
 {/* Updated Reservation Contact */}
-          <div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
-            <div>
-              <p className="text-lg md:text-xl font-semibold mb-1">
-                For exclusive reservations and inquiries:
-              </p>
-              <p
-                onClick={() => copyToClipboard("+91 99999 99999")}
-                className="text-2xl md:text-3xl font-semibold cursor-pointer select-text underline decoration-green-600 decoration-2 hover:decoration-green-800 transition"
-                role="button"
-                tabIndex={0}
-                onKeyPress={e => { if (e.key === 'Enter') copyToClipboard("+91 99999 99999"); }}
-                aria-label="Copy phone number to clipboard"
-              >
-                +91 99999 99999
-              </p>
-            </div>
+<div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
+  <div>
+    <p className="text-lg md:text-xl font-semibold mb-1">
+      For exclusive reservations and inquiries:
+    </p>
+    <p
+      onClick={() => copyToClipboard("+91 76006 16660")}
+      className="text-2xl md:text-3xl font-semibold cursor-pointer select-text underline decoration-green-600 decoration-2 hover:decoration-green-800 transition"
+      role="button"
+      tabIndex={0}
+      onKeyPress={e => {
+        if (e.key === 'Enter') copyToClipboard("+91 76006 16660");
+      }}
+      aria-label="Copy phone number to clipboard"
+    >
+      +91 76006 16660
+    </p>
+  </div>
 
 <Link
   href="/reservation"
-  className="bg-gradient-to-r from-green-700 to-green-500 text-white text-lg md:text-xl font-semibold px-8 py-3 rounded-full shadow-lg hover:from-green-800 hover:to-green-600 transition duration-300 ease-in-out font-cormorant"
+  className="whitespace-nowrap bg-gradient-to-r from-green-700 to-green-500 text-white text-lg md:text-xl font-semibold px-8 py-3 rounded-full shadow-lg hover:from-green-800 hover:to-green-600 transition duration-300 ease-in-out font-cormorant"
   aria-label="Reserve Now"
 >
   Reserve Now
 </Link>
-
-          </div>
+</div>
         </motion.div>
 
             {/* Right Section: Image Stack with Animation */}
@@ -183,7 +212,7 @@ export default function Home() {
         </motion.div>
         <VideoSection/>
         {/* Additional Sections */}
-        <CelebrationSection />
+        {/*  <CelebrationSection />*/}
       </div>
 
       {/* Footer */}
