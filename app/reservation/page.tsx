@@ -149,9 +149,6 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
     } catch (error) {
       console.error('Error creating user:', error);
     }
-  } catch (error) {
-    console.error('Error creating user:', error);
-  }
 
   try {
     const res = await fetch('/api/booking', {
