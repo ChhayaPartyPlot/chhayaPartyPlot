@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
         console.log(name, mobNumber, altNumber);
         const user = new User({ name, mobNumber, altNumber });
         await user.save();
+        console.log(user);
 
         return NextResponse.json({ message: 'User Created', user }, { status: 200 });
     } catch (error) {

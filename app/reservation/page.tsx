@@ -138,7 +138,7 @@ export default function Reservation() {
 
     try {
       const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
-      if (res.status === 404) {
+      if (!res.ok) {
         await fetch('/api/user', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

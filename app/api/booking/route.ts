@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
                     }
                 }
             ]
-        });
+        }).populate('user');
 
         return NextResponse.json(bookings, { status: 200 });
     } catch (error) {
