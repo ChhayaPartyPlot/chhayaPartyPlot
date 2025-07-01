@@ -90,7 +90,7 @@ export default function VideoSection() {
   return (
     <div
       ref={sectionRef}
-      className="relative w-full h-[70vh] sm:h-[60vh] flex flex-col justify-center items-center text-center overflow-hidden"
+      className="relative py-2 w-full h-[70vh] sm:h-[60vh] flex flex-col justify-center items-center text-center overflow-hidden"
     >
       {/* Background Video */}
       <video

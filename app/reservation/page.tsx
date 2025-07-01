@@ -8,6 +8,11 @@ import 'react-calendar/dist/Calendar.css';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { FaWhatsapp, FaPhone } from "react-icons/fa";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
@@ -23,7 +28,7 @@ function getCookie(name: string) {
 export default function Reservation() {
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
   const [activeStartDate, setActiveStartDate] = useState(new Date());
-
+   const [bookingList, setBookingList] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [bookingDays, setBookingDays] = useState<number>(1);
@@ -75,6 +80,7 @@ export default function Reservation() {
       });
 
       setReservedDates(bookedDates);
+      setBookingList(data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
     }
@@ -211,6 +217,36 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
       alert("Error submitting inquiry.");
     }
   };
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    autoTable(doc, {
+      head: [['Name', 'Mobile', 'Start Date', 'Days']],
+      body: bookingList.map(b => [
+        b.user?.name,
+        b.user?.mobNumber,
+        format(new Date(b.startDate), 'yyyy-MM-dd'),
+        b.totalBookingDays
+      ])
+    });
+    doc.save('bookings.pdf');
+  };
+
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(
+      bookingList.map(b => ({
+        Name: b.user?.name,
+        Mobile: b.user?.mobNumber,
+        'Start Date': format(new Date(b.startDate), 'yyyy-MM-dd'),
+        Days: b.totalBookingDays
+      }))
+    );
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Bookings');
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(data, 'bookings.xlsx');
+  };
+
 
   // Disable tiles if date is reserved (for all users)
   const tileDisabled = ({ date }: { date: Date }) =>
@@ -259,14 +295,14 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
                   required
                 />
                 <div className="mb-3">
-  <label className="block text-sm font-medium mb-1">Alternate Mobile Number (optional)</label>
-  <input
-    type="text"
-    value={mobNumber2}
-    onChange={(e) => setMobNumber2(e.target.value)}
-    className="w-full border rounded p-2"
-  />
-</div>
+                  <label className="block text-sm font-medium mb-1">Alternate Mobile Number (optional)</label>
+                  <input
+                    type="text"
+                    value={mobNumber2}
+                    onChange={(e) => setMobNumber2(e.target.value)}
+                    className="w-full border rounded p-2"
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <label className="block text-sm font-medium mb-1">Name</label>
@@ -440,9 +476,49 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
   </form>
 
 
+
             </div>
+            
           </div>
         </section>
+                  {loggedIn && bookingList.length > 0 && (
+          <div className="bg-white rounded-xl shadow-lg p-6 mt-10 w-full max-w-5xl mx-auto">
+            <h2 className="text-xl font-bold mb-4 text-center">This Month’s Bookings</h2>
+            <div className="overflow-auto">
+              <table className="table-auto w-full border border-gray-300">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border p-2">Name</th>
+                    <th className="border p-2">Mobile</th>
+                    <th className="border p-2">Start Date</th>
+                    <th className="border p-2">Days</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookingList.map((b) => (
+                    <tr key={b._id}>
+                      <td className="border p-2">{b.user?.name}</td>
+                      <td className="border p-2">{b.user?.mobNumber}</td>
+                      <td className="border p-2">{format(new Date(b.startDate), 'yyyy-MM-dd')}</td>
+                      <td className="border p-2">{b.totalBookingDays}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Export Buttons */}
+            <div className="flex justify-end mt-4 gap-4">
+              <button onClick={exportToPDF} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                Export PDF
+              </button>
+              <button onClick={exportToExcel} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                Export Excel
+              </button>
+            </div>
+          </div>
+        )}
+
       </div>
 
       <Footer />

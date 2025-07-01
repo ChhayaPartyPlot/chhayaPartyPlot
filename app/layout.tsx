@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     "event hall",
     "gathering hall",
     "co-operate gathering",
+    "chhaya party plot"
   ],
   authors: [{ name: "Chhaya Party Plot", url: "https://chhayapartyplot.com" }],
   openGraph: {

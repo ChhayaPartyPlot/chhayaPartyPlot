@@ -1,9 +1,6 @@
 'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel1 from "./components/Carousel";
-import CountUp from './components/count-up';
-import Stack from './components/stack';
-import CelebrationSection from './components/CelebrationSection';
 import { Footer } from './components/footer';
 import { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
@@ -188,12 +185,13 @@ lawn –Ideal for weddings, receptions, and cultural events.</p>
           </h1>
       
       <Features/>
-      <div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
+      {/* <div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
 
-</div>
+</div> */}
+      <VenueShowcase/>
       </div>
       
-      <VenueShowcase/>
+
        <VideoSection/>
        <Services/>
 
