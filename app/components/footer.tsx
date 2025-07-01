@@ -21,7 +21,7 @@ className="mb-4"
 <div className="flex items-center gap-2 justify-center md:justify-start">
 <Phone size={20} className="text-[#2c1f17]" />
                   <a href="tel:+919898221804" className="text-black">
-+91 98982 21804
++91 76006 16660
 </a>
 </div>
 
@@ -77,8 +77,8 @@ About
             
 Gallery
 </Link>
-              <Link href="/contact" className="text-black">
-Contact
+              <Link href="/reservation" className="text-black">
+Reservation
 </Link>
 </nav>
 </div>

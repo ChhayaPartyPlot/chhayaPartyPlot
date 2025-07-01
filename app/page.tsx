@@ -10,10 +10,11 @@ import { motion } from "framer-motion";
 import VideoSection from './components/VideoSection';
 import Dock from './components/connection';
 import Link from 'next/link';
-
-
 import { FaWhatsapp, FaInstagram, FaPhone } from 'react-icons/fa';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import Features from './components/features';
+import VenueShowcase from './components/venue';
+import Services from './components/services';
 
 
 
@@ -88,9 +89,9 @@ export default function Home() {
         <Carousel1 />
       </div>
 
-      {/* Content starts after the carousel */}
+  
       <div className="flex-grow relative z-20 mt-[100vh] bg-[#FEFFF1] ">
-        <motion.div
+       {/*  <motion.div
           className="bg-cream text-gray-900 px-6 md:px-12 lg:px-24 py-12 flex items-center"
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -98,26 +99,20 @@ export default function Home() {
           viewport={{ once: true }}
         >
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left Section: Text Content */}
+           
             <motion.div
               initial={{ opacity: 0, x: -100 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <h1 className="text-3xl md:text-5xl font-serif text-[#5a4a31] tracking-wide leading-tight">
-                Welcome to{" "}
-                <span className="text-green-800 font-extrabold italic drop-shadow-lg">
-                  Chhaya Party Plot
-                </span>
-              </h1>
+
 
               <p className="text-2xl md:text-3xl font-semibold mt-4 text-[#4e4b42] italic">
                 A premium event destination where timeless elegance meets grand celebration.
               </p>
 
 
- {/* Quick Highlights */}
 <div className="mt-8 space-y-2 text-gray-800 text-base md:text-md max-w-xl font-medium">
     <p>📍 <span className="font-semibold text-green-700">Location:</span> Prime, easily accessible spot in [Your City Name].</p>
 
@@ -160,40 +155,11 @@ lawn –Ideal for weddings, receptions, and cultural events.</p>
   className="count-up-text"
 /> sq. ft. 
 </span>+ guests – Ideal for both grand and intimate gatherings.</p>
-</div>
+</div> 
 
 
-{/* Updated Reservation Contact */}
-<div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
-  <div>
-    <p className="text-lg md:text-xl font-semibold mb-1">
-      For exclusive reservations and inquiries:
-    </p>
-    <p
-      onClick={() => copyToClipboard("+91 76006 16660")}
-      className="text-2xl md:text-3xl font-semibold cursor-pointer select-text underline decoration-green-600 decoration-2 hover:decoration-green-800 transition"
-      role="button"
-      tabIndex={0}
-      onKeyPress={e => {
-        if (e.key === 'Enter') copyToClipboard("+91 76006 16660");
-      }}
-      aria-label="Copy phone number to clipboard"
-    >
-      +91 76006 16660
-    </p>
-  </div>
-
-<Link
-  href="/reservation"
-  className="whitespace-nowrap bg-gradient-to-r from-green-700 to-green-500 text-white text-lg md:text-xl font-semibold px-8 py-3 rounded-full shadow-lg hover:from-green-800 hover:to-green-600 transition duration-300 ease-in-out font-cormorant"
-  aria-label="Reserve Now"
->
-  Reserve Now
-</Link>
-</div>
         </motion.div>
 
-            {/* Right Section: Image Stack with Animation */}
             <motion.div
               className="w-full h-96 md:h-[450px] rounded-lg"
               initial={{ opacity: 0, x: 100 }}
@@ -210,10 +176,30 @@ lawn –Ideal for weddings, receptions, and cultural events.</p>
             </motion.div>
           </div>
         </motion.div>
-        <VideoSection/>
-        {/* Additional Sections */}
-        {/*  <CelebrationSection />*/}
+        */}
+      
+        {/* Intro Heading */}
+        <div className="px-6 md:px-12 lg:px-24 py-5">
+          <h1 className="text-3xl md:text-5xl font-serif text-[#5a4a31] tracking-wide leading-tight text-center">
+            Welcome to{" "}
+            <span className="text-green-800 font-extrabold italic drop-shadow-lg">
+              Chhaya Party Plot
+            </span>
+          </h1>
+      
+      <Features/>
+      <div className="mt-8 max-w-xl flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 text-green-800 font-bold tracking-wide">
+
+</div>
       </div>
+      
+      <VenueShowcase/>
+       <VideoSection/>
+       <Services/>
+
+      </div> 
+      
+
 
       {/* Footer */}
       <Footer />

@@ -351,93 +351,99 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
                 </p>
               )}
             </div>
+{/* Inquiry Form */}
+<div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
+  <h2 className="text-lg font-semibold mb-6 text-center">
+    "Booking Your Date Starts Here – Let’s Go!"
+  </h2>
+  <form onSubmit={handleInquirySubmit} className="space-y-6">
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+      <input
+        type="text"
+        value={inquiryName}
+        onChange={(e) => setInquiryName(e.target.value)}
+        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+        placeholder="Your full name"
+        required
+      />
+    </div>
 
-            {/* Inquiry Form */}
-            <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
-              <h2 className="text-lg font-semibold mb-4 text-center">"Booking Your Date Starts Here – Let’s Go!"</h2>
-              <form onSubmit={handleInquirySubmit}>
-                <div className="mb-3">
-                  <label className="block text-sm font-medium mb-1">Name</label>
-                  <input
-                    type="text"
-                    value={inquiryName}
-                    onChange={(e) => setInquiryName(e.target.value)}
-                    className="w-full border rounded p-2"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="block text-sm font-medium mb-1">Phone Number</label>
-                  <input
-                    type="tel"
-                    value={inquiryPhone}
-                    onChange={(e) => setInquiryPhone(e.target.value)}
-                    className="w-full border rounded p-2"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="block text-sm font-medium mb-1">Starting Date</label>
-                  <input
-                    type="date"
-                    value={inquiryDate}
-                    onChange={(e) => setInquiryDate(e.target.value)}
-                    className="w-full border rounded p-2"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1">Total Booking Days</label>
-                  <input
-                    type="number"
-                    value={inquiryDays}
-                    min={1}
-                    onChange={(e) => setInquiryDays(Number(e.target.value))}
-                    className="w-full border rounded p-2"
-                    required
-                  />
-                </div>
-<button
-  type="submit"
-  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-3"
->
-  Submit Inquiry
-</button>
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+      <input
+        type="tel"
+        value={inquiryPhone}
+        onChange={(e) => setInquiryPhone(e.target.value)}
+        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+        placeholder="+91 98765 43210"
+        required
+      />
+    </div>
 
-{/* Divider with OR */}
-<div className="flex items-center my-4">
-  <hr className="flex-grow border-gray-300" />
-  <span className="mx-3 text-gray-500 font-semibold">or</span>
-  <hr className="flex-grow border-gray-300" />
-</div>
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Starting Date *</label>
+      <input
+        type="date"
+        value={inquiryDate}
+        onChange={(e) => setInquiryDate(e.target.value)}
+        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+        required
+      />
+    </div>
 
-{/* Alternate Contact Buttons with Icons */}
-<div className="flex flex-col gap-2">
-  <button
-    type="button"
-    onClick={() => window.open(`https://wa.me/9265310320`, "_blank")}
-    className="flex items-center justify-center gap-2 w-full bg-white border border-[#25D366] hover:bg-[#e6fff0] text-[#25D366] font-semibold py-2 px-4 rounded"
-  >
-    <FaWhatsapp size={18} />
-    WhatsApp
-  </button>
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Total Booking Days *</label>
+      <input
+        type="number"
+        value={inquiryDays}
+        min={1}
+        onChange={(e) => setInquiryDays(Number(e.target.value))}
+        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+        placeholder="Number of days"
+        required
+      />
+    </div>
 
-  <button
-    type="button"
-    onClick={() => {
-      navigator.clipboard.writeText(`+91 9265310320`);
-     
-    }}
-    className="flex items-center justify-center gap-2 w-full bg-white border border-[#34B7F1] hover:bg-[#e6f7ff] text-[#34B7F1] font-semibold py-2 px-4 rounded"
-  >
-    <FaPhone size={18} />
-    Call
-  </button>
-</div>
+    <button
+      type="submit"
+      className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
+    >
+      Submit Inquiry
+    </button>
+
+    {/* Divider with OR */}
+    <div className="flex items-center my-4">
+      <hr className="flex-grow border-gray-300" />
+      <span className="mx-3 text-gray-500 font-semibold">or</span>
+      <hr className="flex-grow border-gray-300" />
+    </div>
+
+    {/* Alternate Contact Buttons */}
+    <div className="flex flex-col gap-3">
+      <button
+        type="button"
+        onClick={() => window.open(`https://wa.me/9265310320`, "_blank")}
+        className="flex items-center justify-center gap-2 w-full border border-[#25D366] text-[#25D366] hover:bg-[#e6fff0] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
+      >
+        <FaWhatsapp size={18} />
+        WhatsApp
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          navigator.clipboard.writeText(`+91 9265310320`);
+        }}
+        className="flex items-center justify-center gap-2 w-full border border-[#34B7F1] text-[#34B7F1] hover:bg-[#e6f7ff] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
+      >
+        <FaPhone size={18} />
+        Call
+      </button>
+    </div>
+  </form>
 
 
-
-              </form>
             </div>
           </div>
         </section>
