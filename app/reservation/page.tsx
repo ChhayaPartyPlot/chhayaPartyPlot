@@ -136,23 +136,19 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
     return;
   }
 
-  try {
-    const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
-    if (res.status === 404) {
-      await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          mobNumber,
-          email,
-          altNumber: mobNumber2, // <-- ✅ Include alternate number
-        }),
-      });
+
+    try {
+      const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
+      if (!res.ok) {
+        await fetch('/api/user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, mobNumber, email }),
+        });
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
     }
-  } catch (error) {
-    console.error('Error creating user:', error);
-  }
 
   try {
     const res = await fetch('/api/booking', {

@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
 
     try {
         const { name, mobNumber, altNumber } = await req.json();
-        console.log(name, mobNumber, altNumber);
         const user = new User({ name, mobNumber, altNumber });
         await user.save();
 
