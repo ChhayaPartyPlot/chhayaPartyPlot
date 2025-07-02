@@ -44,7 +44,7 @@ function Carousel1() {
     />
 
     {/* Overlay on image only */}
-    <div className="absolute inset-0 bg-black/30 z-[1] pointer-events-none"></div>
+    <div className="absolute inset-0 bg-black/20 z-[1] pointer-events-none"></div>
 
     {/* Carousel Caption */}
     <Carousel.Caption className="absolute inset-0 z-[2] flex items-center justify-center text-center">

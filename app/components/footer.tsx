@@ -36,11 +36,11 @@ info@chhayapartyplot.com
 <div className="md:hidden text-[#2c1f17]">
 <h3 className="text-xl  font-medium text-[#2c1f17] mb-4 text-center">Contact</h3>
                     <address className="not-italic text-[#2c1f17] text-sm leading-relaxed text-center">
-bla bla bla Road, Opp. abc xyz,
+Chhaya Party Plot, 
 <br />
-hiddenleaf,
+Near By Chimla Fatak, 
 <br />
-Surat, Gujarat, India.
+NH 48, Chikhli-396521, Gujarat, India.
 </address>
 </div>
 <div className="flex gap-4 mt-3 justify-center md:justify-start">

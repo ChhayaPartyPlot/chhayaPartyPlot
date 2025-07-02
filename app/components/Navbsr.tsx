@@ -24,7 +24,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className=" fixed top-0 left-0 right-0 z-50 bg-opacity-30 backdrop-blur-md shadow-md w-[100vw]">
+    <header className=" fixed top-0 left-0 right-0 z-50 bg-opacity-30 bg-white/30 backdrop-blur-md shadow-md w-[100vw]">
       <nav className="container mx-auto flex justify-between items-center py-4 px-6">
         <Link href='/'>
         
