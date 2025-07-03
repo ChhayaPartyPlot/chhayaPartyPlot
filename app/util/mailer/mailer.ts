@@ -12,7 +12,7 @@ export async function sendDailyEmail(submissions: any[]) {
       <tr>
         <td>${i + 1}</td>
         <td>${s.name}</td>
-        <td>${s.email}</td>
+        <td>${s.email || ""}</td>
         <td>${s.phone || ''}</td>
         <td>${formatDate(s.startingDate)}</td>
         <td>${s.totalBookingDays}</td>

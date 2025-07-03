@@ -32,13 +32,6 @@ const inquirySchema = new Schema<InquiryDocument>({
   },
 });
 
-// Virtual property to calculate the `endDate` based on `startDate` and `totalBookingDays`
-// bookingSchema.virtual('endDate').get(function(this: BookingDocument) {
-//   const endDate = new Date(this.startDate);
-//   endDate.setDate(endDate.getDate() + this.totalBookingDays);  // Add totalBookingDays to startDate
-//   return endDate;
-// });
-
 const Inquiry = mongoose.models.Inquiry || mongoose.model<InquiryDocument>('Inquiry', inquirySchema);
 
 export {Inquiry};
