@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://chhayapartyplot.com
+
+# Sitemaps
+Sitemap: https://chhayapartyplot.com/sitemap.xml
