@@ -12,9 +12,6 @@ export async function POST(req: NextRequest) {
   console.log('Received login request:', { username, password });
 
   const user = await AdminModel.findOne({ username });
-  console.log(await AdminModel.findOne({ username:"admin" }))
-
-  console.log(user)
 
   if (!user) {
     return NextResponse.json({ message: 'User not found' }, { status: 404 });

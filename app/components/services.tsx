@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Gift, Briefcase, Users2, Calendar, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+
 
 const Services = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -229,15 +231,13 @@ const Services = () => {
               Ready to celebrate? Check available dates and let the planning begin!
 
             </p>
-            <button
-              onClick={() => {
-                const element = document.getElementById('contact');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+
+            <Link
+              href="/reservation"
+              className="inline-block bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
             >
-              reservation
-            </button>
+              Reservation
+            </Link>
           </div>
         </div>
       </div>
