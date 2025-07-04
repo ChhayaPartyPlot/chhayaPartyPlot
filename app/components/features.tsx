@@ -117,7 +117,7 @@ const Features = () => {
               </p>
 
               <div className="mt-8 space-y-2 text-gray-800 text-base font-medium">
-                <p>📍 <span className="font-semibold text-green-700">Location:</span> Prime, easily accessible spot in [Your City Name].</p>
+                <p>📍 <span className="font-semibold text-green-700">Location:</span> Prime, easily accessible spot in Chikhli,Navsari.</p>
                 <p>🌿 <span className="font-semibold text-green-700">Lawn Area:</span>
                   <span className="font-semibold text-green-800"> <CountUp from={1000} to={3000} duration={2} /> sq. ft. </span>
                   lawn –Ideal for weddings, receptions, and cultural events.
