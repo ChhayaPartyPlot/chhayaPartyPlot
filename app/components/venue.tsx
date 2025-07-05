@@ -7,12 +7,12 @@ const VenueShowcase = () => {
 
   const venueImages = [
     {
-      src: "/p1.jpeg",
+      src: "/chhaya-wedding.png",
       title: "Elegant Dining Setup",
       description: "Beautifully arranged dining spaces for your special occasions"
     },
     {
-      src: "/p2.jpeg",
+      src: "/chhaya-wedding-1.png",
       title: "Grand Reception Hall",
       description: "Spacious AC hall perfect for large gatherings and celebrations"
     },

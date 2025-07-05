@@ -29,7 +29,7 @@ const Features = () => {
     {
       icon: MapPin,
       title: 'Prime Location',
-      description: 'Centrally located in [Your City Name], making it easily accessible for all your guests.',
+      description: 'Centrally located in Chikhli,Navsari , making it easily accessible for all your guests.',
       color: 'from-green-500 to-emerald-600',
     },
     {
@@ -151,11 +151,20 @@ const Features = () => {
             >
               +91 76006 16660
             </p>
+              <Link
+              href="/reservation"
+              className="inline-block whitespace-nowrap bg-gradient-to-r from-green-700 to-green-500 text-white text-lg md:text-xl font-semibold px-8 py-2 rounded-full shadow-xl hover:scale-105 hover:from-green-800 hover:to-green-600 transition duration-300 hover:text-black ease-in-out"
+            >
+              Reserve Now
+            </Link>
+
             </motion.div>
+            
             
 
 
           </div>
+          
         </motion.div>
       ) : (
         // === 🖥️ DESKTOP / TABLET VERSION ===
