@@ -50,7 +50,7 @@ const VenueShowcase = () => {
   };
 
   return (
-    <section className="py-0 bg-[#FEFFF1]">
+    <section className="py-2 bg-[#FEFFF1]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
