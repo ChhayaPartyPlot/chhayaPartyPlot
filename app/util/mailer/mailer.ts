@@ -38,7 +38,8 @@ export async function sendDailyEmail(submissions: any[]) {
   
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_TO,
+      to: process.env.EMAIL_TO_PRIMARY,
+      cc: process.env.EMAIL_TO_SECOUNDARY,
       subject: 'Daily Contact Form Summary',
       html,
     });
