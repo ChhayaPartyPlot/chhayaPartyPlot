@@ -29,7 +29,19 @@ export const metadata: Metadata = {
     "event hall",
     "gathering hall",
     "co-operate gathering",
-    "chhaya party plot"
+    "chhaya party plot",
+    "event venue chikhli",
+    "event venue navsari",
+    "marriage hall chikhli",
+    "marriage hall navsari",
+    "banquet hall chikli",
+    "banquet hall navsari",
+    "wedding venue chikli",
+    "wedding venue navsari",
+    "gathering hall chikli",
+    "gathering hall navsari",
+
+
   ],
   authors: [{ name: "Chhaya Party Plot", url: "https://chhayapartyplot.com" }],
   openGraph: {
@@ -64,9 +76,9 @@ export const metadata: Metadata = {
   
   },
   icons: {
-    icon: "./favicon.ico",
-    shortcut: "./favicon.ico",
-    apple: "./favicon.ico",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
     },
 };
 

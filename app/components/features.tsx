@@ -29,7 +29,7 @@ const Features = () => {
     {
       icon: MapPin,
       title: 'Prime Location',
-      description: 'Centrally located in [Your City Name], making it easily accessible for all your guests.',
+      description: 'Centrally located in Chikhli,Navsari , making it easily accessible for all your guests.',
       color: 'from-green-500 to-emerald-600',
     },
     {
@@ -117,7 +117,7 @@ const Features = () => {
               </p>
 
               <div className="mt-8 space-y-2 text-gray-800 text-base font-medium">
-                <p>📍 <span className="font-semibold text-green-700">Location:</span> Prime, easily accessible spot in [Your City Name].</p>
+                <p>📍 <span className="font-semibold text-green-700">Location:</span> Prime, easily accessible spot in Chikhli,Navsari.</p>
                 <p>🌿 <span className="font-semibold text-green-700">Lawn Area:</span>
                   <span className="font-semibold text-green-800"> <CountUp from={1000} to={3000} duration={2} /> sq. ft. </span>
                   lawn –Ideal for weddings, receptions, and cultural events.
@@ -151,11 +151,20 @@ const Features = () => {
             >
               +91 76006 16660
             </p>
+              <Link
+              href="/reservation"
+              className="inline-block whitespace-nowrap bg-gradient-to-r from-green-700 to-green-500 text-white text-lg md:text-xl font-semibold px-8 py-2 rounded-full shadow-xl hover:scale-105 hover:from-green-800 hover:to-green-600 transition duration-300 hover:text-black ease-in-out"
+            >
+              Reserve Now
+            </Link>
+
             </motion.div>
+            
             
 
 
           </div>
+          
         </motion.div>
       ) : (
         // === 🖥️ DESKTOP / TABLET VERSION ===
