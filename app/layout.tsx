@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     siteName: "Chhaya Party Plot",
     images: [
       {
-        url: "https://chhayapartyplot.com/og-image.jpg",
+        url: "https://chhayapartyplot.com/chhaya-wedding-1.png",
         width: 1200,
         height: 630,
         alt: "Chhaya Party Plot event venue",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     title: "Chhaya Party Plot – Premium Event Destination",
     description:
       "Host your dream events at Chhaya Party Plot with elegant venues, lush lawns, and modern amenities.",
-    images: ["https://chhayapartyplot.com/og-image.jpg"],
+    images: ["https://chhayapartyplot.com/chhaya-wedding-1.png"],
     creator: "@chhayapartyplot",
   },
   robots: {
