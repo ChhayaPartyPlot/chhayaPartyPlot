@@ -37,6 +37,13 @@ export default function Reservation() {
   const [mobNumber, setMobNumber] = useState('');
   const [email, setEmail] = useState('');
   const [mobNumber2, setMobNumber2] = useState('');
+const [editingBooking, setEditingBooking] = useState<any>(null);
+
+  const [editStartDate, setEditStartDate] = useState('');
+  const [editDays, setEditDays] = useState(1);
+  const [editName, setEditName] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [userid,setuserid]=useState('')
 
 
 
@@ -45,6 +52,13 @@ export default function Reservation() {
   const [inquiryPhone, setInquiryPhone] = useState('');
   const [inquiryDate, setInquiryDate] = useState('');
   const [inquiryDays, setInquiryDays] = useState<number>(1);
+
+  const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
+const [showUpdateDelete, setShowUpdateDelete] = useState(false);
+
+
+
+  
 
   // State for login status
   const [loggedIn, setLoggedIn] = useState(false);
@@ -56,6 +70,8 @@ export default function Reservation() {
   }, []);
 
   useEffect(() => {
+    console.log(showUpdateDelete)
+        console.log(selectedBooking)
     fetchBookings();
   }, [activeStartDate]);
 
@@ -87,24 +103,48 @@ export default function Reservation() {
   };
 
   const handleDateClick = (date: Date) => {
-    const formattedDate = format(date, 'yyyy-MM-dd');
-    const isReserved = reservedDates.some(
-      d => format(d, 'yyyy-MM-dd') === formattedDate
-    );
+  const formattedDate = format(date, 'yyyy-MM-dd');
+  const isReserved = reservedDates.some(
+    d => format(d, 'yyyy-MM-dd') === formattedDate
+  );
+  console.log(isReserved)
 
-    if (isReserved) {
+  if (isReserved) {
+    if (loggedIn) {
+      console.log("reached")
+      // Find the booking that contains this date
+      const booking = bookingList.find(b => {
+        const start = new Date(b.startDate);
+        for (let i = 0; i < b.totalBookingDays; i++) {
+          const checkDate = new Date(start);
+          checkDate.setDate(start.getDate() + i);
+          console.log(checkDate)
+          if (format(checkDate, 'yyyy-MM-dd') === formattedDate) {
+            return true;
+          }
+        }
+        return false;
+      });
+
+      if (booking) {
+        console.log("aa")
+        setSelectedBooking(booking); // Store the booking
+        setShowUpdateDelete(true);   // Show popup
+        console.log(showUpdateDelete)
+        console.log(selectedBooking)
+      }
+    } else {
       alert("Sorry, this date is already reserved!");
-      return;
     }
+    return;
+  }
 
-    if (!loggedIn) {
-      
-      return;
-    }
+  if (!loggedIn) return;
 
-    setSelectedDate(date);
-    setShowForm(true);
-  };
+  setSelectedDate(date);
+  setShowForm(true);
+};
+
 
   const handleMobNumberChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -115,11 +155,18 @@ export default function Reservation() {
         const res = await fetch(`/api/user?mobNumber=${input}`);
         const data = await res.json();
 
+        console.log(input)
+
         if (data && data.user) {
           setName(data.user.name);
+          setEditName(data.user.name);
+          console.log(editName)
+          setuserid(data.user._id)
+          console.log(userid)
           setEmail(data.user.email || '');
         } else {
           setName('');
+          setEditName('');
           setEmail('');
         }
       } catch (error) {
@@ -248,15 +295,77 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
   };
 
 
-  // Disable tiles if date is reserved (for all users)
-  const tileDisabled = ({ date }: { date: Date }) =>
-    reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
+  // // Disable tiles if date is reserved (for all users)
+  // const tileDisabled = ({ date }: { date: Date }) =>
+  //   reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
 
   // Style reserved dates for all users
   const tileClassName = ({ date }: { date: Date }) =>
     reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'))
       ? 'reserved-date'
       : '';
+
+      console.log("under",showUpdateDelete)
+
+//       {showUpdateDelete && selectedBooking && (
+//   <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
+//     <h3 className="text-xl font-bold mb-4 text-center">Manage Booking</h3>
+//     <p><strong>Name:</strong> {selectedBooking.user?.name}</p>
+//     <p><strong>Mobile:</strong> {selectedBooking.user?.mobNumber}</p>
+//     <p><strong>Start Date:</strong> {format(new Date(selectedBooking.startDate), 'yyyy-MM-dd')}</p>
+//     <p><strong>Days:</strong> {selectedBooking.totalBookingDays}</p>
+
+//     <div className="flex justify-between mt-6">
+//       <button
+//         className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
+//         onClick={() => setShowUpdateDelete(false)}
+//       >
+//         Cancel
+//       </button>
+//       <button
+//         className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+//         onClick={() => {
+//           // Prefill reservation form with this booking's data
+//           setMobNumber(selectedBooking.user?.mobNumber || '');
+//           setMobNumber2(selectedBooking.mobNumber2 || '');
+//           setName(selectedBooking.user?.name || '');
+//           setEmail(selectedBooking.user?.email || '');
+//           setBookingDays(selectedBooking.totalBookingDays);
+//           setSelectedDate(new Date(selectedBooking.startDate));
+//           setShowForm(true);
+//           setShowUpdateDelete(false);
+//         }}
+//       >
+//         Update
+//       </button>
+//       <button
+//         className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+//         onClick={async () => {
+//           if (confirm("Are you sure you want to delete this booking?")) {
+//             try {
+//               const res = await fetch(`/api/booking/${selectedBooking._id}`, {
+//                 method: 'DELETE',
+//               });
+//               if (res.ok) {
+//                 alert("Booking deleted successfully.");
+//                 fetchBookings();
+//                 setShowUpdateDelete(false);
+//               } else {
+//                 alert("Failed to delete booking.");
+//               }
+//             } catch (err) {
+//               console.error(err);
+//               alert("Error deleting booking.");
+//             }
+//           }
+//         }}
+//       >
+//         Delete
+//       </button>
+//     </div>
+//   </div>
+// )}
+
 
   return (
     <main className=" pt-15 mb-3 ">
@@ -270,6 +379,160 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
           color: white !important;
         }
       `}</style>
+
+
+
+      
+
+
+      
+
+{showUpdateDelete && selectedBooking && !editingBooking && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
+          <h3 className="text-xl font-bold mb-4 text-center">Manage Booking</h3>
+          <p><strong>Name:</strong> {selectedBooking.user?.name}</p>
+          <p><strong>Mobile:</strong> {selectedBooking.user?.mobNumber}</p>
+          <p><strong>Start Date:</strong> {format(new Date(selectedBooking.startDate), 'yyyy-MM-dd')}</p>
+          <p><strong>Days:</strong> {selectedBooking.totalBookingDays}</p>
+
+          <div className="flex justify-between mt-6">
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
+              onClick={() => setShowUpdateDelete(false)}
+            >
+              Cancel
+            </button>
+            <button
+              className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+              onClick={() => {
+                setEditStartDate(format(new Date(selectedBooking.startDate), 'yyyy-MM-dd'));
+                setEditDays(selectedBooking.totalBookingDays);
+                setEditName(selectedBooking.user?.name || '');
+                setEditPhone(selectedBooking.user?.mobNumber || '');
+                setEditingBooking(selectedBooking);
+              }}
+            >
+              Update
+            </button>
+            <button
+              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              onClick={async () => {
+                if (confirm("Are you sure you want to delete this booking?")) {
+                  try {
+                    const res = await fetch(`/api/booking/${selectedBooking._id}`, {
+                      method: 'DELETE',
+                    });
+                    if (res.ok) {
+                      alert("Booking deleted successfully.");
+                      fetchBookings();
+                      setShowUpdateDelete(false);
+                    } else {
+                      alert("Failed to delete booking.");
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    alert("Error deleting booking.");
+                  }
+                }
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT FORM */}
+      {editingBooking && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
+          <h3 className="text-xl font-bold mb-4 text-center">Edit Booking</h3>
+
+                    <label className="block mb-2">Mobile Number:</label>
+          <input
+            type="tel"
+            value={editPhone}
+            
+            onChange={(e) => {
+
+              handleMobNumberChange(e)
+              setEditPhone(e.target.value)}}
+            className="border p-2 w-full rounded mb-4"
+          />
+
+          <label className="block mb-2">Name:</label>
+          <input
+            type="text"
+            value={editName}
+            onChange={(e) => setEditName(e.target.value)}
+            className="border p-2 w-full rounded mb-4"
+          />
+
+
+
+          <label className="block mb-2">Start Date:</label>
+          <input
+            type="date"
+            value={editStartDate}
+            onChange={(e) => setEditStartDate(e.target.value)}
+            className="border p-2 w-full rounded mb-4"
+          />
+
+          <label className="block mb-2">Total Booking Days:</label>
+          <input
+            type="number"
+            min="1"
+            value={editDays}
+            onChange={(e) => setEditDays(Number(e.target.value))}
+            className="border p-2 w-full rounded mb-4"
+          />
+
+          <div className="flex justify-between mt-6">
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
+              onClick={() => setEditingBooking(null)}
+            >
+              Cancel
+            </button>
+            <button
+              className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              onClick={async () => {
+                const bodyData = {
+                  updateData: {
+                    user: userid,
+                    startDate: new Date(editStartDate).toISOString(),
+                    totalBookingDays: editDays
+                  },
+                  
+                };
+
+                try {
+                  const res = await fetch(`/api/booking/${editingBooking._id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bodyData)
+                  });
+
+                  if (res.ok) {
+                    alert("Booking updated successfully.");
+                    fetchBookings();
+                    setEditingBooking(null);
+                    setShowUpdateDelete(false);
+                  } else {
+                    alert("Failed to update booking.");
+                  }
+                } catch (err) {
+                  console.error(err);
+                  alert("Error updating booking.");
+                }
+              }}
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      )}
+
+
 
       <div className="relative min-h-screen bg-[#FeFFF1]">
         {/* Form Popup */}
@@ -370,7 +633,7 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
               <h3 className="text-2xl font-semibold mb-4 text-center">Reservation Calendar</h3>
               <Calendar
                 onClickDay={handleDateClick}
-                tileDisabled={tileDisabled}
+                // tileDisabled={tileDisabled}
                 tileClassName={tileClassName}
                 onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
               />

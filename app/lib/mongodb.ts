@@ -15,7 +15,6 @@ import { loadEnvConfig } from '@next/env';
 // }
 const MONGO_URI = process.env.MONGO_URL !; 
 
-
 let isConnected = false;
 
 export const connectToDatabase = async () => {
