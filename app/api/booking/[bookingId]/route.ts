@@ -15,7 +15,7 @@ export async function PATCH(req: NextRequest, { params }: { params: paramsType }
 
     try {
         const body = await req.json();
-        const {bookingId} = await params;
+        const {bookingId} = params;
         const { updateData } = body;
 
         if (!bookingId || !updateData) {
@@ -56,7 +56,7 @@ export async function DELETE(req: NextRequest, { params }: { params: paramsType 
     await connectToDatabase();
 
     try {
-        const {bookingId} = await params;
+        const {bookingId} = params;
 
         if (!bookingId) {
             return NextResponse.json(
