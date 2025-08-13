@@ -12,7 +12,7 @@ type paramsType = {
 /**
  * PATCH endpoint — update a booking partially.
  */
-export async function PATCH(req: NextRequest, { params }: paramsType ) {
+export async function PATCH(req: NextRequest, { params }: {paramsType} ) {
     await connectToDatabase();
 
     try {
@@ -54,7 +54,7 @@ export async function PATCH(req: NextRequest, { params }: paramsType ) {
 /**
  * DELETE endpoint — delete a booking by ID.
  */
-export async function DELETE(req: NextRequest, { params }: paramsType) {
+export async function DELETE(req: NextRequest, { params }: {paramsType}) {
     await connectToDatabase();
 
     try {
