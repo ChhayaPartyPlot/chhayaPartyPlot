@@ -5,10 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 /**
  * PATCH endpoint — update a booking partially.
  */
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { bookingId: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: any) {
   await connectToDatabase();
 
   try {
@@ -46,10 +43,7 @@ export async function PATCH(
 /**
  * DELETE endpoint — delete a booking by ID.
  */
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { bookingId: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: any) {
   await connectToDatabase();
 
   try {
