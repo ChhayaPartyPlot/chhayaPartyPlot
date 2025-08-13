@@ -3,14 +3,16 @@ import { connectToDatabase } from '@/app/lib/mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
 type paramsType = {
-    bookingId: string
+    params:{
+        bookingId: string
+    }
 }
 
 
 /**
  * PATCH endpoint — update a booking partially.
  */
-export async function PATCH(req: NextRequest, { params }: { params: paramsType } ) {
+export async function PATCH(req: NextRequest, { params }: paramsType ) {
     await connectToDatabase();
 
     try {
@@ -52,7 +54,7 @@ export async function PATCH(req: NextRequest, { params }: { params: paramsType }
 /**
  * DELETE endpoint — delete a booking by ID.
  */
-export async function DELETE(req: NextRequest, { params }: { params: paramsType }) {
+export async function DELETE(req: NextRequest, { params }: paramsType) {
     await connectToDatabase();
 
     try {
