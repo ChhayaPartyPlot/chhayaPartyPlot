@@ -20,6 +20,8 @@ const NewAdmin = () => {
     setError(null);
     setIsLoading(true);
 
+
+    
     if (!username || !password) {
       setError('Please fill both username and password.');
       setIsLoading(false);
