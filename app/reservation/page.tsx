@@ -1,19 +1,17 @@
-'use client';
+"use client";
 import Image from "next/image";
 import { Footer } from "../components/footer";
 import { motion } from "framer-motion";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { useState, useEffect } from 'react';
-import { format } from 'date-fns';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { useState, useEffect } from "react";
+import { format } from "date-fns";
 import { FaWhatsapp, FaPhone } from "react-icons/fa";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-
-
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
@@ -22,56 +20,50 @@ const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
 function getCookie(name: string) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift();
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
 }
 
 export default function Reservation() {
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
   const [activeStartDate, setActiveStartDate] = useState(new Date());
-   const [bookingList, setBookingList] = useState<any[]>([]);
+  const [bookingList, setBookingList] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [bookingDays, setBookingDays] = useState<number>(1);
 
-  const [name, setName] = useState('');
-  const [mobNumber, setMobNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [mobNumber2, setMobNumber2] = useState('');
-const [editingBooking, setEditingBooking] = useState<any>(null);
+  const [name, setName] = useState("");
+  const [mobNumber, setMobNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobNumber2, setMobNumber2] = useState("");
+  const [editingBooking, setEditingBooking] = useState<any>(null);
 
-  const [editStartDate, setEditStartDate] = useState('');
+  const [editStartDate, setEditStartDate] = useState("");
   const [editDays, setEditDays] = useState(1);
-  const [editName, setEditName] = useState('');
-  const [editPhone, setEditPhone] = useState('');
-  const [userid,setuserid]=useState('')
-
-
+  const [editName, setEditName] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+  const [userid, setuserid] = useState("");
 
   // Inquiry Form States
-  const [inquiryName, setInquiryName] = useState('');
-  const [inquiryPhone, setInquiryPhone] = useState('');
-  const [inquiryDate, setInquiryDate] = useState('');
+  const [inquiryName, setInquiryName] = useState("");
+  const [inquiryPhone, setInquiryPhone] = useState("");
+  const [inquiryDate, setInquiryDate] = useState("");
   const [inquiryDays, setInquiryDays] = useState<number>(1);
 
   const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
-const [showUpdateDelete, setShowUpdateDelete] = useState(false);
-
-
-
-  
+  const [showUpdateDelete, setShowUpdateDelete] = useState(false);
 
   // State for login status
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     // Check login status by reading session_token cookie
-    const token = getCookie('session_token');
+    const token = getCookie("session_token");
     setLoggedIn(!!token);
   }, []);
 
   useEffect(() => {
-    console.log(showUpdateDelete)
-        console.log(selectedBooking)
+    console.log(showUpdateDelete);
+    console.log(selectedBooking);
     fetchBookings();
   }, [activeStartDate]);
 
@@ -98,55 +90,56 @@ const [showUpdateDelete, setShowUpdateDelete] = useState(false);
       setReservedDates(bookedDates);
       setBookingList(data);
     } catch (error) {
-      console.error('Error fetching bookings:', error);
+      console.error("Error fetching bookings:", error);
     }
   };
 
   const handleDateClick = (date: Date) => {
-  const formattedDate = format(date, 'yyyy-MM-dd');
-  const isReserved = reservedDates.some(
-    d => format(d, 'yyyy-MM-dd') === formattedDate
-  );
-  console.log(isReserved)
+    const formattedDate = format(date, "yyyy-MM-dd");
+    const isReserved = reservedDates.some(
+      (d) => format(d, "yyyy-MM-dd") === formattedDate,
+    );
+    console.log(isReserved);
 
-  if (isReserved) {
-    if (loggedIn) {
-      console.log("reached")
-      // Find the booking that contains this date
-      const booking = bookingList.find(b => {
-        const start = new Date(b.startDate);
-        for (let i = 0; i < b.totalBookingDays; i++) {
-          const checkDate = new Date(start);
-          checkDate.setDate(start.getDate() + i);
-          console.log(checkDate)
-          if (format(checkDate, 'yyyy-MM-dd') === formattedDate) {
-            return true;
+    if (isReserved) {
+      if (loggedIn) {
+        console.log("reached");
+        // Find the booking that contains this date
+        const booking = bookingList.find((b) => {
+          const start = new Date(b.startDate);
+          for (let i = 0; i < b.totalBookingDays; i++) {
+            const checkDate = new Date(start);
+            checkDate.setDate(start.getDate() + i);
+            console.log(checkDate);
+            if (format(checkDate, "yyyy-MM-dd") === formattedDate) {
+              return true;
+            }
           }
+          return false;
+        });
+
+        if (booking) {
+          console.log("aa");
+          setSelectedBooking(booking); // Store the booking
+          setShowUpdateDelete(true); // Show popup
+          console.log(showUpdateDelete);
+          console.log(selectedBooking);
         }
-        return false;
-      });
-
-      if (booking) {
-        console.log("aa")
-        setSelectedBooking(booking); // Store the booking
-        setShowUpdateDelete(true);   // Show popup
-        console.log(showUpdateDelete)
-        console.log(selectedBooking)
+      } else {
+        alert("Sorry, this date is already reserved!");
       }
-    } else {
-      alert("Sorry, this date is already reserved!");
+      return;
     }
-    return;
-  }
 
-  if (!loggedIn) return;
+    if (!loggedIn) return;
 
-  setSelectedDate(date);
-  setShowForm(true);
-};
+    setSelectedDate(date);
+    setShowForm(true);
+  };
 
-
-  const handleMobNumberChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMobNumberChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const input = e.target.value;
     setMobNumber(input);
 
@@ -155,80 +148,79 @@ const [showUpdateDelete, setShowUpdateDelete] = useState(false);
         const res = await fetch(`/api/user?mobNumber=${input}`);
         const data = await res.json();
 
-        console.log(input)
+        console.log(input);
 
         if (data && data.user) {
           setName(data.user.name);
           setEditName(data.user.name);
-          console.log(editName)
-          setuserid(data.user._id)
-          console.log(userid)
-          setEmail(data.user.email || '');
+          console.log(editName);
+          setuserid(data.user._id);
+          console.log(userid);
+          setEmail(data.user.email || "");
         } else {
-          setName('');
-          setEditName('');
-          setEmail('');
+          setName("");
+          setEditName("");
+          setEmail("");
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
       }
     }
   };
 
-const handleReservationSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!selectedDate) return;
+  const handleReservationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedDate) return;
 
-  if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
-    alert("Please enter a valid 10-digit mobile number.");
-    return;
-  }
+    if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
+      alert("Please enter a valid 10-digit mobile number.");
+      return;
+    }
 
-  if (!name) {
-    alert("Name is required.");
-    return;
-  }
-
+    if (!name) {
+      alert("Name is required.");
+      return;
+    }
 
     try {
       const res = await fetch(`/api/user?mobNumber=${mobNumber}`);
       if (!res.ok) {
-        await fetch('/api/user', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        await fetch("/api/user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, mobNumber, email }),
         });
       }
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error("Error creating user:", error);
     }
 
-  try {
-    const res = await fetch('/api/booking', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        mobNumber,
-        mobNumber2,
-        startDate: format(selectedDate, 'yyyy-MM-dd'),
-        totalBookingDays: bookingDays,
-      }),
-    });
+    try {
+      const res = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mobNumber,
+          mobNumber2,
+          startDate: format(selectedDate, "yyyy-MM-dd"),
+          totalBookingDays: bookingDays,
+        }),
+      });
 
-    if (res.ok) {
-      alert("Reservation successful!");
-      setShowForm(false);
-      setSelectedDate(null);
-      fetchBookings();
-    } else {
-      const error = await res.json();
-      alert(`Reservation failed: ${error.message}`);
+      if (res.ok) {
+        alert("Reservation successful!");
+        setShowForm(false);
+        setSelectedDate(null);
+        fetchBookings();
+      } else {
+        const error = await res.json();
+        alert(`Reservation failed: ${error.message}`);
+      }
+    } catch (err) {
+      console.error("Error making reservation:", err);
+      alert("Reservation failed.");
     }
-  } catch (err) {
-    console.error("Error making reservation:", err);
-    alert("Reservation failed.");
-  }
-};
+  };
 
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -238,9 +230,9 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
     }
 
     try {
-      const res = await fetch('/api/inquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: inquiryName,
           phone: inquiryPhone,
@@ -252,9 +244,9 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
       const result = await res.json();
       if (res.ok) {
         alert("Inquiry submitted successfully.");
-        setInquiryName('');
-        setInquiryPhone('');
-        setInquiryDate('');
+        setInquiryName("");
+        setInquiryPhone("");
+        setInquiryDate("");
         setInquiryDays(1);
       } else {
         alert(`Inquiry failed: ${result.error}`);
@@ -267,33 +259,32 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
   const exportToPDF = () => {
     const doc = new jsPDF();
     autoTable(doc, {
-      head: [['Name', 'Mobile', 'Start Date', 'Days']],
-      body: bookingList.map(b => [
+      head: [["Name", "Mobile", "Start Date", "Days"]],
+      body: bookingList.map((b) => [
         b.user?.name,
         b.user?.mobNumber,
-        format(new Date(b.startDate), 'yyyy-MM-dd'),
-        b.totalBookingDays
-      ])
+        format(new Date(b.startDate), "yyyy-MM-dd"),
+        b.totalBookingDays,
+      ]),
     });
-    doc.save('bookings.pdf');
+    doc.save("bookings.pdf");
   };
 
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(
-      bookingList.map(b => ({
+      bookingList.map((b) => ({
         Name: b.user?.name,
         Mobile: b.user?.mobNumber,
-        'Start Date': format(new Date(b.startDate), 'yyyy-MM-dd'),
-        Days: b.totalBookingDays
-      }))
+        "Start Date": format(new Date(b.startDate), "yyyy-MM-dd"),
+        Days: b.totalBookingDays,
+      })),
     );
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Bookings');
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    saveAs(data, 'bookings.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, "Bookings");
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "bookings.xlsx");
   };
-
 
   // // Disable tiles if date is reserved (for all users)
   // const tileDisabled = ({ date }: { date: Date }) =>
@@ -301,71 +292,72 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
 
   // Style reserved dates for all users
   const tileClassName = ({ date }: { date: Date }) =>
-    reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'))
-      ? 'reserved-date'
-      : '';
+    reservedDates.some(
+      (d) => format(d, "yyyy-MM-dd") === format(date, "yyyy-MM-dd"),
+    )
+      ? "reserved-date"
+      : "";
 
-      console.log("under",showUpdateDelete)
+  console.log("under", showUpdateDelete);
 
-//       {showUpdateDelete && selectedBooking && (
-//   <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
-//     <h3 className="text-xl font-bold mb-4 text-center">Manage Booking</h3>
-//     <p><strong>Name:</strong> {selectedBooking.user?.name}</p>
-//     <p><strong>Mobile:</strong> {selectedBooking.user?.mobNumber}</p>
-//     <p><strong>Start Date:</strong> {format(new Date(selectedBooking.startDate), 'yyyy-MM-dd')}</p>
-//     <p><strong>Days:</strong> {selectedBooking.totalBookingDays}</p>
+  //       {showUpdateDelete && selectedBooking && (
+  //   <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
+  //     <h3 className="text-xl font-bold mb-4 text-center">Manage Booking</h3>
+  //     <p><strong>Name:</strong> {selectedBooking.user?.name}</p>
+  //     <p><strong>Mobile:</strong> {selectedBooking.user?.mobNumber}</p>
+  //     <p><strong>Start Date:</strong> {format(new Date(selectedBooking.startDate), 'yyyy-MM-dd')}</p>
+  //     <p><strong>Days:</strong> {selectedBooking.totalBookingDays}</p>
 
-//     <div className="flex justify-between mt-6">
-//       <button
-//         className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-//         onClick={() => setShowUpdateDelete(false)}
-//       >
-//         Cancel
-//       </button>
-//       <button
-//         className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-//         onClick={() => {
-//           // Prefill reservation form with this booking's data
-//           setMobNumber(selectedBooking.user?.mobNumber || '');
-//           setMobNumber2(selectedBooking.mobNumber2 || '');
-//           setName(selectedBooking.user?.name || '');
-//           setEmail(selectedBooking.user?.email || '');
-//           setBookingDays(selectedBooking.totalBookingDays);
-//           setSelectedDate(new Date(selectedBooking.startDate));
-//           setShowForm(true);
-//           setShowUpdateDelete(false);
-//         }}
-//       >
-//         Update
-//       </button>
-//       <button
-//         className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-//         onClick={async () => {
-//           if (confirm("Are you sure you want to delete this booking?")) {
-//             try {
-//               const res = await fetch(`/api/booking/${selectedBooking._id}`, {
-//                 method: 'DELETE',
-//               });
-//               if (res.ok) {
-//                 alert("Booking deleted successfully.");
-//                 fetchBookings();
-//                 setShowUpdateDelete(false);
-//               } else {
-//                 alert("Failed to delete booking.");
-//               }
-//             } catch (err) {
-//               console.error(err);
-//               alert("Error deleting booking.");
-//             }
-//           }
-//         }}
-//       >
-//         Delete
-//       </button>
-//     </div>
-//   </div>
-// )}
-
+  //     <div className="flex justify-between mt-6">
+  //       <button
+  //         className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
+  //         onClick={() => setShowUpdateDelete(false)}
+  //       >
+  //         Cancel
+  //       </button>
+  //       <button
+  //         className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+  //         onClick={() => {
+  //           // Prefill reservation form with this booking's data
+  //           setMobNumber(selectedBooking.user?.mobNumber || '');
+  //           setMobNumber2(selectedBooking.mobNumber2 || '');
+  //           setName(selectedBooking.user?.name || '');
+  //           setEmail(selectedBooking.user?.email || '');
+  //           setBookingDays(selectedBooking.totalBookingDays);
+  //           setSelectedDate(new Date(selectedBooking.startDate));
+  //           setShowForm(true);
+  //           setShowUpdateDelete(false);
+  //         }}
+  //       >
+  //         Update
+  //       </button>
+  //       <button
+  //         className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+  //         onClick={async () => {
+  //           if (confirm("Are you sure you want to delete this booking?")) {
+  //             try {
+  //               const res = await fetch(`/api/booking/${selectedBooking._id}`, {
+  //                 method: 'DELETE',
+  //               });
+  //               if (res.ok) {
+  //                 alert("Booking deleted successfully.");
+  //                 fetchBookings();
+  //                 setShowUpdateDelete(false);
+  //               } else {
+  //                 alert("Failed to delete booking.");
+  //               }
+  //             } catch (err) {
+  //               console.error(err);
+  //               alert("Error deleting booking.");
+  //             }
+  //           }
+  //         }}
+  //       >
+  //         Delete
+  //       </button>
+  //     </div>
+  //   </div>
+  // )}
 
   return (
     <main className=" pt-15 mb-3 ">
@@ -380,20 +372,22 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
         }
       `}</style>
 
-
-
-      
-
-
-      
-
-{showUpdateDelete && selectedBooking && !editingBooking && (
+      {showUpdateDelete && selectedBooking && !editingBooking && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
           <h3 className="text-xl font-bold mb-4 text-center">Manage Booking</h3>
-          <p><strong>Name:</strong> {selectedBooking.user?.name}</p>
-          <p><strong>Mobile:</strong> {selectedBooking.user?.mobNumber}</p>
-          <p><strong>Start Date:</strong> {format(new Date(selectedBooking.startDate), 'yyyy-MM-dd')}</p>
-          <p><strong>Days:</strong> {selectedBooking.totalBookingDays}</p>
+          <p>
+            <strong>Name:</strong> {selectedBooking.user?.name}
+          </p>
+          <p>
+            <strong>Mobile:</strong> {selectedBooking.user?.mobNumber}
+          </p>
+          <p>
+            <strong>Start Date:</strong>{" "}
+            {format(new Date(selectedBooking.startDate), "yyyy-MM-dd")}
+          </p>
+          <p>
+            <strong>Days:</strong> {selectedBooking.totalBookingDays}
+          </p>
 
           <div className="flex justify-between mt-6">
             <button
@@ -405,10 +399,12 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
             <button
               className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
               onClick={() => {
-                setEditStartDate(format(new Date(selectedBooking.startDate), 'yyyy-MM-dd'));
+                setEditStartDate(
+                  format(new Date(selectedBooking.startDate), "yyyy-MM-dd"),
+                );
                 setEditDays(selectedBooking.totalBookingDays);
-                setEditName(selectedBooking.user?.name || '');
-                setEditPhone(selectedBooking.user?.mobNumber || '');
+                setEditName(selectedBooking.user?.name || "");
+                setEditPhone(selectedBooking.user?.mobNumber || "");
                 setEditingBooking(selectedBooking);
               }}
             >
@@ -419,9 +415,12 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
               onClick={async () => {
                 if (confirm("Are you sure you want to delete this booking?")) {
                   try {
-                    const res = await fetch(`/api/booking/${selectedBooking._id}`, {
-                      method: 'DELETE',
-                    });
+                    const res = await fetch(
+                      `/api/booking/${selectedBooking._id}`,
+                      {
+                        method: "DELETE",
+                      },
+                    );
                     if (res.ok) {
                       alert("Booking deleted successfully.");
                       fetchBookings();
@@ -447,15 +446,14 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
         <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
           <h3 className="text-xl font-bold mb-4 text-center">Edit Booking</h3>
 
-                    <label className="block mb-2">Mobile Number:</label>
+          <label className="block mb-2">Mobile Number:</label>
           <input
             type="tel"
             value={editPhone}
-            
             onChange={(e) => {
-
-              handleMobNumberChange(e)
-              setEditPhone(e.target.value)}}
+              handleMobNumberChange(e);
+              setEditPhone(e.target.value);
+            }}
             className="border p-2 w-full rounded mb-4"
           />
 
@@ -466,8 +464,6 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
             onChange={(e) => setEditName(e.target.value)}
             className="border p-2 w-full rounded mb-4"
           />
-
-
 
           <label className="block mb-2">Start Date:</label>
           <input
@@ -500,17 +496,19 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
                   updateData: {
                     user: userid,
                     startDate: new Date(editStartDate).toISOString(),
-                    totalBookingDays: editDays
+                    totalBookingDays: editDays,
                   },
-                  
                 };
 
                 try {
-                  const res = await fetch(`/api/booking/${editingBooking._id}`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(bodyData)
-                  });
+                  const res = await fetch(
+                    `/api/booking/${editingBooking._id}`,
+                    {
+                      method: "PATCH",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(bodyData),
+                    },
+                  );
 
                   if (res.ok) {
                     alert("Booking updated successfully.");
@@ -532,24 +530,28 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
         </div>
       )}
 
-
-
       <div className="relative min-h-screen bg-[#FeFFF1]">
         {/* Form Popup */}
         {showForm && loggedIn && (
           <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
-            <h3 className="text-xl font-bold mb-4 text-center">Complete Your Reservation</h3>
+            <h3 className="text-xl font-bold mb-4 text-center">
+              Complete Your Reservation
+            </h3>
             <form onSubmit={handleReservationSubmit}>
               {selectedDate && (
                 <div className="mb-3">
-                  <label className="block text-sm font-medium mb-1">Starting Date</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Starting Date
+                  </label>
                   <div className="w-full border rounded p-2 bg-gray-100">
-                    {format(selectedDate, 'yyyy-MM-dd')}
+                    {format(selectedDate, "yyyy-MM-dd")}
                   </div>
                 </div>
               )}
               <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Mobile Number</label>
+                <label className="block text-sm font-medium mb-1">
+                  Mobile Number
+                </label>
                 <input
                   type="text"
                   value={mobNumber}
@@ -558,7 +560,9 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
                   required
                 />
                 <div className="mb-3">
-                  <label className="block text-sm font-medium mb-1">Alternate Mobile Number (optional)</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Alternate Mobile Number (optional)
+                  </label>
                   <input
                     type="text"
                     value={mobNumber2}
@@ -578,7 +582,9 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
                 />
               </div>
               <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Email (optional)</label>
+                <label className="block text-sm font-medium mb-1">
+                  Email (optional)
+                </label>
                 <input
                   type="email"
                   value={email}
@@ -587,7 +593,9 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">Total Booking Days</label>
+                <label className="block text-sm font-medium mb-1">
+                  Total Booking Days
+                </label>
                 <input
                   type="number"
                   value={bookingDays}
@@ -623,130 +631,145 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
             transition={{ duration: 0.5 }}
             className="mb-8 text-center"
           >
-            <h1 className="text-4xl font-bold mb-3">"Let’s Lock in Your Celebration Date!"</h1>
-            <p className="text-lg text-gray-700">Select your desired date from the calendar</p>
+            <h1 className="text-4xl font-bold mb-3">
+              "Let’s Lock in Your Celebration Date!"
+            </h1>
+            <p className="text-lg text-gray-700">
+              Select your desired date from the calendar
+            </p>
           </motion.div>
 
           <div className="flex flex-col md:flex-row justify-center items-start gap-8 mt-10 px-4">
             {/* Calendar section (always visible) */}
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-2xl font-semibold mb-4 text-center">Reservation Calendar</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-center">
+                Reservation Calendar
+              </h3>
               <Calendar
                 onClickDay={handleDateClick}
                 // tileDisabled={tileDisabled}
                 tileClassName={tileClassName}
-                onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate!)}
+                onActiveStartDateChange={({ activeStartDate }) =>
+                  setActiveStartDate(activeStartDate!)
+                }
               />
               <p className="mt-4 text-center text-sm text-gray-500">
-                Dates in <span className="font-bold text-red-600">red</span> are already booked.
+                Dates in <span className="font-bold text-red-600">red</span> are
+                already booked.
               </p>
               {!loggedIn && (
-                <p className="mt-1 text-center text-sm text-gray-600">
-                  
-                </p>
+                <p className="mt-1 text-center text-sm text-gray-600"></p>
               )}
             </div>
-{/* Inquiry Form */}
-<div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
-  <h2 className="text-lg font-semibold mb-6 text-center">
-    "Booking Your Date Starts Here – Let’s Go!"
-  </h2>
-  <form onSubmit={handleInquirySubmit} className="space-y-6">
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
-      <input
-        type="text"
-        value={inquiryName}
-        onChange={(e) => setInquiryName(e.target.value)}
-        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-        placeholder="Your full name"
-        required
-      />
-    </div>
+            {/* Inquiry Form */}
+            <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
+              <h2 className="text-lg font-semibold mb-6 text-center">
+                "Booking Your Date Starts Here – Let’s Go!"
+              </h2>
+              <form onSubmit={handleInquirySubmit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    value={inquiryName}
+                    onChange={(e) => setInquiryName(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    placeholder="Your full name"
+                    required
+                  />
+                </div>
 
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-      <input
-        type="tel"
-        value={inquiryPhone}
-        onChange={(e) => setInquiryPhone(e.target.value)}
-        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-        placeholder="+91 98765 43210"
-        required
-      />
-    </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    value={inquiryPhone}
+                    onChange={(e) => setInquiryPhone(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    placeholder="+91 98765 43210"
+                    required
+                  />
+                </div>
 
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">Starting Date *</label>
-      <input
-        type="date"
-        value={inquiryDate}
-        onChange={(e) => setInquiryDate(e.target.value)}
-        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-        required
-      />
-    </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Starting Date *
+                  </label>
+                  <input
+                    type="date"
+                    value={inquiryDate}
+                    onChange={(e) => setInquiryDate(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    required
+                  />
+                </div>
 
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">Total Booking Days *</label>
-      <input
-        type="number"
-        value={inquiryDays}
-        min={1}
-        onChange={(e) => setInquiryDays(Number(e.target.value))}
-        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-        placeholder="Number of days"
-        required
-      />
-    </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Total Booking Days *
+                  </label>
+                  <input
+                    type="number"
+                    value={inquiryDays}
+                    min={1}
+                    onChange={(e) => setInquiryDays(Number(e.target.value))}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    placeholder="Number of days"
+                    required
+                  />
+                </div>
 
-    <button
-      type="submit"
-      className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
-    >
-      Submit Inquiry
-    </button>
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
+                >
+                  Submit Inquiry
+                </button>
 
-    {/* Divider with OR */}
-    <div className="flex items-center my-4">
-      <hr className="flex-grow border-gray-300" />
-      <span className="mx-3 text-gray-500 font-semibold">or</span>
-      <hr className="flex-grow border-gray-300" />
-    </div>
+                {/* Divider with OR */}
+                <div className="flex items-center my-4">
+                  <hr className="flex-grow border-gray-300" />
+                  <span className="mx-3 text-gray-500 font-semibold">or</span>
+                  <hr className="flex-grow border-gray-300" />
+                </div>
 
-    {/* Alternate Contact Buttons */}
-    <div className="flex flex-col gap-3">
-      <button
-        type="button"
-        onClick={() => window.open(`https://wa.me/9265310320`, "_blank")}
-        className="flex items-center justify-center gap-2 w-full border border-[#25D366] text-[#25D366] hover:bg-[#e6fff0] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
-      >
-        <FaWhatsapp size={18} />
-        WhatsApp
-      </button>
+                {/* Alternate Contact Buttons */}
+                <div className="flex flex-col gap-3">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      window.open(`https://wa.me/7600616660`, "_blank")
+                    }
+                    className="flex items-center justify-center gap-2 w-full border border-[#25D366] text-[#25D366] hover:bg-[#e6fff0] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
+                  >
+                    <FaWhatsapp size={18} />
+                    WhatsApp
+                  </button>
 
-      <button
-        type="button"
-        onClick={() => {
-          navigator.clipboard.writeText(`+91 9265310320`);
-        }}
-        className="flex items-center justify-center gap-2 w-full border border-[#34B7F1] text-[#34B7F1] hover:bg-[#e6f7ff] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
-      >
-        <FaPhone size={18} />
-        Call
-      </button>
-    </div>
-  </form>
-
-
-
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(`+91 7600616660`);
+                    }}
+                    className="flex items-center justify-center gap-2 w-full border border-[#34B7F1] text-[#34B7F1] hover:bg-[#e6f7ff] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
+                  >
+                    <FaPhone size={18} />
+                    Call
+                  </button>
+                </div>
+              </form>
             </div>
-            
           </div>
         </section>
-                  {loggedIn && bookingList.length > 0 && (
+        {loggedIn && bookingList.length > 0 && (
           <div className="bg-white rounded-xl shadow-lg p-6 mt-10 w-full max-w-5xl mx-auto">
-            <h2 className="text-xl font-bold mb-4 text-center">This Month’s Bookings</h2>
+            <h2 className="text-xl font-bold mb-4 text-center">
+              This Month’s Bookings
+            </h2>
             <div className="overflow-auto">
               <table className="table-auto w-full border border-gray-300">
                 <thead className="bg-gray-100">
@@ -762,7 +785,9 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
                     <tr key={b._id}>
                       <td className="border p-2">{b.user?.name}</td>
                       <td className="border p-2">{b.user?.mobNumber}</td>
-                      <td className="border p-2">{format(new Date(b.startDate), 'yyyy-MM-dd')}</td>
+                      <td className="border p-2">
+                        {format(new Date(b.startDate), "yyyy-MM-dd")}
+                      </td>
                       <td className="border p-2">{b.totalBookingDays}</td>
                     </tr>
                   ))}
@@ -772,16 +797,21 @@ const handleReservationSubmit = async (e: React.FormEvent) => {
 
             {/* Export Buttons */}
             <div className="flex justify-end mt-4 gap-4">
-              <button onClick={exportToPDF} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+              <button
+                onClick={exportToPDF}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+              >
                 Export PDF
               </button>
-              <button onClick={exportToExcel} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+              <button
+                onClick={exportToExcel}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+              >
                 Export Excel
               </button>
             </div>
           </div>
         )}
-
       </div>
 
       <Footer />
