@@ -1,8 +1,8 @@
-'use client';
-import TiltedCard from './TitleCard';
-import ChangingText from './changing-text';
-import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+"use client";
+import TiltedCard from "./TitleCard";
+import ChangingText from "./changing-text";
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
 export default function CelebrationSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -26,20 +26,23 @@ export default function CelebrationSection() {
       }, 1000);
     };
 
-    scrollElement.addEventListener('scroll', handleUserScroll);
+    scrollElement.addEventListener("scroll", handleUserScroll);
 
     const scrollInterval = setInterval(() => {
       if (!scrollElement || isUserScrolling) return;
 
-      if (scrollElement.scrollLeft + scrollElement.clientWidth >= scrollElement.scrollWidth - 1) {
-        scrollElement.scrollTo({ left: 0, behavior: 'auto' });
+      if (
+        scrollElement.scrollLeft + scrollElement.clientWidth >=
+        scrollElement.scrollWidth - 1
+      ) {
+        scrollElement.scrollTo({ left: 0, behavior: "auto" });
       } else {
-        scrollElement.scrollBy({ left: speed, behavior: 'auto' });
+        scrollElement.scrollBy({ left: speed, behavior: "auto" });
       }
     }, 30);
 
     return () => {
-      scrollElement.removeEventListener('scroll', handleUserScroll);
+      scrollElement.removeEventListener("scroll", handleUserScroll);
       clearInterval(scrollInterval);
     };
   }, []);
@@ -55,7 +58,7 @@ export default function CelebrationSection() {
       rotateY: 180, // Rotate 180 degrees on the Y-axis
       transition: {
         duration: 0.8,
-        ease: "easeOut",
+        ease: [0.25, 0.1, 0.25, 1],
       },
     },
   };
@@ -69,18 +72,38 @@ export default function CelebrationSection() {
       rotateY: -180, // Counter-rotate the content to keep it facing forward
       transition: {
         duration: 0.8,
-        ease: "easeOut",
+        ease: [0.25, 0.1, 0.25, 1],
       },
     },
   };
 
   const cards = [
     { imageSrc: "/image1.jpeg", altText: "Wedding", captionText: "Wedding" },
-    { imageSrc: "/image1.jpeg", altText: "Birthday Party", captionText: "Birthday Party" },
-    { imageSrc: "/image1.jpeg", altText: "Business Party", captionText: "Business Party" },
-    { imageSrc: "/image1.jpeg", altText: "Reception", captionText: "Reception" },
-    { imageSrc: "/image1.jpeg", altText: "Corporate Event", captionText: "Corporate Event" },
-    { imageSrc: "/image1.jpeg", altText: "Engagement", captionText: "Engagement" },
+    {
+      imageSrc: "/image1.jpeg",
+      altText: "Birthday Party",
+      captionText: "Birthday Party",
+    },
+    {
+      imageSrc: "/image1.jpeg",
+      altText: "Business Party",
+      captionText: "Business Party",
+    },
+    {
+      imageSrc: "/image1.jpeg",
+      altText: "Reception",
+      captionText: "Reception",
+    },
+    {
+      imageSrc: "/image1.jpeg",
+      altText: "Corporate Event",
+      captionText: "Corporate Event",
+    },
+    {
+      imageSrc: "/image1.jpeg",
+      altText: "Engagement",
+      captionText: "Engagement",
+    },
   ];
 
   return (
