@@ -144,6 +144,9 @@ importers:
       '@types/nodemailer':
         specifier: ^6.4.17
         version: 6.4.23
+      '@types/passport':
+        specifier: ^1.0.17
+        version: 1.0.17
       '@types/passport-local':
         specifier: ^1.0.38
         version: 1.0.38
