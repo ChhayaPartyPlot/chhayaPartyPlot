@@ -2,7 +2,7 @@
 import TiltedCard from "./TitleCard";
 import ChangingText from "./changing-text";
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 export default function CelebrationSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -47,15 +47,15 @@ export default function CelebrationSection() {
     };
   }, []);
 
-  // Rotation animation variants for the card container
-  const rotateVariants = {
+  // Rotation animation variants
+  const rotateVariants: Variants = {
     hidden: {
       opacity: 0,
-      rotateY: 0, // Start at 0 degrees
+      rotateY: 0,
     },
     visible: {
       opacity: 1,
-      rotateY: 180, // Rotate 180 degrees on the Y-axis
+      rotateY: 180,
       transition: {
         duration: 0.8,
         ease: [0.25, 0.1, 0.25, 1],
@@ -63,13 +63,13 @@ export default function CelebrationSection() {
     },
   };
 
-  // Counter-rotation variants for the card content to keep it facing forward
-  const counterRotateVariants = {
+  // Counter rotation variants
+  const counterRotateVariants: Variants = {
     hidden: {
       rotateY: 0,
     },
     visible: {
-      rotateY: -180, // Counter-rotate the content to keep it facing forward
+      rotateY: -180,
       transition: {
         duration: 0.8,
         ease: [0.25, 0.1, 0.25, 1],
