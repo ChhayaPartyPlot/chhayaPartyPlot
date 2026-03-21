@@ -1,6 +1,5 @@
-
-'use client';
-import { motion } from "framer-motion";
+"use client";
+import { motion, Variants } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 export default function VideoSection() {
@@ -11,10 +10,19 @@ export default function VideoSection() {
     threshold: 0.5,
     rootMargin: "-10px",
   });
-
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  const fadeIn: Variants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.1, 0.25, 1],
+      },
+    },
   };
 
   const openFullVideo = () => {
@@ -29,7 +37,7 @@ export default function VideoSection() {
         const windowHeight = window.innerHeight;
         const scrollProgress = Math.min(
           Math.max((windowHeight - rect.top) / (windowHeight + rect.height), 0),
-          1
+          1,
         );
         const translateY = scrollProgress * -100;
         videoRef.current.style.transform = `translateY(${translateY}px)`;
@@ -61,20 +69,17 @@ export default function VideoSection() {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        setIsInView(entry.isIntersecting);
-        if (videoRef.current) {
-          if (entry.isIntersecting) {
-            videoRef.current.play();
-          } else {
-            videoRef.current.pause();
-          }
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      setIsInView(entry.isIntersecting);
+      if (videoRef.current) {
+        if (entry.isIntersecting) {
+          videoRef.current.play();
+        } else {
+          videoRef.current.pause();
         }
-      },
-      observerOptions
-    );
+      }
+    }, observerOptions);
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
@@ -135,7 +140,9 @@ export default function VideoSection() {
           >
             <path d="M8 5v14l11-7z" />
           </svg>
-          <span className="text-white text-sm md:text-base">Play Full Video</span>
+          <span className="text-white text-sm md:text-base">
+            Play Full Video
+          </span>
         </button>
       </motion.div>
     </div>
