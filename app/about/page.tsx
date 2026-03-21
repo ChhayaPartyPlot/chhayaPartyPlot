@@ -1,26 +1,47 @@
-'use client';
+"use client";
 import Image from "next/image";
 import { Footer } from "../components/footer";
-import { motion } from "framer-motion";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { motion, Variants } from "framer-motion";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function About() {
   // Animation variants for sliding in from left
-  const slideInLeft = {
+  const slideInLeft: Variants = {
     hidden: { opacity: 0, x: -60 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
   };
 
   // Animation variants for sliding in from right
-  const slideInRight = {
+  const slideInRight: Variants = {
     hidden: { opacity: 0, x: 60 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
   };
 
   // Animation variants for fading in from bottom
-  const fadeInUp = {
+  const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
   };
 
   return (
@@ -41,7 +62,7 @@ export default function About() {
           }
         }
       `}</style>
-      
+
       <div className="relative min-h-screen bg-[#FeFFF1]">
         {/* Hero Section */}
         <div className="relative h-[60vh] w-full">
@@ -53,10 +74,12 @@ export default function About() {
             className="brightness-50"
           />
           <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center">
-            
-
-            <h1 className="text-sm tracking-widest font-serif italic text-gray-200">A Venue Beyond Your Imagination</h1>
-            <h2 className="text-5xl font-bold mt-2 font-sans text-gray-100">Discover Our Story</h2>
+            <h1 className="text-sm tracking-widest font-serif italic text-gray-200">
+              A Venue Beyond Your Imagination
+            </h1>
+            <h2 className="text-5xl font-bold mt-2 font-sans text-gray-100">
+              Discover Our Story
+            </h2>
           </div>
         </div>
 
@@ -70,7 +93,6 @@ export default function About() {
               variants={fadeInUp}
               className="text-sm tracking-widest text-gray-500 p-4 sm:p-0"
             >
-              
               CHHAYA PARTY PLOT - A Celebration Redefined
             </motion.h3>
             <motion.h1
@@ -91,7 +113,17 @@ export default function About() {
               transition={{ delay: 0.4 }}
               className="text-gray-600 leading-relaxed p-4 sm:p-0"
             >
-             Chhaya Party Plot is a premier event venue offering a sprawling 30,000 sq. ft. lawn area, perfect for grand weddings, receptions, and celebrations. It features a fully air-conditioned banquet hall with modern interiors, ideal for indoor events and dining. With a capacity to accommodate large gatherings comfortably, the venue also offers ample parking space for 300+ cars, ensuring convenience for your guests. Surrounded by greenery and equipped with top-notch facilities, Chhaya Party Plot blends elegance with functionality. Whether you're planning a traditional or contemporary event, it provides the perfect setting to make your special occasion truly unforgettable.
+              Chhaya Party Plot is a premier event venue offering a sprawling
+              30,000 sq. ft. lawn area, perfect for grand weddings, receptions,
+              and celebrations. It features a fully air-conditioned banquet hall
+              with modern interiors, ideal for indoor events and dining. With a
+              capacity to accommodate large gatherings comfortably, the venue
+              also offers ample parking space for 300+ cars, ensuring
+              convenience for your guests. Surrounded by greenery and equipped
+              with top-notch facilities, Chhaya Party Plot blends elegance with
+              functionality. Whether you're planning a traditional or
+              contemporary event, it provides the perfect setting to make your
+              special occasion truly unforgettable.
             </motion.p>
             <motion.p
               initial="hidden"
@@ -101,7 +133,10 @@ export default function About() {
               transition={{ delay: 0.6 }}
               className="mt-6 text-gray-600 leading-relaxed p-4 sm:p-0"
             >
-              Our mission is to embrace your unique story, style, and vision, transforming them into an unforgettable masterpiece. At Chhaya Partyplot, we don't just host events—we create timeless memories etched in elegance and love.
+              Our mission is to embrace your unique story, style, and vision,
+              transforming them into an unforgettable masterpiece. At Chhaya
+              Partyplot, we don't just host events—we create timeless memories
+              etched in elegance and love.
             </motion.p>
 
             {/* Image Section */}
@@ -164,7 +199,9 @@ export default function About() {
                   transition={{ delay: 0.4 }}
                   className="text-gray-600 mt-4 leading-relaxed"
                 >
-                  Our enchanting landscape becomes the natural backdrop for your memories. The elegance of the lush green lawns brings out the life in the venue and allows you to set up any kind of theme.
+                  Our enchanting landscape becomes the natural backdrop for your
+                  memories. The elegance of the lush green lawns brings out the
+                  life in the venue and allows you to set up any kind of theme.
                 </motion.p>
               </motion.div>
 
@@ -203,7 +240,10 @@ export default function About() {
                   transition={{ delay: 0.4 }}
                   className="text-gray-600 mt-4 leading-relaxed"
                 >
-                  The most special day of your life can sometimes be hectic and stressful, so you can partake in the joy of the occasion. We have exclusive and luxurious air-conditioned rooms for the bride and groom.
+                  The most special day of your life can sometimes be hectic and
+                  stressful, so you can partake in the joy of the occasion. We
+                  have exclusive and luxurious air-conditioned rooms for the
+                  bride and groom.
                 </motion.p>
               </motion.div>
               <motion.div
@@ -277,9 +317,7 @@ export default function About() {
                   variants={slideInRight}
                   transition={{ delay: 0.2 }}
                   className="text-3xl font-bold mt-2"
-                >
-            
-                </motion.h2>
+                ></motion.h2>
                 <motion.p
                   initial="hidden"
                   whileInView="visible"
@@ -288,7 +326,10 @@ export default function About() {
                   transition={{ delay: 0.4 }}
                   className="text-gray-600 mt-4 leading-relaxed"
                 >
-                  Our expansive 30,000 sq. ft. lawn offers a vibrant open-air setting surrounded by nature, creating the perfect canvas for large-scale weddings, cultural festivities, and unforgettable evenings under the stars.
+                  Our expansive 30,000 sq. ft. lawn offers a vibrant open-air
+                  setting surrounded by nature, creating the perfect canvas for
+                  large-scale weddings, cultural festivities, and unforgettable
+                  evenings under the stars.
                 </motion.p>
               </motion.div>
 
@@ -316,9 +357,7 @@ export default function About() {
                   variants={slideInLeft}
                   transition={{ delay: 0.2 }}
                   className="text-3xl font-bold mt-2"
-                >
-                
-                </motion.h2>
+                ></motion.h2>
                 <motion.p
                   initial="hidden"
                   whileInView="visible"
@@ -327,7 +366,10 @@ export default function About() {
                   transition={{ delay: 0.4 }}
                   className="text-gray-600 mt-4 leading-relaxed"
                 >
-                  Our fully air-conditioned banquet hall offers a luxurious indoor atmosphere, seamlessly blending comfort with class — ideal for intimate dinners, receptions, and ceremonies no matter the season.
+                  Our fully air-conditioned banquet hall offers a luxurious
+                  indoor atmosphere, seamlessly blending comfort with class —
+                  ideal for intimate dinners, receptions, and ceremonies no
+                  matter the season.
                 </motion.p>
               </motion.div>
               <motion.div
@@ -412,7 +454,9 @@ export default function About() {
                   transition={{ delay: 0.4 }}
                   className="text-gray-600 mt-4 leading-relaxed"
                 >
-                  With 300+ parking slots available, guests can arrive stress-free. The well-managed parking area ensures smooth flow and safety during large events.
+                  With 300+ parking slots available, guests can arrive
+                  stress-free. The well-managed parking area ensures smooth flow
+                  and safety during large events.
                 </motion.p>
               </motion.div>
 
@@ -451,7 +495,9 @@ export default function About() {
                   transition={{ delay: 0.4 }}
                   className="text-gray-600 mt-4 leading-relaxed"
                 >
-                  Surrounded by greenery and open skies, our venue offers a serene and visually stunning environment that adds a magical touch to your celebration.
+                  Surrounded by greenery and open skies, our venue offers a
+                  serene and visually stunning environment that adds a magical
+                  touch to your celebration.
                 </motion.p>
               </motion.div>
               <motion.div
@@ -536,7 +582,9 @@ export default function About() {
                   transition={{ delay: 0.4 }}
                   className="text-gray-600 mt-4 leading-relaxed"
                 >
-                  Equipped with cutting-edge facilities and thoughtful infrastructure, our venue ensures a seamless and stress-free experience for both guests and hosts.
+                  Equipped with cutting-edge facilities and thoughtful
+                  infrastructure, our venue ensures a seamless and stress-free
+                  experience for both guests and hosts.
                 </motion.p>
               </motion.div>
 
@@ -575,7 +623,9 @@ export default function About() {
                   transition={{ delay: 0.4 }}
                   className="text-gray-600 mt-4 leading-relaxed"
                 >
-                  From floral setups to thematic lighting, every aspect can be tailored to reflect your unique vision — making your event truly one-of-a-kind.
+                  From floral setups to thematic lighting, every aspect can be
+                  tailored to reflect your unique vision — making your event
+                  truly one-of-a-kind.
                 </motion.p>
               </motion.div>
               <motion.div
