@@ -44,6 +44,7 @@
     "react-owl-carousel": "^2.3.3",
     "react-responsive": "^10.0.1",
     "react-typed": "^2.0.12",
+    "sonner": "^2.0.7",
     "swiper": "^11.2.9",
     "xlsx": "^0.18.5",
     "zod": "^3.24.3"
