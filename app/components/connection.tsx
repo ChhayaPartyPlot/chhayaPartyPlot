@@ -10,7 +10,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 
-// ✅ Define props for DockItem
+// DockItem Props
 type DockItemProps = {
   children: React.ReactNode;
   className?: string;
@@ -22,7 +22,7 @@ type DockItemProps = {
   baseItemSize: number;
 };
 
-// ✅ DockItem component
+// DockItem Component
 function DockItem({
   children,
   className = "",
@@ -40,15 +40,15 @@ function DockItem({
       y: 0,
       height: baseItemSize,
     };
-    return (val as number) - rect.y - baseItemSize / 2; // Cast 'val' as a number
+    return (val as number) - rect.y - baseItemSize / 2;
   });
-  
-  
+
   const targetSize = useTransform(
     mouseDistance,
     [-distance, 0, distance],
-    [baseItemSize, magnification, baseItemSize]
+    [baseItemSize, magnification, baseItemSize],
   );
+
   const size = useSpring(targetSize, spring);
 
   return (
@@ -66,7 +66,7 @@ function DockItem({
   );
 }
 
-// ✅ Dock component
+// Dock Component
 export default function Dock({
   items,
   className = "bg-white/10 backdrop-blur-lg border border-white/20",
@@ -92,9 +92,11 @@ export default function Dock({
 }) {
   const mouseY = useMotionValue(Infinity);
   const isHovered = useMotionValue(0);
+
   const [isOpen, setIsOpen] = useState(
-    typeof window !== "undefined" ? window.innerWidth >= 1024 : true
+    typeof window !== "undefined" ? window.innerWidth >= 1024 : true,
   );
+
   const dockRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -108,6 +110,7 @@ export default function Dock({
 
     handleResize();
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -121,16 +124,34 @@ export default function Dock({
     if (isOpen && window.innerWidth < 1024) {
       document.addEventListener("mousedown", handleClickOutside);
     }
+
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
   return (
     <>
-      {/* Toggle Button for Mobile */}
+      {/* Mobile Toggle Button */}
+
       <AnimatePresence>
         {!isOpen && (
           <motion.div
-            className="fixed left-4 top-[45%] -translate-y-1/2 z-[9999] flex items-center justify-center bg-[#25D366] p-2 rounded-full shadow-lg border-2 border-white cursor-pointer"
+            className="
+              fixed
+              left-2
+              top-[45%]
+              -translate-y-1/2
+              z-[9999]
+              flex
+              items-center
+              justify-center
+              bg-[#25D366]
+              p-2
+              rounded-full
+              shadow-lg
+              border-2
+              border-white
+              cursor-pointer
+            "
             onClick={() => setIsOpen(true)}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -141,11 +162,18 @@ export default function Dock({
         )}
       </AnimatePresence>
 
-      {/* Dock */}
+      {/* Dock Panel */}
+
       {isOpen && (
         <motion.div
           ref={dockRef}
-          className="fixed left-2 top-1/2 -translate-y-1/2 z-50"
+          className="
+            fixed
+            left-2
+            top-1/2
+            -translate-y-1/2
+            z-50
+          "
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -100, opacity: 0 }}

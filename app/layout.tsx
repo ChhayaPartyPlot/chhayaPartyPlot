@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import Navbar from "./components/Navbsr";
-import { AuthProvider } from "./src/context/AuthContext"; // Adjust the import path as necessary
+import "./globals.css";
+import { AuthProvider } from "./src/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,72 +14,100 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+
 export const metadata: Metadata = {
-  title: "Chhaya Party Plot – Premium Event Destination",
+  metadataBase: new URL("https://chhayapartyplot.com"),
+
+  title: {
+    default: "Chhaya Party Plot",
+    template: "%s | Chhaya Party Plot",
+  },
+
   description:
-    "Host your dream events at Chhaya Party Plot with elegant venues, lush lawns, and modern amenities.",
+    "Chhaya Party Plot in Chikhli, Navsari offers a spacious lawn, elegant banquet hall, and modern amenities — perfect for weddings, receptions, corporate events, and celebrations.",
+
   keywords: [
-    "party plot",
-    "event venue",
-    "wedding venue",
-    "banquet hall",
-    "celebrations",
     "Chhaya Party Plot",
-    "Marriage hall",
-    "event hall",
-    "gathering hall",
-    "co-operate gathering",
-    "chhaya party plot",
-    "event venue chikhli",
-    "event venue navsari",
+    "party plot in chikhli",
+    "party plot in navsari",
+    "wedding venue chikhli",
+    "wedding venue navsari",
     "marriage hall chikhli",
     "marriage hall navsari",
-    "banquet hall chikli",
+    "banquet hall chikhli",
     "banquet hall navsari",
-    "wedding venue chikli",
-    "wedding venue navsari",
-    "gathering hall chikli",
-    "gathering hall navsari",
-
-
+    "event venue chikhli",
+    "event venue navsari",
+    "corporate event venue",
+    "birthday party venue",
+    "reception venue",
+    "luxury party plot",
+    "wedding lawn chikhli",
+    "event hall chikhli",
+    "best party plot navsari",
   ],
-  authors: [{ name: "Chhaya Party Plot", url: "https://chhayapartyplot.com" }],
+
+  authors: [
+    {
+      name: "Chhaya Party Plot",
+      url: "https://chhayapartyplot.com",
+    },
+  ],
+
+  creator: "Chhaya Party Plot",
+
+  alternates: {
+    canonical: "/",
+  },
+
   openGraph: {
-    title: "Chhaya Party Plot – Premium Event Destination",
+    title: "Chhaya Party Plot – Premium Wedding & Event Venue in Chikhli",
     description:
-      "Host your dream events at Chhaya Party Plot with elegant venues, lush lawns, and modern amenities.",
+      "Host weddings, receptions, and celebrations at Chhaya Party Plot — a premium venue in Chikhli, Navsari with spacious lawn and elegant banquet hall.",
+
     url: "https://chhayapartyplot.com",
+
     siteName: "Chhaya Party Plot",
+
     images: [
       {
-        url: "https://chhayapartyplot.com/chhaya-wedding-1.png",
+        url: "/chhaya-wedding-1.png",
         width: 1200,
         height: 630,
-        alt: "Chhaya Party Plot event venue",
+        alt: "Chhaya Party Plot Wedding Venue in Chikhli",
       },
     ],
+
     locale: "en_IN",
+
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Chhaya Party Plot – Premium Event Destination",
+
+    title: "Chhaya Party Plot – Wedding & Event Venue in Chikhli",
+
     description:
-      "Host your dream events at Chhaya Party Plot with elegant venues, lush lawns, and modern amenities.",
-    images: ["https://chhayapartyplot.com/chhaya-wedding-1.png"],
+      "Premium wedding and event venue in Chikhli, Navsari with spacious lawn and banquet hall.",
+
+    images: ["/chhaya-wedding-1.png"],
+
     creator: "@chhayapartyplot",
   },
+
   robots: {
-  index: true,
-  follow: true,
-  nocache: true,
-  
+    index: true,
+    follow: true,
+    nocache: false,
   },
+
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
     apple: "/favicon.ico",
-    },
+  },
 };
 
 export default function RootLayout({
@@ -89,7 +117,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <AuthProvider>
           <Navbar />
           {children}

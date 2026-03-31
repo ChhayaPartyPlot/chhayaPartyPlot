@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, Gift, Briefcase, Users2, Calendar, Star, ChevronLeft, ChevronRight } from 'lucide-react';
-import Link from 'next/link';
-
+import {
+  Cake,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Gift,
+  Heart,
+  Star,
+  Users2,
+} from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const Services = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -11,10 +19,10 @@ const Services = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
@@ -30,35 +38,62 @@ const Services = () => {
     {
       icon: Heart,
       title: "Wedding Celebrations",
-      description: "Create magical moments with our comprehensive wedding packages including decoration, catering, and coordination services.",
-      features: ["Bridal Suite", "Mandap Setup", "Floral Decorations", "Wedding Coordination"],
-      image: "https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=800",
-      color: "from-pink-500 to-rose-600"
+      description:
+        "Host grand wedding ceremonies with elegant décor, spacious halls, and dedicated arrangements for your special day.",
+      features: [
+        "Mandap Setup",
+        "Bridal & Groom Rooms",
+        "Floral Decorations",
+        "Wedding Coordination",
+      ],
+      image: "S1.png",
+      color: "from-pink-500 to-rose-600",
     },
+
     {
       icon: Gift,
-      title: "Birthday Parties",
-      description: "Make birthdays unforgettable with themed decorations, entertainment, and customized celebration packages.",
-      features: ["Theme Decorations", "Entertainment", "Custom Cakes", "Photography"],
-      image: "https://images.pexels.com/photos/1729797/pexels-photo-1729797.jpeg?auto=compress&cs=tinysrgb&w=800",
-      color: "from-purple-500 to-indigo-600"
+      title: "Engagement Ceremonies",
+      description:
+        "Celebrate your engagement in style with beautifully arranged décor and comfortable seating for your guests.",
+      features: [
+        "Stage Decoration",
+        "Ring Ceremony Setup",
+        "Lighting & Sound",
+        "Photo-Friendly Backdrops",
+      ],
+      image: "S2.jpg",
+      color: "from-purple-500 to-indigo-600",
     },
+
     {
-      icon: Briefcase,
-      title: "Corporate Events",
-      description: "Professional venue for meetings, conferences, and corporate gatherings with modern AV equipment and catering.",
-      features: ["AV Equipment", "Business Catering", "Meeting Rooms", "WiFi & Tech Support"],
-      image: "https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg?auto=compress&cs=tinysrgb&w=800",
-      color: "from-blue-500 to-cyan-600"
+      icon: Cake,
+      title: "Birthday Parties",
+      description:
+        "Make birthdays memorable with themed decorations and spacious party arrangements.",
+      features: [
+        "Theme Decorations",
+        "Cake Table Setup",
+        "Music & Lighting",
+        "Kids Play Area Setup",
+      ],
+      image: "S5.jpg",
+      color: "from-orange-500 to-pink-500",
     },
+
     {
       icon: Users2,
-      title: "Social Gatherings",
-      description: "Perfect space for family reunions, anniversaries, and social events with flexible arrangements.",
-      features: ["Flexible Seating", "Music System", "Catering Options", "Decoration Services"],
-      image: "https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=800",
-      color: "from-green-500 to-emerald-600"
-    }
+      title: "Reception & Social Events",
+      description:
+        "Perfect venue for receptions, anniversaries, and family gatherings with flexible seating arrangements.",
+      features: [
+        "Reception Stage Setup",
+        "Dining Arrangements",
+        "Music System",
+        "Decoration Services",
+      ],
+      image: "S4.jpg",
+      color: "from-green-500 to-emerald-600",
+    },
   ];
 
   const nextSlide = () => {
@@ -73,12 +108,41 @@ const Services = () => {
     <section id="services" className="py-20 bg-[#FEFFF1]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">Services</span>
+          {/* Heading */}
+          <h2
+            className="
+    text-3xl sm:text-4xl md:text-5xl
+    font-bold
+    text-gray-800
+    mb-6
+  "
+          >
+            Our{" "}
+            <span
+              className="
+      text-transparent
+      bg-clip-text
+      bg-linear-to-r
+      from-green-600
+      to-emerald-600
+    "
+            >
+              Services
+            </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            From intimate celebrations to grand events, we offer comprehensive services 
-            tailored to make your special moments truly extraordinary.
+
+          {/* Description */}
+          <p
+            className="
+    text-base sm:text-lg md:text-xl
+    text-gray-600
+    max-w-3xl
+    mx-auto
+    leading-relaxed
+  "
+          >
+            From intimate celebrations to grand events, we offer comprehensive
+            services tailored to make your special moments truly extraordinary.
           </p>
         </div>
 
@@ -87,7 +151,7 @@ const Services = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="group bg-gradient-to-br from-gray-50 to-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1"
+              className="group bg-linear-to-br from-gray-50 to-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1"
             >
               <div className="relative h-64 overflow-hidden">
                 <img
@@ -97,21 +161,23 @@ const Services = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute top-6 left-6">
-                  <div className={`bg-gradient-to-r ${service.color} p-3 rounded-2xl shadow-lg`}>
+                  <div
+                    className={`bg-gradient-to-r ${service.color} p-3 rounded-2xl shadow-lg`}
+                  >
                     <service.icon className="text-white" size={28} />
                   </div>
                 </div>
               </div>
-              
+
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4 group-hover:text-green-600 transition-colors">
                   {service.title}
                 </h3>
-                
+
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   {service.description}
                 </p>
-                
+
                 <div className="grid grid-cols-2 gap-3">
                   {service.features.map((feature, featureIndex) => (
                     <div
@@ -130,47 +196,98 @@ const Services = () => {
 
         {/* Mobile Carousel View */}
         <div className="md:hidden relative mb-16">
+          {/* Carousel Wrapper */}
           <div className="overflow-hidden rounded-3xl">
-            <div 
+            <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
               {services.map((service, index) => (
-                <div
-                  key={index}
-                  className="w-full flex-shrink-0"
-                >
-                  <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl overflow-hidden shadow-lg mx-2">
+                <div key={index} className="w-full flex-shrink-0 px-2">
+                  <div
+                    className="
+            bg-gradient-to-br
+            from-gray-50
+            to-white
+            rounded-3xl
+            overflow-hidden
+            
+          "
+                  >
+                    {/* Image */}
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={service.image}
                         alt={service.title}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+
+                      {/* Overlay */}
+                      <div
+                        className="
+                absolute inset-0
+                bg-gradient-to-t
+                from-black/60
+                to-transparent
+              "
+                      />
+
+                      {/* Icon */}
                       <div className="absolute top-4 left-4">
-                        <div className={`bg-gradient-to-r ${service.color} p-2 rounded-xl shadow-lg`}>
+                        <div
+                          className={`
+                    bg-gradient-to-r
+                    ${service.color}
+                    p-2
+                    rounded-xl
+                    shadow-lg
+                  `}
+                        >
                           <service.icon className="text-white" size={20} />
                         </div>
                       </div>
                     </div>
-                    
+
+                    {/* Content */}
                     <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-800 mb-3">
+                      <h3
+                        className="
+                text-xl
+                font-bold
+                text-gray-800
+                mb-3
+              "
+                      >
                         {service.title}
                       </h3>
-                      
-                      <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+
+                      <p
+                        className="
+                text-gray-600
+                mb-4
+                text-sm
+                leading-relaxed
+              "
+                      >
                         {service.description}
                       </p>
-                      
+
+                      {/* Features */}
                       <div className="grid grid-cols-2 gap-2">
                         {service.features.map((feature, featureIndex) => (
                           <div
                             key={featureIndex}
-                            className="flex items-center space-x-2 text-xs text-gray-700"
+                            className="
+                      flex items-center
+                      gap-2
+                      text-xs
+                      text-gray-700
+                    "
                           >
-                            <Star className="text-green-500 fill-current" size={12} />
+                            <Star
+                              className="text-green-500 fill-current"
+                              size={12}
+                            />
                             <span>{feature}</span>
                           </div>
                         ))}
@@ -182,62 +299,135 @@ const Services = () => {
             </div>
           </div>
 
-          {/* Mobile Carousel Controls */}
+          {/* Navigation Controls */}
+
           <button
             onClick={prevSlide}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm p-2 rounded-full shadow-lg transition-all duration-300"
+            className="
+    absolute
+    left-2
+    top-1/2
+    -translate-y-1/2
+    p-2
+    transition-all
+    duration-300
+    hover:scale-110
+  "
           >
-            <ChevronLeft className="text-gray-800" size={20} />
-          </button>
-          
-          <button
-            onClick={nextSlide}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm p-2 rounded-full shadow-lg transition-all duration-300"
-          >
-            <ChevronRight className="text-gray-800" size={20} />
+            <ChevronLeft className="text-black drop-shadow-lg" size={24} />
           </button>
 
-          {/* Mobile Carousel Indicators */}
-          <div className="flex justify-center mt-6 space-x-2">
+          <button
+            onClick={nextSlide}
+            className="
+    absolute
+    right-2
+    top-1/2
+    -translate-y-1/2
+    p-2
+    transition-all
+    duration-300
+    hover:scale-110
+  "
+          >
+            <ChevronRight className="text-black drop-shadow-lg" size={24} />
+          </button>
+
+          {/* Premium Indicators */}
+
+          <div className="flex justify-center items-center mt-6 gap-3">
             {services.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide 
-                    ? 'bg-green-600 w-6' 
-                    : 'bg-gray-300'
-                }`}
+                className={`
+          h-2
+          rounded-full
+          transition-all
+          duration-300
+          ${
+            index === currentSlide
+              ? "w-8 bg-green-600 shadow-md shadow-green-600/40"
+              : "w-2 bg-gray-300 hover:bg-gray-400"
+          }
+        `}
               />
             ))}
           </div>
 
-          {/* Service Counter for Mobile */}
-          <div className="text-center mt-4">
+          {/* Counter */}
+
+          {/* <div className="text-center mt-4">
             <span className="text-sm text-gray-500">
               {currentSlide + 1} of {services.length}
             </span>
-          </div>
+          </div> */}
         </div>
 
-        {/* Call to Action - Same for both views */}
-        <div className="text-center">
-          <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl p-8 md:p-12 text-white">
-            <Calendar className="mx-auto mb-6 text-green-200" size={48} />
-            <h3 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Plan Your Event?
-            </h3>
-            <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">
-              Ready to celebrate? Check available dates and let the planning begin!
+        {/* Call to Action */}
 
+        <div className="text-center">
+          <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl">
+            {/* Icon */}
+
+            <Calendar className="mx-auto mb-6 text-green-200" size={48} />
+
+            {/* Heading */}
+
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
+              Plan Your Special Event at Chhaya Party Plot
+            </h3>
+
+            {/* Description */}
+
+            <p className="text-sm md:text-lg text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+              Check available dates and reserve your venue today. From weddings
+              to celebrations, we make every moment memorable with elegant
+              spaces and seamless service.
             </p>
 
-            <Link
-              href="/reservation"
-              className="inline-block bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-            >
-              Reservation
-            </Link>
+            {/* Buttons */}
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              {/* Reservation Button */}
+
+              <Link
+                href="/reservation"
+                className="
+          inline-block
+          bg-white text-green-600
+          hover:bg-green-50
+          px-8 py-4
+          rounded-full
+          font-semibold
+          text-lg
+          transition-all duration-300
+          transform hover:scale-105
+          hover:shadow-lg
+        "
+              >
+                Book Your Event
+              </Link>
+
+              {/* Optional Call Button */}
+
+              <a
+                href="tel:+917600616660"
+                className="
+          inline-block
+          bg-green-800 text-white
+          hover:bg-green-900
+          px-8 py-4
+          rounded-full
+          font-semibold
+          text-lg
+          transition-all duration-300
+          transform hover:scale-105
+        "
+              >
+                Call Now
+              </a>
+            </div>
           </div>
         </div>
       </div>

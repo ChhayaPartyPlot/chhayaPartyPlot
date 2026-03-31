@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const VenueShowcase = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -7,25 +7,41 @@ const VenueShowcase = () => {
 
   const venueImages = [
     {
-      src: "/chhaya-wedding.png",
-      title: "Elegant Dining Setup",
-      description: "Beautifully arranged dining spaces for your special occasions"
+      src: "H2.jpg",
+      title: "Banquet Hall Exterior",
+      description:
+        "Elegant exterior view of the banquet hall showcasing its grand entrance and spacious design.",
     },
     {
-      src: "/chhaya-wedding-1.png",
-      title: "Grand Reception Hall",
-      description: "Spacious AC hall perfect for large gatherings and celebrations"
+      src: "H1.jpg",
+      title: "Air-Conditioned Banquet Hall",
+      description:
+        "Spacious air-conditioned hall perfect for weddings, receptions, and large gatherings.",
     },
     {
-      src: "/p3.jpeg",
-      title: "Outdoor Garden Area",
-      description: "Lush green lawn area ideal for outdoor ceremonies"
+      src: "H3.jpg",
+      title: "Lawn Area",
+      description:
+        "Spacious green lawn ideal for weddings, receptions, and outdoor celebrations.",
     },
     {
-      src: "/p4.jpeg",
-      title: "Party Setup",
-      description: "Vibrant party arrangements with professional lighting"
-    }
+      src: "/H5.jpg",
+      title: "Banquet Hall Side View",
+      description:
+        "Side view of the banquet hall showcasing its spacious structure and elegant exterior design.",
+    },
+    {
+      src: "T1.jpg",
+      title: "Aerial View",
+      description:
+        "A stunning aerial view highlighting the full property layout, including halls, lawn, and parking areas.",
+    },
+    {
+      src: "H6.jpg",
+      title: "Parking Aerial View",
+      description:
+        "Aerial view of the spacious parking area designed for smooth vehicle movement and guest convenience.",
+    },
   ];
 
   useEffect(() => {
@@ -42,7 +58,9 @@ const VenueShowcase = () => {
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + venueImages.length) % venueImages.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + venueImages.length) % venueImages.length,
+    );
   };
 
   const togglePlayPause = () => {
@@ -54,20 +72,22 @@ const VenueShowcase = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-            Venue <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">Showcase</span>
+            Venue{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">
+              Highlights
+            </span>
           </h2>
-
         </div>
 
         <div className="relative max-w-6xl mx-auto">
-          <div className="relative h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+          <div className="relative h-96 md:h-[500px]  rounded-3xl overflow-hidden shadow-2xl">
             {venueImages.map((image, index) => (
               <div
                 key={index}
                 className={`absolute inset-0 transition-all duration-700 transform ${
-                  index === currentSlide 
-                    ? 'opacity-100 scale-100' 
-                    : 'opacity-0 scale-105'
+                  index === currentSlide
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-105"
                 }`}
               >
                 <img
@@ -77,7 +97,9 @@ const VenueShowcase = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <div className="absolute bottom-8 left-8 right-8 text-white">
-                  <h3 className="text-2xl md:text-3xl font-bold mb-2">{image.title}</h3>
+                  <h3 className="text-2xl md:text-3xl font-bold mb-2">
+                    {image.title}
+                  </h3>
                   <p className="text-lg text-white/90">{image.description}</p>
                 </div>
               </div>
@@ -87,64 +109,120 @@ const VenueShowcase = () => {
           {/* Navigation Controls */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+            className="
+            hidden md:block
+    absolute
+    left-4
+    top-1/2
+    -translate-y-1/2
+    p-3
+    text-white
+    rounded-full
+    transition-all
+    duration-300
+    hover:scale-110
+   
+  "
           >
-            <ChevronLeft className="text-gray-800" size={24} />
+            <ChevronLeft className="text-white drop-shadow-lg" size={26} />
           </button>
-          
+
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+            className="
+            hidden md:block
+    absolute
+    right-4
+    top-1/2
+    -translate-y-1/2
+    p-3
+    text-white
+    rounded-full 
+    transition-all
+    duration-300
+    hover:scale-110
+    
+  "
           >
-            <ChevronRight className="text-gray-800" size={24} />
+            <ChevronRight className="text-white drop-shadow-lg" size={26} />
           </button>
 
           {/* Play/Pause Button */}
           <button
             onClick={togglePlayPause}
-            className="absolute top-4 right-4 bg-white/90 hover:bg-white backdrop-blur-sm p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+            className="
+    absolute
+    top-4
+    right-4
+    p-3
+    text-white
+    rounded-full
+    transition-all
+    duration-300
+    hover:scale-110
+    hover:shadow-xl
+  "
           >
             {isPlaying ? (
-              <Pause className="text-gray-800" size={20} />
+              <Pause className="text-white drop-shadow-lg" size={20} />
             ) : (
-              <Play className="text-gray-800" size={20} />
+              <Play className="text-white drop-shadow-lg" size={20} />
             )}
           </button>
 
           {/* Slide Indicators */}
-          <div className="flex justify-center mt-8 space-x-2">
+          <div className="flex justify-center items-center mt-8 gap-3">
             {venueImages.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentSlide 
-                    ? 'bg-green-600 w-8' 
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
+                className={`
+        relative
+        h-2
+        rounded-full
+        transition-all
+        duration-300
+        ease-in-out
+        ${
+          index === currentSlide
+            ? "w-8 bg-green-600 shadow-md shadow-green-600/40 scale-110"
+            : "w-2 bg-gray-300 hover:bg-gray-400 hover:scale-110"
+        }
+      `}
               />
             ))}
           </div>
 
           {/* Thumbnail Navigation */}
-          <div className="grid grid-cols-5 gap-4 mt-8">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4 mt-8">
             {venueImages.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`relative h-20 rounded-xl overflow-hidden transition-all duration-300 ${
-                  index === currentSlide 
-                    ? 'ring-4 ring-green-500 scale-105' 
-                    : 'hover:scale-105 opacity-70 hover:opacity-100'
-                }`}
+                className={`
+        relative
+        w-full
+        aspect-[4/3]
+        rounded-2xl
+        overflow-hidden
+        transition-all
+        duration-300
+
+        ${
+          index === currentSlide
+            ? "ring-2 ring-green-600 scale-105 shadow-lg"
+            : "opacity-70 hover:opacity-100 hover:scale-105"
+        }
+      `}
               >
                 <img
                   src={image.src}
                   alt={image.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-2xl "
                 />
+
                 {index === currentSlide && (
-                  <div className="absolute inset-0 bg-green-500/20"></div>
+                  <div className="absolute inset-0 bg-green-600/20 rounded-2xl"></div>
                 )}
               </button>
             ))}
@@ -152,7 +230,6 @@ const VenueShowcase = () => {
         </div>
 
         {/* Call to Action */}
-        
       </div>
     </section>
   );

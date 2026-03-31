@@ -154,7 +154,7 @@ export default function About() {
                   alt="Enchanting Landscape"
                   width={600}
                   height={400}
-                  className="w-full h-auto md:h-[350px] object-cover shadow-md"
+                  className="w-full h-auto md:h-87.5 object-cover shadow-md"
                 />
                 <div className="absolute bottom-4 left-4">
                   <Image
