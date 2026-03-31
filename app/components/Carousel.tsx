@@ -6,28 +6,28 @@ import Link from "next/link";
 
 const images = [
   {
-    src: "/D2.jpg",
+    src: "/D2.JPG",
     alt: "Chhaya Party Plot Grand Entrance",
     caption: "Grand Entrance",
     description:
       "A welcoming entrance designed to create the perfect first impression for your special events.",
   },
   {
-    src: "/D3.jpg",
+    src: "/D3.JPG",
     alt: "Spacious Lawn at Chhaya Party Plot",
     caption: "Spacious Green Lawn",
     description:
       "Expansive open lawn ideal for weddings, receptions, and large celebrations under the sky.",
   },
   {
-    src: "/D4.jpg",
+    src: "/D4.JPG",
     alt: "Elegant Banquet Setup at Chhaya Party Plot",
     caption: "Elegant Event Setup",
     description:
       "Beautifully arranged decor and seating to make every celebration truly memorable.",
   },
   {
-    src: "/D1.jpg",
+    src: "/D1.JPG",
     alt: "Night View of Chhaya Party Plot",
     caption: "Stunning Night Ambience",
     description:
