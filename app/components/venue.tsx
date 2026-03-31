@@ -7,37 +7,37 @@ const VenueShowcase = () => {
 
   const venueImages = [
     {
-      src: "H2.jpg",
+      src: "/H2.JPG",
       title: "Banquet Hall Exterior",
       description:
         "Elegant exterior view of the banquet hall showcasing its grand entrance and spacious design.",
     },
     {
-      src: "H1.jpg",
+      src: "/H1.jpg",
       title: "Air-Conditioned Banquet Hall",
       description:
         "Spacious air-conditioned hall perfect for weddings, receptions, and large gatherings.",
     },
     {
-      src: "H3.jpg",
+      src: "/H3.JPG",
       title: "Lawn Area",
       description:
         "Spacious green lawn ideal for weddings, receptions, and outdoor celebrations.",
     },
     {
-      src: "/H5.jpg",
+      src: "/H5.JPG",
       title: "Banquet Hall Side View",
       description:
         "Side view of the banquet hall showcasing its spacious structure and elegant exterior design.",
     },
     {
-      src: "T1.jpg",
+      src: "/T1.JPG",
       title: "Aerial View",
       description:
         "A stunning aerial view highlighting the full property layout, including halls, lawn, and parking areas.",
     },
     {
-      src: "H6.jpg",
+      src: "/H6.JPG",
       title: "Parking Aerial View",
       description:
         "Aerial view of the spacious parking area designed for smooth vehicle movement and guest convenience.",

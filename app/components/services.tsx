@@ -46,7 +46,7 @@ const Services = () => {
         "Floral Decorations",
         "Wedding Coordination",
       ],
-      image: "S1.png",
+      image: "/S1.PNG",
       color: "from-pink-500 to-rose-600",
     },
 
@@ -61,7 +61,7 @@ const Services = () => {
         "Lighting & Sound",
         "Photo-Friendly Backdrops",
       ],
-      image: "S2.jpg",
+      image: "/S2.jpg",
       color: "from-purple-500 to-indigo-600",
     },
 
@@ -76,7 +76,7 @@ const Services = () => {
         "Music & Lighting",
         "Kids Play Area Setup",
       ],
-      image: "S5.jpg",
+      image: "/S5.JPG",
       color: "from-orange-500 to-pink-500",
     },
 
@@ -91,7 +91,7 @@ const Services = () => {
         "Music System",
         "Decoration Services",
       ],
-      image: "S4.jpg",
+      image: "/S4.jpg",
       color: "from-green-500 to-emerald-600",
     },
   ];
