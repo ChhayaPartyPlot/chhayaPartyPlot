@@ -30,7 +30,7 @@ export function Footer() {
 
           {/* Navigation */}
           <div className="hidden md:flex justify-start">
-            <nav className="flex flex-col space-y-2 items-center md:items-start">
+            {/* <nav className="flex flex-col space-y-2 items-center md:items-start">
               <h3 className="text-xl font-medium mb-4 text-black">Explore</h3>
 
               <Link
@@ -60,68 +60,86 @@ export function Footer() {
               >
                 Reservation
               </Link>
-            </nav>
+            </nav> */}
           </div>
 
           {/* Contact Info */}
-          <ul className="space-y-3 text-center md:text-left text-[#2c1f17]">
-            {/* Phone */}
-            <li>
-              <div className="flex items-start gap-2 justify-center md:justify-start">
-                <FaPhoneAlt size={18} className="mt-[4px] shrink-0 w-[18px]" />
+          <div className="space-y-3 text-center md:text-left text-[#2c1f17]">
+            <ul className="space-y-3 pl-0 list-none">
+              {/* Phone */}
+              <li>
+                <div className="flex items-start gap-2 justify-start">
+                  <FaPhoneAlt
+                    size={18}
+                    className="mt-[4px] shrink-0 w-[18px]"
+                  />
 
-                <p className="mb-0">
-                  <strong>Phone:</strong>{" "}
-                  <Link
-                    href="tel:+917600616660"
-                    className="text-black hover:underline"
-                  >
-                    +91 76006 16660
-                  </Link>
-                </p>
-              </div>
-            </li>
-
-            {/* Email */}
-            <li>
-              <div className="flex items-start gap-2 justify-center md:justify-start">
-                <IoMail size={18} className="mt-[4px] shrink-0 w-[18px]" />
-
-                <p className="mb-0">
-                  <strong>Email:</strong>{" "}
-                  <Link
-                    href="mailto:chhayapartyplot@gmail.com"
-                    className="text-black hover:underline"
-                  >
-                    chhayapartyplot@gmail.com
-                  </Link>
-                </p>
-              </div>
-            </li>
-
-            {/* Address */}
-            <li>
-              <div className="flex items-start gap-2 justify-center md:justify-start">
-                <FaLocationArrow
-                  size={18}
-                  className="mt-[4px] shrink-0 w-[18px]"
-                />
-
-                <div className="text-left leading-relaxed">
-                  <strong>Address:</strong>{" "}
-                  <Link
-                    href="https://www.google.com/maps/place/Chhaya+Party+Plot/@20.7288678,73.0306851,17z/data=!3m1!4b1!4m6!3m5!1s0x3be0ed1aac0027a3:0xa2d6c4b636ce3d7f!8m2!3d20.7288678!4d73.0306851!16s%2Fg%2F11v0y548kr?entry=ttu&g_ep=EgoyMDI1MDUxMy4xIKXMDSoASAFQAw%3D%3D"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-black hover:underline"
-                  >
-                    Chhaya Party Plot, Chimla, NH 48, Chikhli, Navsari-396521.
-                  </Link>
+                  <p className="mb-0">
+                    <strong>Phone:</strong>{" "}
+                    <Link
+                      href="tel:+917600616660"
+                      className="text-black hover:underline"
+                    >
+                      +91 76006 16660
+                    </Link>
+                  </p>
                 </div>
-              </div>
-            </li>
-            <ul className="social-media mt-4 flex gap-4 justify-start md:justify-start">
-              {/* Instagram */}
+              </li>
+
+              {/* Email */}
+              <li>
+                <div className="flex items-start gap-2 justify-start">
+                  <IoMail size={18} className="mt-[4px] shrink-0 w-[18px]" />
+
+                  <p className="mb-0">
+                    <strong>Email:</strong>{" "}
+                    <Link
+                      href="mailto:chhayapartyplot@gmail.com"
+                      className="text-black hover:underline"
+                    >
+                      chhayapartyplot@gmail.com
+                    </Link>
+                  </p>
+                </div>
+              </li>
+
+              {/* Address */}
+              <li>
+                <div className="flex items-start gap-2 justify-start">
+                  <FaLocationArrow
+                    size={18}
+                    className="mt-[4px] shrink-0 w-[18px]"
+                  />
+
+                  <div className="text-left leading-relaxed">
+                    <strong>Address:</strong>{" "}
+                    <Link
+                      href="https://www.google.com/maps/place/Chhaya+Party+Plot"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-black hover:underline"
+                    >
+                      Chhaya Party Plot, Chimla, NH 48, Chikhli, Navsari-396521.
+                    </Link>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            {/* Social Icons — FIXED POSITION */}
+            <ul
+              className="
+  social-media
+  mt-4
+  flex
+  gap-4
+  justify-center
+  md:justify-start
+  pl-0
+  ml-0
+  list-none
+"
+            >
               <li>
                 <Link
                   href="https://www.instagram.com/chhaya_partyplot"
@@ -132,7 +150,7 @@ export function Footer() {
                   <FaInstagram size={20} />
                 </Link>
               </li>
-              {/* WhatsApp */}
+
               <li>
                 <Link
                   href="https://wa.me/917600616660"
@@ -143,6 +161,7 @@ export function Footer() {
                   <FaWhatsapp size={20} />
                 </Link>
               </li>
+
               <li>
                 <Link
                   href="https://www.youtube.com/@ChhayaPartyPlot"
@@ -154,7 +173,6 @@ export function Footer() {
                 </Link>
               </li>
 
-              {/* Facebook */}
               <li>
                 <Link
                   href="https://www.facebook.com/profile.php?id=61560839651768"
@@ -166,7 +184,7 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
-          </ul>
+          </div>
         </div>
       </div>
 

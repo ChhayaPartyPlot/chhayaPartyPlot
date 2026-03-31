@@ -120,6 +120,7 @@ const Features = () => {
         bg-[radial-gradient(circle_at_top,_rgba(34,197,94,0.08),transparent_60%)]
         px-6 md:px-12 lg:px-24
         py-10 md:py-16
+        rounded-3xl
       "
     >
       {/* Heading */}

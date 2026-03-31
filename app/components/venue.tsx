@@ -203,10 +203,11 @@ const VenueShowcase = () => {
         relative
         w-full
         aspect-[4/3]
-        rounded-xl
+        rounded-2xl
         overflow-hidden
         transition-all
         duration-300
+
         ${
           index === currentSlide
             ? "ring-2 ring-green-600 scale-105 shadow-lg"
@@ -217,11 +218,11 @@ const VenueShowcase = () => {
                 <img
                   src={image.src}
                   alt={image.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-2xl "
                 />
 
                 {index === currentSlide && (
-                  <div className="absolute inset-0 bg-green-600/20"></div>
+                  <div className="absolute inset-0 bg-green-600/20 rounded-2xl"></div>
                 )}
               </button>
             ))}

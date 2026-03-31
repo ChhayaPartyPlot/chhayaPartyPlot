@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
 import {
-  Heart,
-  Gift,
-  Briefcase,
-  Users2,
+  Cake,
   Calendar,
-  Star,
   ChevronLeft,
   ChevronRight,
-  Cake,
+  Gift,
+  Heart,
+  Star,
+  Users2,
 } from "lucide-react";
 import Link from "next/link";
-import { FaRing } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 const Services = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -124,7 +122,7 @@ const Services = () => {
               className="
       text-transparent
       bg-clip-text
-      bg-gradient-to-r
+      bg-linear-to-r
       from-green-600
       to-emerald-600
     "
@@ -153,7 +151,7 @@ const Services = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="group bg-gradient-to-br from-gray-50 to-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1"
+              className="group bg-linear-to-br from-gray-50 to-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1"
             >
               <div className="relative h-64 overflow-hidden">
                 <img
@@ -198,44 +196,93 @@ const Services = () => {
 
         {/* Mobile Carousel View */}
         <div className="md:hidden relative mb-16">
+          {/* Carousel Wrapper */}
           <div className="overflow-hidden rounded-3xl">
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
               {services.map((service, index) => (
-                <div key={index} className="w-full flex-shrink-0">
-                  <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl overflow-hidden shadow-lg mx-2">
+                <div key={index} className="w-full flex-shrink-0 px-2">
+                  <div
+                    className="
+            bg-gradient-to-br
+            from-gray-50
+            to-white
+            rounded-3xl
+            overflow-hidden
+            
+          "
+                  >
+                    {/* Image */}
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={service.image}
                         alt={service.title}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+
+                      {/* Overlay */}
+                      <div
+                        className="
+                absolute inset-0
+                bg-gradient-to-t
+                from-black/60
+                to-transparent
+              "
+                      />
+
+                      {/* Icon */}
                       <div className="absolute top-4 left-4">
                         <div
-                          className={`bg-gradient-to-r ${service.color} p-2 rounded-xl shadow-lg`}
+                          className={`
+                    bg-gradient-to-r
+                    ${service.color}
+                    p-2
+                    rounded-xl
+                    shadow-lg
+                  `}
                         >
                           <service.icon className="text-white" size={20} />
                         </div>
                       </div>
                     </div>
 
+                    {/* Content */}
                     <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-800 mb-3">
+                      <h3
+                        className="
+                text-xl
+                font-bold
+                text-gray-800
+                mb-3
+              "
+                      >
                         {service.title}
                       </h3>
 
-                      <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      <p
+                        className="
+                text-gray-600
+                mb-4
+                text-sm
+                leading-relaxed
+              "
+                      >
                         {service.description}
                       </p>
 
+                      {/* Features */}
                       <div className="grid grid-cols-2 gap-2">
                         {service.features.map((feature, featureIndex) => (
                           <div
                             key={featureIndex}
-                            className="flex items-center space-x-2 text-xs text-gray-700"
+                            className="
+                      flex items-center
+                      gap-2
+                      text-xs
+                      text-gray-700
+                    "
                           >
                             <Star
                               className="text-green-500 fill-current"
@@ -252,40 +299,69 @@ const Services = () => {
             </div>
           </div>
 
-          {/* Mobile Carousel Controls */}
+          {/* Navigation Controls */}
+
           <button
             onClick={prevSlide}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm p-2 rounded-full shadow-lg transition-all duration-300"
+            className="
+    absolute
+    left-2
+    top-1/2
+    -translate-y-1/2
+    p-2
+    transition-all
+    duration-300
+    hover:scale-110
+  "
           >
-            <ChevronLeft className="text-gray-800" size={20} />
+            <ChevronLeft className="text-black drop-shadow-lg" size={24} />
           </button>
 
           <button
             onClick={nextSlide}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm p-2 rounded-full shadow-lg transition-all duration-300"
+            className="
+    absolute
+    right-2
+    top-1/2
+    -translate-y-1/2
+    p-2
+    transition-all
+    duration-300
+    hover:scale-110
+  "
           >
-            <ChevronRight className="text-gray-800" size={20} />
+            <ChevronRight className="text-black drop-shadow-lg" size={24} />
           </button>
 
-          {/* Mobile Carousel Indicators */}
-          <div className="flex justify-center mt-6 space-x-2">
+          {/* Premium Indicators */}
+
+          <div className="flex justify-center items-center mt-6 gap-3">
             {services.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? "bg-green-600 w-6" : "bg-gray-300"
-                }`}
+                className={`
+          h-2
+          rounded-full
+          transition-all
+          duration-300
+          ${
+            index === currentSlide
+              ? "w-8 bg-green-600 shadow-md shadow-green-600/40"
+              : "w-2 bg-gray-300 hover:bg-gray-400"
+          }
+        `}
               />
             ))}
           </div>
 
-          {/* Service Counter for Mobile */}
-          <div className="text-center mt-4">
+          {/* Counter */}
+
+          {/* <div className="text-center mt-4">
             <span className="text-sm text-gray-500">
               {currentSlide + 1} of {services.length}
             </span>
-          </div>
+          </div> */}
         </div>
 
         {/* Call to Action */}
