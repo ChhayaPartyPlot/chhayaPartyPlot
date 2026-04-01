@@ -64,20 +64,7 @@ export async function POST(req: NextRequest) {
     const result: CloudinaryUploadResult = await new Promise(
       (resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
-          {
-            folder: "uploads",
-
-            transformation: [
-              {
-                overlay: "logo_we3ozr",
-                gravity: "south_east",
-                x: 15,
-                y: 15,
-                width: 120,
-                opacity: 60,
-              },
-            ],
-          },
+          { folder: "uploads" },
           (error, result) => {
             if (error) return reject(error);
             if (!result)
@@ -95,48 +82,5 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Upload error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-export async function DELETE(req: NextRequest) {
-  try {
-    await connectToDatabase();
-
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json({ error: "Image ID required" }, { status: 400 });
-    }
-
-    // Find image
-    const image = await Gallery.findById(id);
-
-    if (!image) {
-      return NextResponse.json({ error: "Image not found" }, { status: 404 });
-    }
-
-    // Delete from Cloudinary
-    try {
-      const urlParts = image.url.split("/");
-      const fileName = urlParts[urlParts.length - 1];
-      const publicId = `uploads/${fileName.split(".")[0]}`;
-
-      await cloudinary.uploader.destroy(publicId);
-    } catch (err) {
-      console.warn("Cloudinary delete failed:", err);
-    }
-
-    // Delete from MongoDB
-    await Gallery.findByIdAndDelete(id);
-
-    return NextResponse.json(
-      { message: "Image deleted successfully" },
-      { status: 200 },
-    );
-  } catch (error) {
-    console.error("Delete error:", error);
-
-    return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }
