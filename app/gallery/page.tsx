@@ -1,28 +1,46 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { Footer } from '../components/footer';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { Footer } from "../components/footer";
+import "bootstrap/dist/css/bootstrap.min.css";
 function getCookie(name: string) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift();
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
 }
 
 //const VALID_EVENT_TYPES = ['wedding', 'Birthday', 'party', 'festival']; // Example types - adjust per your backend
 
 const Gallery = () => {
   const [fadeIn, setFadeIn] = useState(false);
-  const [images, setImages] = useState<{ _id: string; url: string; width: number; height: number }[]>([]);
+  const [images, setImages] = useState<
+    { _id: string; url: string; width: number; height: number }[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   // State for login status
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedIndex === null) return;
+
+      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "Escape") setSelectedIndex(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedIndex]);
+
   useEffect(() => {
     // Check login status by reading session_token cookie
-    const token = getCookie('session_token');
+    const token = getCookie("session_token");
     setLoggedIn(!!token);
   }, []);
   //const [eventType, setEventType] = useState(VALID_EVENT_TYPES[0]);
@@ -33,7 +51,7 @@ const Gallery = () => {
 
     const fetchImages = async () => {
       try {
-        const res = await fetch('/api/image');
+        const res = await fetch("/api/image");
         const data = await res.json();
         setImages(data);
       } catch (error) {
@@ -45,6 +63,30 @@ const Gallery = () => {
 
     fetchImages();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this image?")) return;
+
+    try {
+      const res = await fetch(`/api/image?id=${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        alert("Delete failed");
+        return;
+      }
+
+      // Refresh images
+      const updatedImages = await (await fetch("/api/image")).json();
+      setImages(updatedImages);
+
+      alert("Image deleted successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Error deleting image");
+    }
+  };
 
   const columnWidth = 300;
 
@@ -60,34 +102,50 @@ const Gallery = () => {
       try {
         // Prepare form data
         const formData = new FormData();
-        formData.append('file', files[0]);  // Upload one file at a time for now
-       // formData.append('eventType', eventType);
+        formData.append("file", files[0]); // Upload one file at a time for now
+        // formData.append('eventType', eventType);
 
-        const res = await fetch('/api/image', {
-          method: 'POST',
+        const res = await fetch("/api/image", {
+          method: "POST",
           body: formData,
         });
 
         const json = await res.json();
 
         if (!res.ok) {
-          alert(`Upload failed: ${json.error || 'Unknown error'}`);
+          alert(`Upload failed: ${json.error || "Unknown error"}`);
           setUploading(false);
           return;
         }
 
-        alert('Image uploaded successfully!');
+        alert("Image uploaded successfully!");
         // Optionally, refresh images list
-        const updatedImages = await (await fetch('/api/image')).json();
+        const updatedImages = await (await fetch("/api/image")).json();
         setImages(updatedImages);
       } catch (error) {
-        alert('Error uploading image');
+        alert("Error uploading image");
         console.error(error);
       } finally {
         setUploading(false);
-        if (fileInputRef.current) fileInputRef.current.value = ''; // reset file input
+        if (fileInputRef.current) fileInputRef.current.value = ""; // reset file input
       }
     }
+  };
+
+  const handleNext = () => {
+    if (selectedIndex === null) return;
+
+    setSelectedIndex((prev) =>
+      prev !== null ? (prev + 1) % images.length : null,
+    );
+  };
+
+  const handlePrev = () => {
+    if (selectedIndex === null) return;
+
+    setSelectedIndex((prev) =>
+      prev !== null ? (prev - 1 + images.length) % images.length : null,
+    );
   };
 
   return (
@@ -96,7 +154,7 @@ const Gallery = () => {
         {/* Hero Section */}
         <div className="relative h-[40vh] w-full">
           <Image
-            src="/image6.jpg"
+            src="/D3.JPG"
             alt="Chhaya Partyplot"
             layout="fill"
             objectFit="cover"
@@ -105,10 +163,12 @@ const Gallery = () => {
           <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center">
             <h1
               className={`text-5xl font-bold italic transition-opacity duration-700 transform ${
-                fadeIn ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
+                fadeIn
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 -translate-y-10"
               }`}
             >
-              Snapshots of Celebration
+              Moments Worth Remembering
             </h1>
           </div>
         </div>
@@ -128,26 +188,25 @@ const Gallery = () => {
           </select> */}
 
           {loggedIn && (
-  <>
-    <button
-      onClick={handleUploadClick}
-      disabled={uploading}
-      className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow ${
-        uploading ? 'opacity-50 cursor-not-allowed' : ''
-      }`}
-    >
-      {uploading ? 'Uploading...' : 'Upload Image'}
-    </button>
-    <input
-      type="file"
-      accept="image/*"
-      ref={fileInputRef}
-      onChange={handleFileChange}
-      className="hidden"
-    />
-  </>
-)}
-
+            <>
+              <button
+                onClick={handleUploadClick}
+                disabled={uploading}
+                className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow ${
+                  uploading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                {uploading ? "Uploading..." : "Upload Image"}
+              </button>
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </>
+          )}
         </div>
 
         {/* Gallery */}
@@ -157,14 +216,14 @@ const Gallery = () => {
           ) : (
             <div
               className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4"
-              style={{ columnGap: '1rem' }}
+              style={{ columnGap: "1rem" }}
             >
-              {images.map((img) => {
+              {images.map((img, index) => {
                 const height = (img.height / img.width) * columnWidth;
                 return (
                   <div
                     key={img._id}
-                    className="mb-4 break-inside-avoid rounded-lg overflow-hidden shadow-lg bg-white transform transition-transform duration-300 hover:scale-105"
+                    className="mb-4 break-inside-avoid rounded-lg overflow-hidden shadow-lg bg-white transform transition-transform duration-300 hover:scale-105 relative"
                     style={{ width: `${columnWidth}px` }}
                   >
                     <img
@@ -172,9 +231,23 @@ const Gallery = () => {
                       alt="Gallery image"
                       width={columnWidth}
                       height={height}
-                      style={{ width: '100%', height: 'auto', display: 'block' }}
+                      onClick={() => setSelectedIndex(index)}
+                      className="cursor-pointer"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                      }}
                       loading="lazy"
                     />
+                    {loggedIn && (
+                      <button
+                        onClick={() => handleDelete(img._id)}
+                        className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 );
               })}
@@ -182,6 +255,50 @@ const Gallery = () => {
           )}
         </div>
       </div>
+      {selectedIndex !== null && (
+        <div
+          className="fixed inset-0 backdrop-blur-lg bg-black/40 flex items-center justify-center z-50"
+          onClick={() => setSelectedIndex(null)}
+        >
+          {/* Close Button */}
+          <button
+            className="absolute top-5 right-5 text-white text-4xl font-bold"
+            onClick={() => setSelectedIndex(null)}
+          >
+            ×
+          </button>
+
+          {/* Previous Button */}
+          <button
+            className="absolute left-5 text-white text-5xl font-bold"
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrev();
+            }}
+          >
+            ‹
+          </button>
+
+          {/* Image */}
+          <img
+            src={images[selectedIndex].url}
+            alt="Full view"
+            className="max-h-[90%] max-w-[90%] object-contain rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {/* Next Button */}
+          <button
+            className="absolute right-5 text-white text-5xl font-bold"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNext();
+            }}
+          >
+            ›
+          </button>
+        </div>
+      )}
       <Footer />
     </main>
   );
