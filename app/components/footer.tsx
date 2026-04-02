@@ -114,7 +114,7 @@ export function Footer() {
                   <div className="text-left leading-relaxed">
                     <strong>Address:</strong>{" "}
                     <Link
-                      href="https://www.google.com/maps/place/Chhaya+Party+Plot"
+                      href="https://www.google.com/maps/place/Chhaya+Party+Plot/@20.7288678,73.0306851,17z/data=!3m1!4b1!4m6!3m5!1s0x3be0ed1aac0027a3:0xa2d6c4b636ce3d7f!8m2!3d20.7288678!4d73.0306851!16s%2Fg%2F11v0y548kr?entry=ttu&g_ep=EgoyMDI1MDUxMy4xIKXMDSoASAFQAw%3D%3D"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-black hover:underline"
