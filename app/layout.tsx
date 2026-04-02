@@ -14,8 +14,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://chhayapartyplot.com"),
 
@@ -124,6 +122,11 @@ export default function RootLayout({
           <Navbar />
           {children}
         </AuthProvider>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="3a9d5d7b-32b0-4e43-8c0a-b6afe4151e2d"
+        ></script>
       </body>
     </html>
   );
