@@ -83,7 +83,7 @@ const Navbar = () => {
                 : "text-black hover:text-green-200"
             }`}
           >
-            Reservation
+            Enquiry
           </Link>
 
           {/* Show buttons if logged in */}

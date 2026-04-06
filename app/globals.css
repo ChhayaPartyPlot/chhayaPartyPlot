@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600;700&display=swap");
 @import "tailwindcss";
-
 
 :root {
   --background: #ffffff;
@@ -43,8 +42,6 @@ body {
   overflow-x: hidden;
 }
 
-
-
 footer {
   margin-top: auto;
   width: 100%;
@@ -61,7 +58,7 @@ footer {
 }
 
 body a {
-  color:green  !important;
+  color: green !important;
   text-decoration: none !important;
 }
 
@@ -71,4 +68,15 @@ body a:hover {
 
 .text-border {
   -webkit-text-stroke: 1 black;
+}
+
+/* Past Dates (Disabled Dates) */
+.react-calendar__tile:disabled {
+  color: #9ca3af !important; /* gray-400 */
+  background-color: #f3f4f6 !important; /* light gray */
+  cursor: not-allowed;
+}
+/* Remove weekend red */
+.react-calendar__month-view__days__day--weekend {
+  color: #374151 !important;
 }

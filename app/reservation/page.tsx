@@ -1,17 +1,16 @@
 "use client";
-import Image from "next/image";
-import { Footer } from "../components/footer";
-import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { FaWhatsapp, FaPhone } from "react-icons/fa";
+import { saveAs } from "file-saver";
+import { motion } from "framer-motion";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useEffect, useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { FaWhatsapp } from "react-icons/fa";
 import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import { Footer } from "../components/footer";
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
@@ -30,6 +29,7 @@ export default function Reservation() {
   const [showForm, setShowForm] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [bookingDays, setBookingDays] = useState<number>(1);
+  const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState("");
   const [mobNumber, setMobNumber] = useState("");
@@ -52,6 +52,8 @@ export default function Reservation() {
   const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
   const [showUpdateDelete, setShowUpdateDelete] = useState(false);
 
+  const [inquirySuccess, setInquirySuccess] = useState(false);
+  const [inquiryLoading, setInquiryLoading] = useState(false);
   // State for login status
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -62,8 +64,8 @@ export default function Reservation() {
   }, []);
 
   useEffect(() => {
-    console.log(showUpdateDelete);
-    console.log(selectedBooking);
+    // console.log(showUpdateDelete);
+    // console.log(selectedBooking);
     fetchBookings();
   }, [activeStartDate]);
 
@@ -99,18 +101,18 @@ export default function Reservation() {
     const isReserved = reservedDates.some(
       (d) => format(d, "yyyy-MM-dd") === formattedDate,
     );
-    console.log(isReserved);
+    // console.log(isReserved);
 
     if (isReserved) {
       if (loggedIn) {
-        console.log("reached");
+        // console.log("reached");
         // Find the booking that contains this date
         const booking = bookingList.find((b) => {
           const start = new Date(b.startDate);
           for (let i = 0; i < b.totalBookingDays; i++) {
             const checkDate = new Date(start);
             checkDate.setDate(start.getDate() + i);
-            console.log(checkDate);
+            // console.log(checkDate);
             if (format(checkDate, "yyyy-MM-dd") === formattedDate) {
               return true;
             }
@@ -119,11 +121,10 @@ export default function Reservation() {
         });
 
         if (booking) {
-          console.log("aa");
           setSelectedBooking(booking); // Store the booking
           setShowUpdateDelete(true); // Show popup
-          console.log(showUpdateDelete);
-          console.log(selectedBooking);
+          // console.log(showUpdateDelete);
+          // console.log(selectedBooking);
         }
       } else {
         alert("Sorry, this date is already reserved!");
@@ -148,14 +149,14 @@ export default function Reservation() {
         const res = await fetch(`/api/user?mobNumber=${input}`);
         const data = await res.json();
 
-        console.log(input);
+        // console.log(input);
 
         if (data && data.user) {
           setName(data.user.name);
           setEditName(data.user.name);
-          console.log(editName);
+          // console.log(editName);
           setuserid(data.user._id);
-          console.log(userid);
+          // console.log(userid);
           setEmail(data.user.email || "");
         } else {
           setName("");
@@ -172,13 +173,13 @@ export default function Reservation() {
     e.preventDefault();
     if (!selectedDate) return;
 
-    if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
+    if (!MOB_NUMBER_PATTERN.test(inquiryPhone)) {
       alert("Please enter a valid 10-digit mobile number.");
       return;
     }
 
-    if (!name) {
-      alert("Name is required.");
+    if (!inquiryName || !inquiryPhone || !inquiryDate) {
+      alert("Please fill in all required fields.");
       return;
     }
 
@@ -221,15 +222,22 @@ export default function Reservation() {
       alert("Reservation failed.");
     }
   };
-
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!MOB_NUMBER_PATTERN.test(inquiryPhone)) {
+      alert("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
     if (!inquiryName || !inquiryPhone || !inquiryDate) {
       alert("Please fill in all required fields.");
       return;
     }
 
     try {
+      setInquiryLoading(true); // ✅ Start loading
+
       const res = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -242,18 +250,27 @@ export default function Reservation() {
       });
 
       const result = await res.json();
+
       if (res.ok) {
-        alert("Inquiry submitted successfully.");
+        setInquirySuccess(true);
+
         setInquiryName("");
         setInquiryPhone("");
         setInquiryDate("");
         setInquiryDays(1);
+
+        // Auto hide message
+        setTimeout(() => {
+          setInquirySuccess(false);
+        }, 4000);
       } else {
         alert(`Inquiry failed: ${result.error}`);
       }
     } catch (err) {
       console.error("Inquiry submission error:", err);
       alert("Error submitting inquiry.");
+    } finally {
+      setInquiryLoading(false); // ✅ Stop loading
     }
   };
   const exportToPDF = () => {
@@ -298,7 +315,7 @@ export default function Reservation() {
       ? "reserved-date"
       : "";
 
-  console.log("under", showUpdateDelete);
+  // console.log("under", showUpdateDelete);
 
   //       {showUpdateDelete && selectedBooking && (
   //   <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
@@ -555,7 +572,15 @@ export default function Reservation() {
                 <input
                   type="text"
                   value={mobNumber}
-                  onChange={handleMobNumberChange}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "");
+                    handleMobNumberChange({
+                      ...e,
+                      target: { ...e.target, value },
+                    });
+                  }}
+                  maxLength={10}
+                  inputMode="numeric"
                   className="w-full border rounded p-2"
                   required
                 />
@@ -629,75 +654,104 @@ export default function Reservation() {
             initial={{ y: -40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="mb-8 text-center"
+            className=" text-center"
           >
-            <h1 className="text-4xl font-bold mb-3">
-              "Let’s Lock in Your Celebration Date!"
+            <h1 className="text-4xl md:text-5xl font-bold mb-3 mt-5 text-gray-900">
+              Plan Your Celebration With Us
             </h1>
-            <p className="text-lg text-gray-700">
-              Select your desired date from the calendar
+
+            <p className="text-lg text-gray-600 max-w-xl mx-auto">
+              Explore available dates and share your event details to begin
+              planning.
             </p>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row justify-center items-start gap-8 mt-10 px-4">
+          <div className="flex flex-col md:flex-row justify-center items-start gap-8 mt-2 px-4">
             {/* Calendar section (always visible) */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-2xl font-semibold mb-4 text-center">
-                Reservation Calendar
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+              <h3 className="text-2xl font-semibold mb-3 text-center text-gray-900">
+                Check Date Availability
               </h3>
+
+              <p className="text-center text-sm text-gray-600 mb-5">
+                Select your preferred event date to check availability.
+              </p>
+
               <Calendar
                 onClickDay={handleDateClick}
-                // tileDisabled={tileDisabled}
                 tileClassName={tileClassName}
+                tileDisabled={({ date, view }) => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+
+                  const maxDate = new Date();
+                  maxDate.setFullYear(maxDate.getFullYear() + 2);
+
+                  return view === "month" && (date < today || date > maxDate);
+                }}
                 onActiveStartDateChange={({ activeStartDate }) =>
                   setActiveStartDate(activeStartDate!)
                 }
               />
-              <p className="mt-4 text-center text-sm text-gray-500">
-                Dates in <span className="font-bold text-red-600">red</span> are
+
+              <p className="mt-5 text-center text-sm text-gray-500">
+                Dates marked in{" "}
+                <span className="font-semibold text-red-600">red</span> are
                 already booked.
               </p>
-              {!loggedIn && (
-                <p className="mt-1 text-center text-sm text-gray-600"></p>
-              )}
             </div>
-            {/* Inquiry Form */}
-            <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
-              <h2 className="text-lg font-semibold mb-6 text-center">
-                "Booking Your Date Starts Here – Let’s Go!"
+            {/* Event Enquiry Form */}
+
+            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md border border-gray-100">
+              {/* Premium Heading */}
+              <h2 className="text-xl font-semibold mb-2 text-center text-gray-900">
+                Share Your Event Details
               </h2>
-              <form onSubmit={handleInquirySubmit} className="space-y-6">
+
+              <p className="text-sm text-gray-600 text-center mb-6">
+                Select your preferred dates and our team will contact you to
+                confirm availability.
+              </p>
+
+              <form onSubmit={handleInquirySubmit} className="space-y-5">
+                {/* Full Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
+                    Full Name
                   </label>
                   <input
                     type="text"
                     value={inquiryName}
                     onChange={(e) => setInquiryName(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Your full name"
+                    placeholder="Enter your full name"
                     required
                   />
                 </div>
 
+                {/* Phone */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number *
+                    Phone Number
                   </label>
                   <input
                     type="tel"
                     value={inquiryPhone}
-                    onChange={(e) => setInquiryPhone(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, ""); // allow numbers only
+                      setInquiryPhone(value);
+                    }}
+                    maxLength={10}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                    placeholder="+91 98765 43210"
+                    placeholder="Enter 10-digit mobile number"
                     required
                   />
                 </div>
 
+                {/* Event Date */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Starting Date *
+                    Event Start Date
                   </label>
                   <input
                     type="date"
@@ -708,9 +762,10 @@ export default function Reservation() {
                   />
                 </div>
 
+                {/* Number of Days */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Total Booking Days *
+                    Number of Event Days
                   </label>
                   <input
                     type="number"
@@ -718,38 +773,59 @@ export default function Reservation() {
                     min={1}
                     onChange={(e) => setInquiryDays(Number(e.target.value))}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Number of days"
+                    placeholder="Enter number of days"
                     required
                   />
                 </div>
 
+                {/* Success Message */}
+                {inquirySuccess && (
+                  <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl text-center">
+                    Enquiry submitted successfully! We will contact you soon.
+                  </div>
+                )}
+
+                {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center"
+                  disabled={inquiryLoading}
+                  className={`w-full py-4 px-6 rounded-2xl font-semibold text-lg transition-all duration-300
+  ${
+    inquiryLoading
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white hover:scale-[1.02] hover:shadow-lg"
+  }`}
                 >
-                  Submit Inquiry
+                  {inquiryLoading ? "Sending..." : "Send Event Enquiry"}
                 </button>
 
-                {/* Divider with OR */}
-                <div className="flex items-center my-4">
-                  <hr className="flex-grow border-gray-300" />
-                  <span className="mx-3 text-gray-500 font-semibold">or</span>
-                  <hr className="flex-grow border-gray-300" />
-                </div>
+                {/* Divider */}
+                {/* <div className="flex items-center my-5">
+                  <hr className="flex-grow border-gray-200" />
+                  <span className="mx-3 text-gray-500 text-sm font-medium">
+                    OR
+                  </span>
+                  <hr className="flex-grow border-gray-200" />
+                </div> */}
 
-                {/* Alternate Contact Buttons */}
-                <div className="flex flex-col gap-3">
+                {/* Alternate Contact */}
+                {/* <div className="flex flex-col gap-3">
+            
                   <button
                     type="button"
                     onClick={() =>
-                      window.open(`https://wa.me/7600616660`, "_blank")
+                      window.open(
+                        "https://wa.me/917600616660?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20booking%20Chhaya%20Party%20Plot.",
+                        "_blank",
+                      )
                     }
-                    className="flex items-center justify-center gap-2 w-full border border-[#25D366] text-[#25D366] hover:bg-[#e6fff0] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
+                    className="flex items-center justify-center gap-2 w-full border border-[#25D366] text-[#25D366] hover:bg-[#e6fff0] font-semibold py-3 px-4 rounded-xl transition-all duration-200 hover:shadow-md"
                   >
-                    <FaWhatsapp size={18} />
-                    WhatsApp
+                    <FaWhatsapp size={20} />
+                    Chat on WhatsApp
                   </button>
 
+               
                   <button
                     type="button"
                     onClick={() => {
@@ -758,13 +834,49 @@ export default function Reservation() {
                     className="flex items-center justify-center gap-2 w-full border border-[#34B7F1] text-[#34B7F1] hover:bg-[#e6f7ff] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
                   >
                     <FaPhone size={18} />
-                    Call
+                    Call Us
                   </button>
-                </div>
+                </div> */}
               </form>
             </div>
           </div>
+          {/* Call to Action Section */}
+          <div className="w-full mt-12 px-4">
+            <div className="text-center">
+              <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl max-w-4xl mx-auto">
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
+                  Plan Your Special Event at Chhaya Party Plot
+                </h3>
+
+                <p className="text-sm md:text-lg text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+                  Check available dates and reserve your venue today. From
+                  weddings to celebrations, we make every moment memorable with
+                  elegant spaces and seamless service.
+                </p>
+
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <a
+                    href="https://wa.me/917600616660?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20booking%20Chhaya%20Party%20Plot."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                  >
+                    <FaWhatsapp size={20} />
+                    Chat on WhatsApp
+                  </a>
+
+                  <a
+                    href="tel:+917600616660"
+                    className="inline-block bg-green-800 text-white hover:bg-green-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+                  >
+                    Call Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
+
         {loggedIn && bookingList.length > 0 && (
           <div className="bg-white rounded-xl shadow-lg p-6 mt-10 w-full max-w-5xl mx-auto">
             <h2 className="text-xl font-bold mb-4 text-center">
