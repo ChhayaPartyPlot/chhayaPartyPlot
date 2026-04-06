@@ -28,7 +28,15 @@ const items = [
   {
     icon: <FaWhatsapp size={18} color="#25D366" />,
     label: "WhatsApp",
-    onClick: () => window.open("https://wa.me/917600616660", "_blank"),
+    onClick: () => {
+      const message =
+        "Hello, I would like to enquire about booking Chhaya Party Plot.";
+
+      window.open(
+        `https://wa.me/917600616660?text=${encodeURIComponent(message)}`,
+        "_blank",
+      );
+    },
   },
   {
     icon: <FaInstagram size={18} color="#E4405F" />,

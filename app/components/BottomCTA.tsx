@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { FaWhatsapp } from "react-icons/fa";
 import { toast } from "sonner";
 
 /* Copy Phone */
@@ -108,21 +109,25 @@ const BottomCTA = () => {
         </Link>
 
         <a
-          href="https://wa.me/917600616660"
+          href={`https://wa.me/917600616660?text=${encodeURIComponent(
+            "Hello, I would like to enquire about booking Chhaya Party Plot.",
+          )}`}
           target="_blank"
           rel="noopener noreferrer"
           className="
-            bg-green-800 text-white
-            font-semibold
-            px-8 py-3
-            rounded-full
-            shadow-xl
-            hover:scale-105
-            hover:bg-green-900
-            transition
-          "
+    inline-flex items-center gap-2
+    bg-green-800 text-white
+    font-semibold
+    px-8 py-3
+    rounded-full
+    shadow-xl
+    hover:scale-105
+    hover:bg-green-900
+    transition
+  "
         >
-          WhatsApp Us
+          <FaWhatsapp size={20} />
+          Chat on WhatsApp
         </a>
       </div>
     </div>

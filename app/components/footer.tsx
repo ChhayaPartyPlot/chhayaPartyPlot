@@ -152,14 +152,17 @@ export function Footer() {
               </li>
 
               <li>
-                <Link
-                  href="https://wa.me/917600616660"
+                <a
+                  href={`https://wa.me/917600616660?text=${encodeURIComponent(
+                    "Hello, I would like to enquire about booking Chhaya Party Plot.",
+                  )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-black hover:text-[#2c1f17] transition-colors"
+                  title="Chat on WhatsApp"
+                  className="text-black hover:text-[#25D366] transition-colors"
                 >
                   <FaWhatsapp size={20} />
-                </Link>
+                </a>
               </li>
 
               <li>
