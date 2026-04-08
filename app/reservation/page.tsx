@@ -173,12 +173,12 @@ export default function Reservation() {
     e.preventDefault();
     if (!selectedDate) return;
 
-    if (!MOB_NUMBER_PATTERN.test(inquiryPhone)) {
+    if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
       alert("Please enter a valid 10-digit mobile number.");
       return;
     }
 
-    if (!inquiryName || !inquiryPhone || !inquiryDate) {
+    if (!name || !mobNumber || !selectedDate) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -390,159 +390,232 @@ export default function Reservation() {
       `}</style>
 
       {showUpdateDelete && selectedBooking && !editingBooking && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
-          <h3 className="text-xl font-bold mb-4 text-center">Manage Booking</h3>
-          <p>
-            <strong>Name:</strong> {selectedBooking.user?.name}
-          </p>
-          <p>
-            <strong>Mobile:</strong> {selectedBooking.user?.mobNumber}
-          </p>
-          <p>
-            <strong>Start Date:</strong>{" "}
-            {format(new Date(selectedBooking.startDate), "yyyy-MM-dd")}
-          </p>
-          <p>
-            <strong>Days:</strong> {selectedBooking.totalBookingDays}
-          </p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="bg-white shadow-2xl p-6 rounded-xl w-full max-w-xl">
+            <h3 className="text-xl font-bold mb-6 text-center">
+              Manage Booking
+            </h3>
 
-          <div className="flex justify-between mt-6">
-            <button
-              className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-              onClick={() => setShowUpdateDelete(false)}
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-              onClick={() => {
-                setEditStartDate(
-                  format(new Date(selectedBooking.startDate), "yyyy-MM-dd"),
-                );
-                setEditDays(selectedBooking.totalBookingDays);
-                setEditName(selectedBooking.user?.name || "");
-                setEditPhone(selectedBooking.user?.mobNumber || "");
-                setEditingBooking(selectedBooking);
-              }}
-            >
-              Update
-            </button>
-            <button
-              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              onClick={async () => {
-                if (confirm("Are you sure you want to delete this booking?")) {
-                  try {
-                    const res = await fetch(
-                      `/api/booking/${selectedBooking._id}`,
-                      {
-                        method: "DELETE",
-                      },
-                    );
-                    if (res.ok) {
-                      alert("Booking deleted successfully.");
-                      fetchBookings();
-                      setShowUpdateDelete(false);
-                    } else {
-                      alert("Failed to delete booking.");
+            {/* Booking Details */}
+
+            <div className="space-y-2 text-gray-700">
+              <p>
+                <strong>Name:</strong> {selectedBooking.user?.name}
+              </p>
+
+              <p>
+                <strong>Mobile:</strong> {selectedBooking.user?.mobNumber}
+              </p>
+
+              <p>
+                <strong>Event Date:</strong>{" "}
+                {format(new Date(selectedBooking.startDate), "dd-MM-yyyy")}
+              </p>
+
+              <p>
+                <strong>Days:</strong> {selectedBooking.totalBookingDays}
+              </p>
+            </div>
+
+            {/* Buttons */}
+
+            <div className="flex justify-between gap-4 mt-6">
+              {/* Cancel */}
+              <button
+                className="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
+                onClick={() => setShowUpdateDelete(false)}
+              >
+                Cancel
+              </button>
+
+              {/* Update */}
+              <button
+                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+                onClick={() => {
+                  // ⭐ IMPORTANT FIX
+                  setuserid(selectedBooking.user?._id || "");
+
+                  setEditStartDate(
+                    format(new Date(selectedBooking.startDate), "yyyy-MM-dd"),
+                  );
+
+                  setEditDays(selectedBooking.totalBookingDays);
+
+                  setEditName(selectedBooking.user?.name || "");
+
+                  setEditPhone(selectedBooking.user?.mobNumber || "");
+
+                  setEditingBooking(selectedBooking);
+
+                  setShowUpdateDelete(false);
+                }}
+              >
+                Update
+              </button>
+
+              {/* Delete */}
+              <button
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                onClick={async () => {
+                  if (
+                    confirm("Are you sure you want to delete this booking?")
+                  ) {
+                    try {
+                      const res = await fetch(
+                        `/api/booking/${selectedBooking._id}`,
+                        {
+                          method: "DELETE",
+                        },
+                      );
+
+                      if (res.ok) {
+                        alert("Booking deleted successfully.");
+
+                        fetchBookings();
+                        setShowUpdateDelete(false);
+                      } else {
+                        alert("Failed to delete booking.");
+                      }
+                    } catch (err) {
+                      console.error(err);
+                      alert("Error deleting booking.");
                     }
-                  } catch (err) {
-                    console.error(err);
-                    alert("Error deleting booking.");
                   }
-                }
-              }}
-            >
-              Delete
-            </button>
+                }}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* EDIT FORM */}
       {editingBooking && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
-          <h3 className="text-xl font-bold mb-4 text-center">Edit Booking</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="bg-white shadow-2xl p-6 rounded-xl w-full max-w-xl">
+            <h3 className="text-xl font-bold mb-6 text-center">Edit Booking</h3>
 
-          <label className="block mb-2">Mobile Number:</label>
-          <input
-            type="tel"
-            value={editPhone}
-            onChange={(e) => {
-              handleMobNumberChange(e);
-              setEditPhone(e.target.value);
-            }}
-            className="border p-2 w-full rounded mb-4"
-          />
+            {/* Name */}
+            <label className="block mb-2 font-medium">Name:</label>
 
-          <label className="block mb-2">Name:</label>
-          <input
-            type="text"
-            value={editName}
-            onChange={(e) => setEditName(e.target.value)}
-            className="border p-2 w-full rounded mb-4"
-          />
+            <input
+              type="text"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              placeholder="Enter name"
+              className="border p-2 w-full rounded mb-4"
+              required
+            />
 
-          <label className="block mb-2">Start Date:</label>
-          <input
-            type="date"
-            value={editStartDate}
-            onChange={(e) => setEditStartDate(e.target.value)}
-            className="border p-2 w-full rounded mb-4"
-          />
+            {/* Mobile Number */}
+            <label className="block mb-2 font-medium">Mobile Number:</label>
 
-          <label className="block mb-2">Total Booking Days:</label>
-          <input
-            type="number"
-            min="1"
-            value={editDays}
-            onChange={(e) => setEditDays(Number(e.target.value))}
-            className="border p-2 w-full rounded mb-4"
-          />
+            <input
+              type="tel"
+              value={editPhone}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                setEditPhone(value);
 
-          <div className="flex justify-between mt-6">
-            <button
-              className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-              onClick={() => setEditingBooking(null)}
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={async () => {
-                const bodyData = {
-                  updateData: {
-                    user: userid,
-                    startDate: new Date(editStartDate).toISOString(),
-                    totalBookingDays: editDays,
-                  },
-                };
-
-                try {
-                  const res = await fetch(
-                    `/api/booking/${editingBooking._id}`,
-                    {
-                      method: "PATCH",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(bodyData),
-                    },
-                  );
-
-                  if (res.ok) {
-                    alert("Booking updated successfully.");
-                    fetchBookings();
-                    setEditingBooking(null);
-                    setShowUpdateDelete(false);
-                  } else {
-                    alert("Failed to update booking.");
-                  }
-                } catch (err) {
-                  console.error(err);
-                  alert("Error updating booking.");
-                }
+                // Fetch user details
+                handleMobNumberChange({
+                  ...e,
+                  target: { ...e.target, value },
+                } as React.ChangeEvent<HTMLInputElement>);
               }}
-            >
-              Save Changes
-            </button>
+              maxLength={10}
+              inputMode="numeric"
+              placeholder="Enter 10-digit number"
+              className="border p-2 w-full rounded mb-4"
+              required
+            />
+
+            {/* Start Date */}
+            <label className="block mb-2 font-medium">Event Date:</label>
+
+            <input
+              type="date"
+              value={editStartDate}
+              onChange={(e) => setEditStartDate(e.target.value)}
+              className="border p-2 w-full rounded mb-4"
+              required
+            />
+
+            {/* Days */}
+            <label className="block mb-2 font-medium">
+              Total Booking Days:
+            </label>
+
+            <input
+              type="number"
+              min="1"
+              value={editDays}
+              onChange={(e) => setEditDays(Number(e.target.value))}
+              className="border p-2 w-full rounded mb-6"
+              required
+            />
+
+            {/* Buttons */}
+            <div className="flex justify-between gap-4 mt-4">
+              <button
+                className="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
+                onClick={() => setEditingBooking(null)}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                onClick={async () => {
+                  // Validation
+                  if (editPhone.length !== 10) {
+                    alert("Enter valid 10-digit mobile number");
+                    return;
+                  }
+
+                  if (!editName || !editStartDate) {
+                    alert("Please fill all fields");
+                    return;
+                  }
+
+                  const bodyData = {
+                    updateData: {
+                      startDate: editStartDate, // ✅ FIXED
+                      totalBookingDays: Number(editDays),
+                    },
+                  };
+
+                  try {
+                    const res = await fetch(
+                      `/api/booking/${editingBooking._id}`,
+                      {
+                        method: "PATCH",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(bodyData),
+                      },
+                    );
+
+                    if (res.ok) {
+                      alert("Booking updated successfully ✅");
+
+                      fetchBookings();
+                      setEditingBooking(null);
+                      setShowUpdateDelete(false);
+                    } else {
+                      alert("Failed to update booking ❌");
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    alert("Error updating booking ❌");
+                  }
+                }}
+              >
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -550,102 +623,99 @@ export default function Reservation() {
       <div className="relative min-h-screen bg-[#FeFFF1]">
         {/* Form Popup */}
         {showForm && loggedIn && (
-          <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
-            <h3 className="text-xl font-bold mb-4 text-center">
-              Complete Your Reservation
-            </h3>
-            <form onSubmit={handleReservationSubmit}>
-              {selectedDate && (
-                <div className="mb-3">
-                  <label className="block text-sm font-medium mb-1">
-                    Starting Date
-                  </label>
-                  <div className="w-full border rounded p-2 bg-gray-100">
-                    {format(selectedDate, "yyyy-MM-dd")}
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+            <div className="bg-white shadow-2xl p-6 rounded-xl w-full max-w-xl">
+              <h3 className="text-xl font-bold mb-4 text-center">
+                Complete Your Reservation
+              </h3>
+
+              <form onSubmit={handleReservationSubmit}>
+                {/* Starting Date */}
+                {selectedDate && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">
+                      Event Date
+                    </label>
+
+                    <div className="w-full border rounded p-2 bg-gray-100">
+                      {format(selectedDate, "dd-MM-yyyy")}
+                    </div>
                   </div>
-                </div>
-              )}
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">
-                  Mobile Number
-                </label>
-                <input
-                  type="text"
-                  value={mobNumber}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, "");
-                    handleMobNumberChange({
-                      ...e,
-                      target: { ...e.target, value },
-                    });
-                  }}
-                  maxLength={10}
-                  inputMode="numeric"
-                  className="w-full border rounded p-2"
-                  required
-                />
-                <div className="mb-3">
+                )}
+                {/* Mobile Number */}
+                <div className="mb-4">
                   <label className="block text-sm font-medium mb-1">
-                    Alternate Mobile Number (optional)
+                    Mobile Number
                   </label>
+
                   <input
-                    type="text"
-                    value={mobNumber2}
-                    onChange={(e) => setMobNumber2(e.target.value)}
+                    type="tel"
+                    value={mobNumber}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, "");
+                      setMobNumber(value);
+
+                      handleMobNumberChange({
+                        ...e,
+                        target: { ...e.target, value },
+                      } as React.ChangeEvent<HTMLInputElement>);
+                    }}
+                    maxLength={10}
+                    inputMode="numeric"
+                    placeholder="Enter 10-digit mobile number"
                     className="w-full border rounded p-2"
+                    required
                   />
                 </div>
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full border rounded p-2"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium mb-1">
-                  Email (optional)
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border rounded p-2"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">
-                  Total Booking Days
-                </label>
-                <input
-                  type="number"
-                  value={bookingDays}
-                  min={1}
-                  onChange={(e) => setBookingDays(Number(e.target.value))}
-                  className="w-full border rounded p-2"
-                  required
-                />
-              </div>
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-                  onClick={() => setShowForm(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Reserve Now
-                </button>
-              </div>
-            </form>
+                {/* Name */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Name</label>
+
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter name"
+                    className="w-full border rounded p-2"
+                    required
+                  />
+                </div>
+
+                {/* Booking Days */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium mb-1">
+                    Total Booking Days
+                  </label>
+
+                  <input
+                    type="number"
+                    value={bookingDays}
+                    min={1}
+                    onChange={(e) => setBookingDays(Number(e.target.value))}
+                    className="w-full border rounded p-2"
+                    required
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-between gap-4">
+                  <button
+                    type="button"
+                    className="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
+                    onClick={() => setShowForm(false)}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Reserve Now
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
 
@@ -749,13 +819,20 @@ export default function Reservation() {
                 </div>
 
                 {/* Event Date */}
+                {/* Event Date */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Event Start Date
+                    Event Date
                   </label>
+
                   <input
-                    type="date"
+                    type="text"
+                    placeholder="Choose your event date"
                     value={inquiryDate}
+                    onFocus={(e) => (e.target.type = "date")}
+                    onBlur={(e) => {
+                      if (!e.target.value) e.target.type = "text";
+                    }}
                     onChange={(e) => setInquiryDate(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     required
@@ -840,84 +917,107 @@ export default function Reservation() {
               </form>
             </div>
           </div>
-          {/* Call to Action Section */}
-          <div className="w-full mt-12 px-4">
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl max-w-4xl mx-auto">
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-                  Plan Your Special Event at Chhaya Party Plot
-                </h3>
+          {/* Hide CTA if logged in */}
+          {!loggedIn && (
+            /* Call to Action Section */
+            <div className="w-full mt-12 px-4">
+              <div className="text-center">
+                <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl max-w-4xl mx-auto">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
+                    Plan Your Special Event at Chhaya Party Plot
+                  </h3>
 
-                <p className="text-sm md:text-lg text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
-                  Check available dates and reserve your venue today. From
-                  weddings to celebrations, we make every moment memorable with
-                  elegant spaces and seamless service.
-                </p>
+                  <p className="text-sm md:text-lg text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+                    Check available dates and reserve your venue today. From
+                    weddings to celebrations, we make every moment memorable
+                    with elegant spaces and seamless service.
+                  </p>
 
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                  <a
-                    href="https://wa.me/917600616660?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20booking%20Chhaya%20Party%20Plot."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-                  >
-                    <FaWhatsapp size={20} />
-                    Chat on WhatsApp
-                  </a>
+                  <div className="flex flex-col sm:flex-row justify-center gap-4">
+                    <a
+                      href="https://wa.me/917600616660?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20booking%20Chhaya%20Party%20Plot."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                    >
+                      <FaWhatsapp size={20} />
+                      Chat on WhatsApp
+                    </a>
 
-                  <a
-                    href="tel:+917600616660"
-                    className="inline-block bg-green-800 text-white hover:bg-green-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105"
-                  >
-                    Call Now
-                  </a>
+                    <a
+                      href="tel:+917600616660"
+                      className="inline-block bg-green-800 text-white hover:bg-green-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+                    >
+                      Call Now
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </section>
 
         {loggedIn && bookingList.length > 0 && (
-          <div className="bg-white rounded-xl shadow-lg p-6 mt-10 w-full max-w-5xl mx-auto">
+          <div className="bg-white rounded-xl shadow-lg p-6 mt-10 w-full max-w-5xl mx-auto mb-3">
             <h2 className="text-xl font-bold mb-4 text-center">
               This Month’s Bookings
             </h2>
-            <div className="overflow-auto">
-              <table className="table-auto w-full border border-gray-300">
+
+            <div className="overflow-x-auto">
+              <table className="min-w-full border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="border p-2">Name</th>
-                    <th className="border p-2">Mobile</th>
-                    <th className="border p-2">Start Date</th>
-                    <th className="border p-2">Days</th>
+                    <th className="border p-2 text-left">Name</th>
+                    <th className="border p-2 text-left">Mobile</th>
+                    <th className="border p-2 text-left">Event Date</th>
+                    <th className="border p-2 text-center">Days</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  {bookingList.map((b) => (
-                    <tr key={b._id}>
-                      <td className="border p-2">{b.user?.name}</td>
-                      <td className="border p-2">{b.user?.mobNumber}</td>
-                      <td className="border p-2">
-                        {format(new Date(b.startDate), "yyyy-MM-dd")}
+                  {bookingList && bookingList.length > 0 ? (
+                    bookingList.map((b) => (
+                      <tr key={b._id} className="hover:bg-gray-50">
+                        <td className="border p-2">{b.user?.name || "N/A"}</td>
+
+                        <td className="border p-2">
+                          {b.user?.mobNumber || "N/A"}
+                        </td>
+
+                        <td className="border p-2">
+                          {b.startDate
+                            ? format(new Date(b.startDate), "dd-MM-yyyy")
+                            : "N/A"}
+                        </td>
+
+                        <td className="border p-2 text-center">
+                          {b.totalBookingDays || 0}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={4} className="text-center p-4 text-gray-500">
+                        No bookings found for this month
                       </td>
-                      <td className="border p-2">{b.totalBookingDays}</td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
 
             {/* Export Buttons */}
-            <div className="flex justify-end mt-4 gap-4">
+            <div className="flex flex-col sm:flex-row justify-end mt-4 gap-3">
               <button
                 onClick={exportToPDF}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
               >
                 Export PDF
               </button>
+
               <button
                 onClick={exportToExcel}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
               >
                 Export Excel
               </button>
