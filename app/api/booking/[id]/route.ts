@@ -2,19 +2,22 @@ import { Booking } from "@/app/models/Booking";
 import { connectToDatabase } from "@/app/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
+/* UPDATE BOOKING */
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   await connectToDatabase();
 
   try {
+    const { id } = await params; // ✅ required in Next.js 15
+
     const body = await req.json();
-    const { id } = await params;
     const { updateData } = body;
 
     console.log("Update ID:", id);
     console.log("Update Data:", updateData);
+
     if (!id || !updateData) {
       return NextResponse.json(
         { message: "id and updateData required" },
@@ -46,14 +49,17 @@ export async function PATCH(
   }
 }
 
+/* DELETE BOOKING */
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   await connectToDatabase();
 
   try {
-    const { id } = await params;
+    const { id } = await params; // ✅ required
+
+    console.log("DELETE ID:", id);
 
     const deletedBooking = await Booking.findByIdAndDelete(id);
 
