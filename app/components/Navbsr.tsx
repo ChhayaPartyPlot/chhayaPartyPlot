@@ -88,20 +88,21 @@ const Navbar = () => {
 
           {/* Show buttons if logged in */}
           {isLoggedIn && (
-            <>
+            <div className="flex items-center gap-3 ml-6">
               <button
                 onClick={handleNewAdmin}
-                className="ml-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2  transition duration-200 cursor-pointer rounded-2xl"
               >
                 New Admin
               </button>
+
               <button
                 onClick={handleLogout}
-                className="ml-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                className="bg-red-400 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition duration-200 cursor-pointer"
               >
                 Logout
               </button>
-            </>
+            </div>
           )}
         </div>
 

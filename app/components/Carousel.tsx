@@ -48,7 +48,7 @@ function Carousel1() {
     <div key={isMounted ? "carousel-mounted" : "carousel-unmounted"}>
       <Carousel
         data-bs-theme="dark"
-        interval={4000}
+        interval={8000}
         pause={false}
         onSelect={(selectedIndex) => setActiveIndex(selectedIndex)}
       >

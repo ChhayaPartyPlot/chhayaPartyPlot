@@ -1,11 +1,11 @@
 "use client";
 
 import {
+  AnimatePresence,
   motion,
   useMotionValue,
   useSpring,
   useTransform,
-  AnimatePresence,
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
@@ -59,7 +59,7 @@ function DockItem({
         height: size,
       }}
       onClick={onClick}
-      className={`relative flex flex-col items-center justify-center rounded-full bg-[#060606] border-neutral-700 border-2 shadow-md ${className}`}
+      className={`relative flex flex-col items-center justify-center rounded-full bg-[#060606] border-neutral-700 border-2 shadow-md cursor-pointer ${className}`}
     >
       {children}
     </motion.div>
