@@ -51,9 +51,14 @@ export default function About() {
   }) => {
     return (
       <div
-        className={`grid md:grid-cols-2 gap-10 items-center mt-20 ${
-          reverse ? "md:flex-row-reverse" : ""
-        }`}
+        className={`
+  grid
+  grid-cols-1
+  md:grid-cols-2
+  gap-8 md:gap-10
+  items-center
+  mt-12 md:mt-20
+`}
       >
         {/* Image */}
 
@@ -70,7 +75,16 @@ export default function About() {
               alt={title}
               width={600}
               height={400}
-              className="w-full h-[350px] object-cover hover:scale-105 transition duration-500"
+              className="
+  w-full
+  h-[220px]
+  sm:h-[260px]
+  md:h-[350px]
+  object-cover
+  hover:scale-105
+  transition
+  duration-500
+"
             />
             <div className="absolute bottom-4 left-4">
               <Image
@@ -198,7 +212,7 @@ export default function About() {
 
         {/* Hero Content */}
 
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-6">
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4 sm:px-6 lg:px-8">
           {/* Subtitle */}
 
           <motion.p
@@ -227,8 +241,8 @@ export default function About() {
       </section>
       {/* ================= OUR STORY SECTION ================= */}
 
-      <section className="py-8 bg-[#FEFFF1]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-10 md:pt-16 bg-[#FEFFF1]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-4 sm:px-6 lg:px-8 lg:px-8">
           {/* Title */}
 
           <motion.h2
@@ -254,7 +268,7 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-        w-70 md:w-full
+      w-[180px] md:w-full
         h-[2px]
         bg-gradient-to-r
         from-green-600
@@ -361,8 +375,8 @@ export default function About() {
 
       {/* ================= PREMIUM JOURNEY TIMELINE ================= */}
 
-      <section className="py-8 bg-[#FEFFF1]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <section className="py-10  bg-[#FEFFF1]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-4 sm:px-6 lg:px-8">
           {/* Title */}
 
           <motion.h2
@@ -420,12 +434,12 @@ export default function About() {
 
           {/* Timeline */}
 
-          <div className="relative mt-12 md:mt-20">
+          <div className="relative mt-10 md:mt-16">
             {/* Vertical Line */}
 
             <div
               className="
-        absolute left-3 md:left-1/2
+        absolute left-4 md:left-1/2
         transform md:-translate-x-1/2
         h-full w-[2px]
         bg-gradient-to-b
@@ -464,9 +478,9 @@ export default function About() {
 
                 <div
                   className="
-            absolute left-3 md:left-1/2
+            absolute left-4 md:left-1/2
             transform md:-translate-x-1/2
-            w-4 h-4 md:w-5 md:h-5
+    w-4 h-4 md:w-5 md:h-5 border-2 border-white
             bg-gradient-to-r
             from-green-600
             to-emerald-600
@@ -507,9 +521,9 @@ export default function About() {
 
                 <div
                   className="
-            absolute left-3 md:left-1/2
+            absolute left-4 md:left-1/2
             transform md:-translate-x-1/2
-            w-4 h-4 md:w-5 md:h-5
+          w-4 h-4 md:w-5 md:h-5 border-2 border-white
             bg-gradient-to-r
             from-green-600
             to-emerald-600
@@ -549,9 +563,9 @@ export default function About() {
 
                 <div
                   className="
-            absolute left-3 md:left-1/2
+        absolute left-4 md:left-1/2
             transform md:-translate-x-1/2
-            w-4 h-4 md:w-5 md:h-5
+    w-4 h-4 md:w-5 md:h-5 border-2 border-white
             bg-gradient-to-r
             from-green-600
             to-emerald-600
@@ -592,9 +606,9 @@ export default function About() {
 
                 <div
                   className="
-            absolute left-3 md:left-1/2
+            absolute left-4 md:left-1/2
             transform md:-translate-x-1/2
-            w-4 h-4 md:w-5 md:h-5
+        w-4 h-4 md:w-5 md:h-5 border-2 border-white
             bg-gradient-to-r
             from-green-600
             to-emerald-600
@@ -610,7 +624,7 @@ export default function About() {
       {/* ================= FEATURES SECTION ================= */}
 
       {/* <section className="py-16 bg-[#FeFFF1]">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
             initial="hidden"
             whileInView="visible"
@@ -638,8 +652,8 @@ export default function About() {
 
       {/* ================= WHY CHOOSE US ================= */}
 
-      <section className="py-8 bg-white">
-        <div className="max-w-6xl mx-auto px-6 text-center">
+      <section className="py-10 md:py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Title */}
 
           <motion.h2
@@ -678,7 +692,7 @@ export default function About() {
 
           {/* Cards */}
 
-          <div className="grid md:grid-cols-3 gap-10 mt-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-10 mt-12 md:mt-16">
             {/* Card 1 */}
 
             <motion.div
@@ -779,10 +793,10 @@ export default function About() {
 
       {/* ================= LUXURY QUOTE SECTION ================= */}
 
-      <section className="relative py-8  overflow-hidden">
+      <section className="relative py-10 md:py-16  overflow-hidden">
         {/* Quote Content */}
 
-        <div className="relative max-w-4xl mx-auto px-6 text-center text-black">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-black">
           <motion.h2
             initial="hidden"
             whileInView="visible"
@@ -802,29 +816,18 @@ export default function About() {
             </span>
             "
           </motion.h2>
-
-          {/* Decorative Line */}
-
-          {/* <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            transition={{ delay: 0.2 }}
-            className="w-24 h-[2px] bg-amber-400 mx-auto mt-8"
-          /> */}
         </div>
       </section>
 
       {/* CTA Section */}
 
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <BottomCTA />
       </div>
 
       {/* ================= GOOGLE REVIEWS SECTION ================= */}
 
-      <section className="py-8 bg-white">
+      <section className="py-10 md:py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           {/* Title */}
 
@@ -849,7 +852,7 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-        w-70 md:w-full
+w-[180px] md:w-full
         h-[2px]
         bg-gradient-to-r
         from-green-600
@@ -898,7 +901,7 @@ export default function About() {
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3731.5406954840605!2d73.02810481156264!3d20.728867780766617!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be0ed1aac0027a3%3A0xa2d6c4b636ce3d7f!2sChhaya%20Party%20Plot!5e0!3m2!1sen!2sin!4v1774952053460!5m2!1sen!2sin"
               width="100%"
               height="350"
-              className="md:h-[450px]"
+              className="w-full h-[280px] sm:h-[350px] md:h-[450px]"
               style={{ border: 0 }}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

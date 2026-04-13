@@ -2,18 +2,15 @@
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 import Carousel1 from "./components/Carousel";
-import { Footer } from "./components/footer";
 import Dock from "./components/connection";
 import Features from "./components/features";
-import VenueShowcase from "./components/venue";
+import { Footer } from "./components/footer";
 import Services from "./components/services";
+import VenueShowcase from "./components/venue";
 
-import { motion } from "framer-motion";
-import { FaWhatsapp, FaInstagram, FaPhone } from "react-icons/fa";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaInstagram, FaMapMarkerAlt, FaPhone, FaWhatsapp } from "react-icons/fa";
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard
