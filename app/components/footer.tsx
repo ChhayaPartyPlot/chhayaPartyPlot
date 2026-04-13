@@ -13,72 +13,42 @@ import { IoMail } from "react-icons/io5";
 export function Footer() {
   return (
     <footer className="bg-[#c3ca6d] text-zinc-300 w-full z-50">
-      <div className="container mx-auto pt-8 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+      <div className="container mx-auto px-3 pt-4 md:pt-8 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center md:text-center items-center ">
           {/* Logo */}
-          <div className="space-y-4 flex flex-col md:flex-row items-center md:items-start">
+          <div className="space-y-4 flex flex-col md:flex-row items-start md:items-start">
             <div className="flex flex-col sm:flex-row items-center sm:space-x-4">
               <Image
                 src="/logo.png"
-                alt="Chhaya Party Plot"
                 width={280}
                 height={60}
-                className="mb-4"
+                className="mb-2 w-47.5 sm:w-57.5 md:w-70 h-auto"
+                alt={""}
               />
             </div>
           </div>
 
-          {/* Navigation */}
-          <div className="hidden md:flex justify-start">
-            {/* <nav className="flex flex-col space-y-2 items-center md:items-start">
-              <h3 className="text-xl font-medium mb-4 text-black">Explore</h3>
-
-              <Link
-                href="/"
-                className="text-black hover:underline transition-colors"
-              >
-                Home
-              </Link>
-
-              <Link
-                href="/about"
-                className="text-black hover:underline transition-colors"
-              >
-                About
-              </Link>
-
-              <Link
-                href="/gallery"
-                className="text-black hover:underline transition-colors"
-              >
-                Gallery
-              </Link>
-
-              <Link
-                href="/reservation"
-                className="text-black hover:underline transition-colors"
-              >
-                Reservation
-              </Link>
-            </nav> */}
-          </div>
-
           {/* Contact Info */}
-          <div className="space-y-3 text-center md:text-left text-[#2c1f17]">
-            <ul className="space-y-3 pl-0 list-none">
+          <div
+            className="
+    space-y-4
+    text-center
+    md:text-right
+    text-[#2c1f17]
+  "
+          >
+            {/* Contact List */}
+            <ul className="space-y-1 md:space-y-2 list-none m-0 p-0">
               {/* Phone */}
               <li>
-                <div className="flex items-start gap-2 justify-start">
-                  <FaPhoneAlt
-                    size={18}
-                    className="mt-[4px] shrink-0 w-[18px]"
-                  />
+                <div className="flex items-start gap-3 justify-start md:justify-end">
+                  <FaPhoneAlt size={18} className="mt-[3px] shrink-0" />
 
-                  <p className="mb-0">
+                  <p className="text-sm sm:text-base leading-relaxed">
                     <strong>Phone:</strong>{" "}
                     <Link
                       href="tel:+917600616660"
-                      className="text-black hover:underline"
+                      className="text-black hover:underline wrap-break-word"
                     >
                       +91 76006 16660
                     </Link>
@@ -88,14 +58,14 @@ export function Footer() {
 
               {/* Email */}
               <li>
-                <div className="flex items-start gap-2 justify-start">
-                  <IoMail size={18} className="mt-[4px] shrink-0 w-[18px]" />
+                <div className="flex items-start gap-3 justify-start md:justify-end">
+                  <IoMail size={18} className="mt-[3px] shrink-0" />
 
-                  <p className="mb-0">
+                  <p className="text-sm sm:text-base leading-relaxed">
                     <strong>Email:</strong>{" "}
                     <Link
                       href="mailto:chhayapartyplot@gmail.com"
-                      className="text-black hover:underline"
+                      className="text-black hover:underline break-all"
                     >
                       chhayapartyplot@gmail.com
                     </Link>
@@ -105,47 +75,46 @@ export function Footer() {
 
               {/* Address */}
               <li>
-                <div className="flex items-start gap-2 justify-start">
-                  <FaLocationArrow
-                    size={18}
-                    className="mt-[4px] shrink-0 w-[18px]"
-                  />
+                <div className="flex items-start gap-3 justify-start md:justify-end">
+                  <FaLocationArrow size={18} className="mt-0.75 shrink-0" />
 
-                  <div className="text-left leading-relaxed">
+                  <p className="text-sm sm:text-base leading-relaxed text-left md:text-right ">
                     <strong>Address:</strong>{" "}
                     <Link
-                      href="https://www.google.com/maps/place/Chhaya+Party+Plot/@20.7288678,73.0306851,17z/data=!3m1!4b1!4m6!3m5!1s0x3be0ed1aac0027a3:0xa2d6c4b636ce3d7f!8m2!3d20.7288678!4d73.0306851!16s%2Fg%2F11v0y548kr?entry=ttu&g_ep=EgoyMDI1MDUxMy4xIKXMDSoASAFQAw%3D%3D"
+                      href="https://www.google.com/maps/place/Chhaya+Party+Plot"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-black hover:underline"
+                      className="text-black hover:underline word-break break-word"
                     >
-                      Chhaya Party Plot, Chimla, NH 48, Chikhli, Navsari-396521.
+                      Chhaya Party Plot, Chimla, NH 48, Chikhli, Navsari-396521
                     </Link>
-                  </div>
+                  </p>
                 </div>
               </li>
             </ul>
 
-            {/* Social Icons — FIXED POSITION */}
+            {/* Social Icons */}
             <ul
               className="
-  social-media
-  mt-4
-  flex
-  gap-4
-  justify-center
-  md:justify-start
-  pl-0
-  ml-0
-  list-none
-"
+    
+      flex
+      gap-4
+      justify-center
+      md:justify-end
+      list-none
+     md:m-0 md:p-0
+     mt-2
+    
+  
+    "
             >
               <li>
                 <Link
                   href="https://www.instagram.com/chhaya_partyplot"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-black hover:text-[#2c1f17] transition-colors"
+                  className="text-black hover:text-[#2c1f17] transition"
+                  aria-label="Instagram"
                 >
                   <FaInstagram size={20} />
                 </Link>
@@ -158,8 +127,8 @@ export function Footer() {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Chat on WhatsApp"
-                  className="text-black hover:text-[#25D366] transition-colors"
+                  className="text-black hover:text-[#25D366] transition"
+                  aria-label="WhatsApp"
                 >
                   <FaWhatsapp size={20} />
                 </a>
@@ -170,7 +139,8 @@ export function Footer() {
                   href="https://www.youtube.com/@ChhayaPartyPlot"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-black hover:text-[#2c1f17] transition-colors"
+                  className="text-black hover:text-[#2c1f17] transition"
+                  aria-label="YouTube"
                 >
                   <FaYoutube size={20} />
                 </Link>
@@ -181,7 +151,8 @@ export function Footer() {
                   href="https://www.facebook.com/profile.php?id=61560839651768"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-black hover:text-[#2c1f17] transition-colors"
+                  className="text-black hover:text-[#2c1f17] transition"
+                  aria-label="Facebook"
                 >
                   <FaFacebookF size={20} />
                 </Link>

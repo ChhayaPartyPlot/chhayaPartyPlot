@@ -140,7 +140,7 @@ export default function Dock({
               left-2
               top-[45%]
               -translate-y-1/2
-              z-[9999]
+               z-30
               flex
               items-center
               justify-center
