@@ -54,10 +54,11 @@ export async function POST(req: NextRequest) {
     // const email = body.email;
     const startDate = new Date(body.startDate || new Date());
     const totalBookingDays = Number(body.totalBookingDays) || 1;
+    const eventType = body.eventType;
 
 
     if (mobNumber && MOB_NUMBER_PATTERN.test(mobNumber.toString())) {
-        return await addBookingThroughMobNumber(mobNumber, startDate, totalBookingDays);
+        return await addBookingThroughMobNumber(mobNumber, startDate, totalBookingDays, eventType);
     // } else if (email && EMAIL_PATTERN.test(email)) {
     //     return await addBookingThroughEmail(email, startDate, totalBookingDays);
     } else {

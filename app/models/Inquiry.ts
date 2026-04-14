@@ -1,38 +1,58 @@
-import mongoose, { Document, Schema, Types } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 interface InquiryDocument extends Document {
-  name: string;              // Name of the user
-  email: string;             // Email of the user
-  phone: string;             // Phone number of the user
-  startingDate: Date;              // Booking start date
-  totalBookingDays: number;     // Total number of booking days
+  name: string;
+  email: string;
+  phone: string;
+  startingDate: Date;
+  totalBookingDays: number;
+  eventType: string;
 }
 
 const inquirySchema = new Schema<InquiryDocument>({
-  name:{
+  name: {
     type: String,
     required: true,
   },
-  email:{
+
+  email: {
     type: String,
     // required: true,
   },
-  phone:{
+
+  phone: {
     type: String,
     required: true,
   },
-  startingDate: { 
-    type: Date, 
-    required: true 
+
+  startingDate: {
+    type: Date,
+    required: true,
   },
-  totalBookingDays: { 
-    type: Number, 
-    default:1,
-    min: [1, 'Booking days must be at least 1'],  // Ensure that at least 1 day is booked
+
+  eventType: {
+    type: String,
+    required: true,
+    enum: [
+      "Wedding",
+      "Birthday",
+      "Corporate Event",
+      "Engagement",
+      "Reception",
+      "Other",
+    ],
+  },
+
+  totalBookingDays: {
+    type: Number,
+    default: 1,
+    min: [1, "Booking days must be at least 1"],
   },
 });
 
-const Inquiry = mongoose.models.Inquiry || mongoose.model<InquiryDocument>('Inquiry', inquirySchema);
+const Inquiry =
+  mongoose.models.Inquiry ||
+  mongoose.model<InquiryDocument>("Inquiry", inquirySchema);
 
-export {Inquiry};
-export type { inquirySchema };
+export { Inquiry };
+export type { InquiryDocument };

@@ -1,9 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/app/lib/mongodb";
 import { Inquiry } from "@/app/models/Inquiry";
-import { saveContactSubmission } from "@/app/util/storage/storage";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { sendDailyEmail } from "../../util/mailer/mailer";
 
 const InquiryValidationSchema = z.object({
   name: z.string(),
@@ -11,13 +9,28 @@ const InquiryValidationSchema = z.object({
   phone: z.string(),
   startingDate: z.string(),
   totalBookingDays: z.number().optional().default(1),
+
+  eventType: z.string(), // ✅ added
+  customEvent: z.string().optional(), // ✅ added
 });
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, phone, startingDate, totalBookingDays } =
-      InquiryValidationSchema.parse(body);
+
+    let {
+      name,
+      phone,
+      startingDate,
+      totalBookingDays,
+      eventType,
+      customEvent,
+    } = InquiryValidationSchema.parse(body); // ✅ updated destructuring
+
+    // ✅ added logic for "Other"
+    if (eventType === "Other" && customEvent) {
+      eventType = customEvent;
+    }
 
     await connectToDatabase();
     let inq = await Inquiry.create({
@@ -25,6 +38,7 @@ export async function POST(req: NextRequest) {
       phone,
       startingDate,
       totalBookingDays,
+      eventType, // ✅ added
     });
 
     // saveContactSubmission?.({ name, phone, startingDate, totalBookingDays }); // optional

@@ -70,6 +70,8 @@ export default function Reservation() {
   // State for login status
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const [inquiryEventType, setInquiryEventType] = useState("Wedding");
+  const [eventType, setEventType] = useState("Wedding");
   useEffect(() => {
     // Check login status by reading session_token cookie
     const token = getCookie("session_token");
@@ -146,6 +148,12 @@ export default function Reservation() {
     if (!loggedIn) return;
 
     setSelectedDate(date);
+    setName("");
+    setMobNumber("");
+    setEmail("");
+    setMobNumber2("");
+    setBookingDays(1);
+    setEventType("Wedding");
     setShowForm(true);
   };
 
@@ -216,6 +224,7 @@ export default function Reservation() {
           mobNumber2,
           startDate: format(selectedDate, "yyyy-MM-dd"),
           totalBookingDays: bookingDays,
+          eventType: eventType,
         }),
       });
 
@@ -223,6 +232,12 @@ export default function Reservation() {
         toast.success("Reservation successful!");
         setShowForm(false);
         setSelectedDate(null);
+        setName("");
+        setMobNumber("");
+        setEmail("");
+        setMobNumber2("");
+        setBookingDays(1);
+        setEventType("Wedding");
         fetchBookings();
       } else {
         const error = await res.json();
@@ -257,6 +272,7 @@ export default function Reservation() {
           phone: inquiryPhone,
           startingDate: inquiryDate,
           totalBookingDays: inquiryDays,
+          eventType: inquiryEventType,
         }),
       });
 
@@ -269,6 +285,7 @@ export default function Reservation() {
         setInquiryPhone("");
         setInquiryDate("");
         setInquiryDays(1);
+        setInquiryEventType("Wedding");
 
         // Auto hide message
         setTimeout(() => {
@@ -287,11 +304,13 @@ export default function Reservation() {
   const exportToPDF = () => {
     const doc = new jsPDF();
     autoTable(doc, {
-      head: [["Name", "Mobile", "Start Date", "Days"]],
+      head: [["Name", "Mobile", "Start Date", "Event Type", "Days"]],
+
       body: bookingList.map((b) => [
         b.user?.name,
         b.user?.mobNumber,
         format(new Date(b.startDate), "yyyy-MM-dd"),
+        b.eventType, // ✅ ADD
         b.totalBookingDays,
       ]),
     });
@@ -357,7 +376,10 @@ export default function Reservation() {
                 <strong>Event Date:</strong>{" "}
                 {format(new Date(selectedBooking.startDate), "dd-MM-yyyy")}
               </p>
-
+              <p>
+                <strong>Event Type:</strong>{" "}
+                {selectedBooking.eventType || "N/A"}
+              </p>
               <p>
                 <strong>Days:</strong> {selectedBooking.totalBookingDays}
               </p>
@@ -392,6 +414,7 @@ export default function Reservation() {
                   setEditPhone(selectedBooking.user?.mobNumber || "");
 
                   setEditingBooking(selectedBooking);
+                  setEventType(selectedBooking.eventType || "Wedding");
 
                   setShowUpdateDelete(false);
                 }}
@@ -521,6 +544,26 @@ export default function Reservation() {
               required
             />
 
+            {/* Event Type */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">
+                Event Type
+              </label>
+
+              <select
+                value={eventType}
+                onChange={(e) => setEventType(e.target.value)}
+                className="w-full border rounded p-2"
+                required
+              >
+                <option value="Wedding">Wedding</option>
+                <option value="Birthday">Birthday</option>
+                <option value="Corporate Event">Corporate Event</option>
+                <option value="Engagement">Engagement</option>
+                <option value="Reception">Reception</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
             {/* Buttons */}
             <div className="flex justify-between gap-4 mt-4">
               <button
@@ -548,6 +591,7 @@ export default function Reservation() {
                     updateData: {
                       startDate: editStartDate, // ✅ FIXED
                       totalBookingDays: Number(editDays),
+                      eventType: eventType,
                     },
                   };
 
@@ -645,7 +689,26 @@ export default function Reservation() {
                     required
                   />
                 </div>
+                {/* Event Type */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Event Type
+                  </label>
 
+                  <select
+                    value={eventType}
+                    onChange={(e) => setEventType(e.target.value)}
+                    className="w-full border rounded p-2"
+                    required
+                  >
+                    <option value="Wedding">Wedding</option>
+                    <option value="Birthday">Birthday</option>
+                    <option value="Corporate Event">Corporate Event</option>
+                    <option value="Engagement">Engagement</option>
+                    <option value="Reception">Reception</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
                 {/* Booking Days */}
                 <div className="mb-6">
                   <label className="block text-sm font-medium mb-1">
@@ -667,7 +730,17 @@ export default function Reservation() {
                   <button
                     type="button"
                     className="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-                    onClick={() => setShowForm(false)}
+                    onClick={() => {
+                      setShowForm(false);
+
+                      // ✅ Reset form
+                      setName("");
+                      setMobNumber("");
+                      setEmail("");
+                      setMobNumber2("");
+                      setBookingDays(1);
+                      setEventType("Wedding");
+                    }}
                   >
                     Cancel
                   </button>
@@ -758,7 +831,7 @@ export default function Reservation() {
                     type="text"
                     value={inquiryName}
                     onChange={(e) => setInquiryName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
                     placeholder="Enter your full name"
                     required
                   />
@@ -777,13 +850,12 @@ export default function Reservation() {
                       setInquiryPhone(value);
                     }}
                     maxLength={10}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
                     placeholder="Enter 10-digit mobile number"
                     required
                   />
                 </div>
 
-                {/* Event Date */}
                 {/* Event Date */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -799,9 +871,29 @@ export default function Reservation() {
                       if (!e.target.value) e.target.type = "text";
                     }}
                     onChange={(e) => setInquiryDate(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
                     required
                   />
+                </div>
+                {/* Event Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Event Type
+                  </label>
+
+                  <select
+                    value={inquiryEventType}
+                    onChange={(e) => setInquiryEventType(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
+                    required
+                  >
+                    <option value="Wedding">Wedding</option>
+                    <option value="Birthday">Birthday</option>
+                    <option value="Corporate Event">Corporate Event</option>
+                    <option value="Engagement">Engagement</option>
+                    <option value="Reception">Reception</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
 
                 {/* Number of Days */}
@@ -814,7 +906,7 @@ export default function Reservation() {
                     value={inquiryDays}
                     min={1}
                     onChange={(e) => setInquiryDays(Number(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
                     placeholder="Enter number of days"
                     required
                   />
@@ -839,45 +931,6 @@ export default function Reservation() {
                 >
                   {inquiryLoading ? "Sending..." : "Send Event Enquiry"}
                 </Button>
-
-                {/* Divider */}
-                {/* <div className="flex items-center my-5">
-                  <hr className="flex-grow border-gray-200" />
-                  <span className="mx-3 text-gray-500 text-sm font-medium">
-                    OR
-                  </span>
-                  <hr className="flex-grow border-gray-200" />
-                </div> */}
-
-                {/* Alternate Contact */}
-                {/* <div className="flex flex-col gap-3">
-            
-                  <button
-                    type="button"
-                    onClick={() =>
-                      window.open(
-                        "https://wa.me/917600616660?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20booking%20Chhaya%20Party%20Plot.",
-                        "_blank",
-                      )
-                    }
-                    className="flex items-center justify-center gap-2 w-full border border-[#25D366] text-[#25D366] hover:bg-[#e6fff0] font-semibold py-3 px-4 rounded-xl transition-all duration-200 hover:shadow-md"
-                  >
-                    <FaWhatsapp size={20} />
-                    Chat on WhatsApp
-                  </button>
-
-               
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(`+91 7600616660`);
-                    }}
-                    className="flex items-center justify-center gap-2 w-full border border-[#34B7F1] text-[#34B7F1] hover:bg-[#e6f7ff] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
-                  >
-                    <FaPhone size={18} />
-                    Call Us
-                  </button>
-                </div> */}
               </form>
             </div>
           </div>
@@ -934,6 +987,7 @@ export default function Reservation() {
                     <th className="border p-2 text-left">Name</th>
                     <th className="border p-2 text-left">Mobile</th>
                     <th className="border p-2 text-left">Event Date</th>
+                    <th className="border p-2 text-left">Event Date</th>
                     <th className="border p-2 text-center">Days</th>
                   </tr>
                 </thead>
@@ -953,6 +1007,7 @@ export default function Reservation() {
                             ? format(new Date(b.startDate), "dd-MM-yyyy")
                             : "N/A"}
                         </td>
+                        <td className="border p-2">{b.eventType || "N/A"}</td>
 
                         <td className="border p-2 text-center">
                           {b.totalBookingDays || 0}
