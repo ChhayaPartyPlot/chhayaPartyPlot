@@ -120,32 +120,34 @@ function Carousel1() {
                   <Link
                     href="/reservation"
                     className="
-        border border-white
-        relative
-        transition-all duration-300
-        px-8 py-3
-        uppercase tracking-widest
-        text-sm
-        font-[Barlow_Condensed]
-        bg-transparent
-        text-white
-        mt-6
-        inline-block
-        overflow-hidden
+    relative inline-block mt-6
 
-        before:absolute
-        before:inset-0
-        before:bg-white
-        before:scale-x-0
-        before:origin-left
-        before:transition-transform
-        before:duration-300
+    px-8 py-3
+    border border-white
 
-        hover:before:scale-x-100
-        hover:text-[#2c1f17]
-      "
+    text-white
+    text-sm md:text-base
+    font-medium
+    tracking-[0.15em]
+    uppercase
+    font-[Barlow_Condensed]
+
+    overflow-hidden
+    transition-all duration-300
+
+    before:absolute
+    before:inset-0
+    before:bg-white
+    before:scale-x-0
+    before:origin-left
+    before:transition-transform
+    before:duration-300
+
+    hover:before:scale-x-100
+    hover:text-[#7a8740]!
+  "
                   >
-                    <span className="relative z-10">Book Your Event</span>
+                    <span className="relative z-10">Reserve Your Date</span>
                   </Link>
                 </div>
               </Carousel.Caption>

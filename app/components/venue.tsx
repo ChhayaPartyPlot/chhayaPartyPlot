@@ -73,7 +73,7 @@ const VenueShowcase = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
             Venue{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c3ca6d] to-[#7a8740]">
               Highlights
             </span>
           </h2>
@@ -183,11 +183,11 @@ const VenueShowcase = () => {
         transition-all
         duration-300
         ease-in-out
-        ${
-          index === currentSlide
-            ? "w-8 bg-green-600 shadow-md shadow-green-600/40 scale-110"
-            : "w-2 bg-gray-300 hover:bg-gray-400 hover:scale-110"
-        }
+     ${
+       index === currentSlide
+         ? "w-8 bg-[#c3ca6d] shadow-md shadow-[#c3ca6d]/40 scale-110"
+         : "w-2 bg-gray-300 hover:bg-gray-400 hover:scale-110"
+     }
       `}
               />
             ))}

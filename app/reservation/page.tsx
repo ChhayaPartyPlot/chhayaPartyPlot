@@ -23,6 +23,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
@@ -420,7 +421,7 @@ export default function Reservation() {
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
 
                     <AlertDialogAction
-                      className="bg-red-600 hover:bg-red-700"
+                      className="bg-red-600! hover:bg-red-700!"
                       onClick={async () => {
                         try {
                           const res = await fetch(
@@ -826,19 +827,18 @@ export default function Reservation() {
                   </div>
                 )}
 
-                {/* Submit Button */}
-                <button
+                <Button
                   type="submit"
                   disabled={inquiryLoading}
                   className={`w-full py-4 px-6 rounded-2xl font-semibold text-lg transition-all duration-300
   ${
     inquiryLoading
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white hover:scale-[1.02] hover:shadow-lg"
+      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+      : "bg-[#c3ca6d] hover:bg-[#7a8740] text-white hover:scale-[1.02] hover:shadow-lg"
   }`}
                 >
                   {inquiryLoading ? "Sending..." : "Send Event Enquiry"}
-                </button>
+                </Button>
 
                 {/* Divider */}
                 {/* <div className="flex items-center my-5">
@@ -886,12 +886,12 @@ export default function Reservation() {
             /* Call to Action Section */
             <div className="w-full mt-12 px-4">
               <div className="text-center">
-                <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl max-w-4xl mx-auto">
+                <div className="bg-gradient-to-r from-[#c3ca6d] to-[#7a8740] rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl max-w-4xl mx-auto">
                   <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
                     Plan Your Special Event at Chhaya Party Plot
                   </h3>
 
-                  <p className="text-sm md:text-lg text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+                  <p className="text-sm md:text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
                     Check available dates and reserve your venue today. From
                     weddings to celebrations, we make every moment memorable
                     with elegant spaces and seamless service.
@@ -902,7 +902,7 @@ export default function Reservation() {
                       href="https://wa.me/917600616660?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20booking%20Chhaya%20Party%20Plot."
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                      className="inline-flex items-center justify-center gap-2 bg-white! text-[#7a8740]! hover:bg-gray-100! px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
                     >
                       <FaWhatsapp size={20} />
                       Chat on WhatsApp
@@ -910,7 +910,7 @@ export default function Reservation() {
 
                     <a
                       href="tel:+917600616660"
-                      className="inline-block bg-green-800 text-white hover:bg-green-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+                      className="inline-block bg-[#7a8740]! text-white! hover:bg-[#6a7538]! px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105"
                     >
                       Call Now
                     </a>
@@ -972,19 +972,19 @@ export default function Reservation() {
 
             {/* Export Buttons */}
             <div className="flex flex-col sm:flex-row justify-end mt-4 gap-3">
-              <button
+              <Button
                 onClick={exportToPDF}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
               >
                 Export PDF
-              </button>
+              </Button>
 
-              <button
+              <Button
                 onClick={exportToExcel}
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
               >
                 Export Excel
-              </button>
+              </Button>
             </div>
           </div>
         )}

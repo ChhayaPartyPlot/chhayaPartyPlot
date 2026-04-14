@@ -10,7 +10,12 @@ import { Footer } from "./components/footer";
 import Services from "./components/services";
 import VenueShowcase from "./components/venue";
 
-import { FaInstagram, FaMapMarkerAlt, FaPhone, FaWhatsapp } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaWhatsapp,
+} from "react-icons/fa";
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard
@@ -106,11 +111,10 @@ export default function Home() {
         <div className="px-6 md:px-12 lg:px-24 py-5">
           <h1 className="text-3xl md:text-5xl font-serif text-[#5a4a31] tracking-wide leading-tight text-center">
             Welcome to{" "}
-            <span className="text-green-800 font-extrabold italic drop-shadow-lg">
+            <span className="text-[#7a8740] font-extrabold italic drop-shadow-lg">
               Chhaya Party Plot
             </span>
           </h1>
-
           <Features />
 
           <VenueShowcase />

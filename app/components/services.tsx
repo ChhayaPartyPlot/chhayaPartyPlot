@@ -123,8 +123,8 @@ const Services = () => {
       text-transparent
       bg-clip-text
       bg-linear-to-r
-      from-green-600
-      to-emerald-600
+      from-[#c3ca6d]
+      to-[#7a8740]
     "
             >
               Services
@@ -184,7 +184,10 @@ const Services = () => {
                       key={featureIndex}
                       className="flex items-center space-x-2 text-sm text-gray-700"
                     >
-                      <Star className="text-green-500 fill-current" size={16} />
+                      <Star
+                        className="text-[#7a8740]/80 fill-[#7a8740]/80"
+                        size={16}
+                      />
                       <span>{feature}</span>
                     </div>
                   ))}
@@ -367,10 +370,13 @@ const Services = () => {
         {/* Call to Action */}
 
         <div className="text-center">
-          <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl">
+          <div className="bg-gradient-to-r from-[#c3ca6d] to-[#7a8740] rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl relative overflow-hidden">
+            {/* Subtle shine layer (premium look) */}
+            <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-3xl" />
+
             {/* Icon */}
 
-            <Calendar className="mx-auto mb-6 text-green-200" size={48} />
+            <Calendar className="mx-auto mb-6 text-white/80" size={48} />
 
             {/* Heading */}
 
@@ -380,7 +386,7 @@ const Services = () => {
 
             {/* Description */}
 
-            <p className="text-sm md:text-lg text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm md:text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
               Check available dates and reserve your venue today. From weddings
               to celebrations, we make every moment memorable with elegant
               spaces and seamless service.
@@ -395,8 +401,8 @@ const Services = () => {
                 href="/reservation"
                 className="
           inline-block
-          bg-white text-green-600
-          hover:bg-green-50
+          bg-white text-[#7a8740]!
+          hover:bg-gray-100!
           px-8 py-4
           rounded-full
           font-semibold
@@ -409,14 +415,15 @@ const Services = () => {
                 Book Your Event
               </Link>
 
-              {/* Optional Call Button */}
+              {/* Call Button */}
 
               <a
                 href="tel:+917600616660"
                 className="
           inline-block
-          bg-green-800 text-white
-          hover:bg-green-900
+          bg-[#7a8740]!
+          text-white!
+          hover:bg-[#6a7538]!
           px-8 py-4
           rounded-full
           font-semibold

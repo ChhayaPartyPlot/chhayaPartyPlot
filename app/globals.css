@@ -127,7 +127,7 @@ body a:hover {
 
 /* Selected Date → #7a8740 */
 .react-calendar__tile--active {
-  background: #7a8740 !important;
+  background: #b2b95f !important;
   color: white !important;
   border-radius: 8px;
   font-weight: 600;
