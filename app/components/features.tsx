@@ -41,7 +41,7 @@ const Features = () => {
 
       {
         icon: Building2,
-        title: "Air-Conditioned Hall",
+        title: "AC Banquet Hall",
         countUpFrom: 0,
         countUpTo: 800,
         unit: " guests",
@@ -96,7 +96,7 @@ const Features = () => {
 
       {
         icon: Palette,
-        title: "Customizable Decor",
+        title: "Custom Decor",
         description:
           "Flexible decor options to match your wedding or event theme.",
         color: "from-pink-500 to-rose-600",
@@ -117,25 +117,25 @@ const Features = () => {
     <section
       id="features"
       className="
-        bg-[#FEFFF1]
-        bg-[radial-gradient(circle_at_top,_rgba(34,197,94,0.08),transparent_60%)]
-        px-6 md:px-12 lg:px-24
-        py-10 md:py-16
-        rounded-3xl
-      "
+         
+        
+          px-6 md:px-8 lg:px-16
+          py-10 md:py-10
+          rounded-3xl
+        "
     >
       {/* Heading */}
 
       <div className="text-center mb-12 md:mb-16">
         <p
           className="
-          text-xl md:text-2xl lg:text-3xl
-          font-semibold
-          text-[#4e4b42]
-          italic
-          max-w-3xl
-          mx-auto
-        "
+            text-xl md:text-2xl lg:text-3xl
+            font-semibold
+            text-[#4e4b42]
+            italic
+            max-w-3xl
+            mx-auto
+          "
         >
           A premium event destination where timeless elegance meets grand
           celebration.
@@ -146,46 +146,45 @@ const Features = () => {
 
       <div
         className="
-        grid
-        grid-cols-1
-        sm:grid-cols-2
-        lg:grid-cols-4
-        gap-6 md:gap-8
-      "
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          lg:grid-cols-4
+          gap-6 md:gap-8
+        "
       >
         {features.map((feature) => (
           <div
             key={feature.title}
             className="
-    group
-    bg-white
-    rounded-xl
-    p-5
-    shadow-md
-    hover:shadow-xl
-    transition-all
-    duration-300
-    transform
-    hover:-translate-y-2
-    hover:scale-[1.02]
-    border border-gray-200
-    flex flex-col
-    h-full
-  "
+      group
+      bg-white
+      rounded-xl
+      p-4
+      shadow-md
+      hover:shadow-xl
+      transition-all
+      duration-300
+      transform
+      hover:-translate-y-2
+      hover:scale-[1.02]
+      border border-gray-200
+      flex flex-col
+      h-full
+    "
           >
             {/* Icon (fixed height) */}
             <div
               className={`
-      w-14 h-14 md:w-16 md:h-16
-      bg-gradient-to-r ${feature.color}
-      rounded-2xl
-      flex items-center justify-center
-      mb-4
-      shadow-lg
-      group-hover:scale-110
-      transition-all
-      shrink-0
-    `}
+        w-14 h-14 md:w-16 md:h-16
+        bg-gradient-to-r ${feature.color}
+        rounded-2xl
+        flex items-center justify-center
+        mb-4
+        group-hover:scale-110
+        transition-all
+        shrink-0
+      `}
             >
               <feature.icon className="text-white" size={26} />
             </div>
@@ -193,14 +192,14 @@ const Features = () => {
             {/* Title (fixed height) */}
             <h3
               className="
-      text-lg md:text-xl
-      font-bold
-      text-gray-800
-      mb-3
-      group-hover:text-green-600
-      min-h-[48px]
-      flex items-start
-    "
+    text-base md:text-lg
+    font-semibold
+    text-gray-800
+    mb-2
+    leading-snug
+    min-h-[48px]
+    break-words
+  "
             >
               {feature.title}
             </h3>
@@ -208,15 +207,21 @@ const Features = () => {
             {/* Description (flex grow) */}
             <p
               className="
-      text-gray-600
-      leading-relaxed
-      text-sm
-      flex-grow
-    "
+    text-gray-600
+    leading-relaxed
+    text-sm
+    flex-grow
+  "
             >
               {feature.countUpTo ? (
                 <>
-                  <span className="font-bold text-green-700">
+                  <span
+                    className="
+  font-bold
+  text-[#7a8740]
+  tracking-wide
+"
+                  >
                     <CountUp
                       from={feature.countUpFrom || 0}
                       to={feature.countUpTo}
@@ -239,36 +244,36 @@ const Features = () => {
 
       <div
         className="
-        mt-12 md:mt-16
-        bg-gradient-to-r
-        from-emerald-600
-        to-green-600
-        rounded-3xl
-        px-6 md:px-12
-        py-10 md:py-12
-        text-white
-        text-center
-        shadow-xl
-      "
+      mt-12 md:mt-16
+      bg-gradient-to-r
+      from-[#c3ca6d]
+      to-[#7a8740]
+      rounded-3xl
+      px-6 md:px-12
+      py-10 md:py-12
+      text-white
+      text-center
+      shadow-xl
+    "
       >
         <h3
           className="
-          text-xl md:text-2xl lg:text-3xl
-          font-bold
-          mb-4
-        "
+        text-xl md:text-2xl lg:text-3xl
+        font-bold
+        mb-4
+      "
         >
           Everything You Need for a Perfect Celebration
         </h3>
 
         <p
           className="
-          text-sm md:text-lg
-          text-green-100
-          mb-8
-          max-w-2xl
-          mx-auto
-        "
+        text-sm md:text-lg
+        text-white/90
+        mb-8
+        max-w-2xl
+        mx-auto
+      "
         >
           From weddings and receptions to birthdays and corporate events,
           <span className="font-semibold text-white">
@@ -287,12 +292,12 @@ const Features = () => {
             if (e.key === "Enter") copyToClipboard("+91 76006 16660");
           }}
           className="
-            text-xl md:text-2xl lg:text-3xl
-            font-bold
-            cursor-pointer
-            hover:text-yellow-300
-            transition
-          "
+        text-xl md:text-2xl lg:text-3xl
+        font-bold
+        cursor-pointer
+        hover:text-yellow-200!
+        transition
+      "
           role="button"
           tabIndex={0}
         >
@@ -303,25 +308,25 @@ const Features = () => {
 
         <div
           className="
-          flex flex-col sm:flex-row
-          justify-center
-          items-center
-          gap-4
-          mt-6
-        "
+        flex flex-col sm:flex-row
+        justify-center
+        items-center
+        gap-4
+        mt-6
+      "
         >
           <Link
             href="/reservation"
             className="
-              bg-white text-green-700
-              font-semibold
-              px-8 py-3
-              rounded-full
-              shadow-xl
-              hover:scale-105
-              hover:bg-green-100
-              transition
-            "
+          bg-white text-[#7a8740]!
+          font-semibold
+          px-8 py-3
+          rounded-full
+          shadow-xl
+          hover:scale-105
+          hover:bg-gray-100!
+          transition
+        "
           >
             Reserve Now
           </Link>
@@ -333,16 +338,17 @@ const Features = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="
-    inline-flex items-center gap-2
-    bg-green-800 text-white
-    font-semibold
-    px-8 py-3
-    rounded-full
-    shadow-xl
-    hover:scale-105
-    hover:bg-green-900
-    transition
-  "
+          inline-flex items-center gap-2
+          bg-[#7a8740]!
+          text-white!
+          font-semibold
+          px-8 py-3
+          rounded-full
+          shadow-xl
+          hover:scale-105
+          hover:bg-[#6a7538]!
+          transition
+        "
           >
             <FaWhatsapp size={20} />
             Chat on WhatsApp

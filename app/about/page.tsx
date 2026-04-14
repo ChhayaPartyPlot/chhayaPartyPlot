@@ -219,19 +219,18 @@ export default function About() {
             initial="hidden"
             animate="visible"
             variants={fadeInUp}
-            className="text-sm md:text-base tracking-[4px] uppercase text-amber-300"
+            className="text-sm md:text-2xl  tracking-[4px] uppercase drop-shadow-sm text-[#c3ca6d]"
           >
             A Venue Beyond Your Imagination
           </motion.p>
 
           {/* Main Title */}
-
           <motion.h1
             initial="hidden"
             animate="visible"
             variants={fadeInUp}
             transition={{ delay: 0.2 }}
-            className="text-4xl md:text-6xl font-bold mt-4 leading-tight "
+            className="text-4xl md:text-6xl font-bold mt-4 leading-tight drop-shadow-md "
           >
             Our Story of Vision
           </motion.h1>
@@ -251,13 +250,16 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-        text-2xl sm:text-3xl md:text-5xl
-        font-bold
-        text-center
-        leading-snug
-      "
+    text-2xl sm:text-3xl md:text-5xl
+    font-bold
+    text-center
+    leading-snug
+  "
           >
-            Our Story – A Vision Turned Into Reality
+            Our Story -{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c3ca6d] to-[#7a8740]">
+              A Vision Turned Into Reality
+            </span>
           </motion.h2>
 
           {/* Decorative Line */}
@@ -268,15 +270,14 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-      w-[180px] md:w-full
-        h-[2px]
-        bg-gradient-to-r
-        from-green-600
-        to-emerald-600
-        mx-auto
-        mt-4 md:mt-6
-        mb-8
-      "
+    w-[180px] md:w-full
+    h-[2px]
+    bg-gradient-to-r
+ from-[#c3ca6d]/80 to-[#7a8740]
+    mx-auto
+    mt-4 md:mt-6
+    mb-8
+  "
           />
 
           {/* Paragraph 1 */}
@@ -385,31 +386,32 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-        text-2xl sm:text-3xl md:text-5xl
-        font-bold
-        text-center
-      "
+    text-2xl sm:text-3xl md:text-5xl
+    font-bold
+    text-center
+  "
           >
-            Our Journey
+            Our{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c3ca6d] to-[#7a8740]">
+              Journey
+            </span>
           </motion.h2>
 
           {/* Decorative Line */}
-
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-        w-40 md:w-full
-        h-[2px]
-        bg-gradient-to-r
-        from-green-600
-        to-emerald-600
-        mx-auto
-        mt-4 md:mt-6
-        mb-8
-      "
+    w-40 md:w-full
+    h-[2px]
+    bg-gradient-to-r
+  from-[#c3ca6d]/80 to-[#7a8740]
+    mx-auto
+    mt-4 md:mt-6
+    mb-8
+  "
           />
 
           {/* Subtitle */}
@@ -439,13 +441,11 @@ export default function About() {
 
             <div
               className="
-        absolute left-4 md:left-1/2
-        transform md:-translate-x-1/2
-        h-full w-[2px]
-        bg-gradient-to-b
-        from-green-700
-        to-emerald-700
-      "
+    absolute left-4 md:left-1/2
+    transform md:-translate-x-1/2
+    h-full w-[2px]
+    bg-[#c3ca6d]
+  "
             ></div>
 
             {/* Step 1 */}
@@ -475,17 +475,15 @@ export default function About() {
                 </div>
 
                 {/* Dot */}
-
                 <div
                   className="
-            absolute left-4 md:left-1/2
-            transform md:-translate-x-1/2
-    w-4 h-4 md:w-5 md:h-5 border-2 border-white
-            bg-gradient-to-r
-            from-green-600
-            to-emerald-600
-            rounded-full
-          "
+    absolute left-4 md:left-1/2
+    transform md:-translate-x-1/2
+    w-4 h-4 md:w-5 md:h-5
+    border-2 border-white
+    bg-[#7a8740]
+    rounded-full
+  "
                 ></div>
               </div>
             </div>
@@ -521,14 +519,13 @@ export default function About() {
 
                 <div
                   className="
-            absolute left-4 md:left-1/2
-            transform md:-translate-x-1/2
-          w-4 h-4 md:w-5 md:h-5 border-2 border-white
-            bg-gradient-to-r
-            from-green-600
-            to-emerald-600
-            rounded-full
-          "
+    absolute left-4 md:left-1/2
+    transform md:-translate-x-1/2
+    w-4 h-4 md:w-5 md:h-5
+    border-2 border-white
+    bg-[#7a8740]
+    rounded-full
+  "
                 ></div>
               </div>
             </div>
@@ -563,14 +560,13 @@ export default function About() {
 
                 <div
                   className="
-        absolute left-4 md:left-1/2
-            transform md:-translate-x-1/2
-    w-4 h-4 md:w-5 md:h-5 border-2 border-white
-            bg-gradient-to-r
-            from-green-600
-            to-emerald-600
-            rounded-full
-          "
+    absolute left-4 md:left-1/2
+    transform md:-translate-x-1/2
+    w-4 h-4 md:w-5 md:h-5
+    border-2 border-white
+    bg-[#7a8740]
+    rounded-full
+  "
                 ></div>
               </div>
             </div>
@@ -606,49 +602,19 @@ export default function About() {
 
                 <div
                   className="
-            absolute left-4 md:left-1/2
-            transform md:-translate-x-1/2
-        w-4 h-4 md:w-5 md:h-5 border-2 border-white
-            bg-gradient-to-r
-            from-green-600
-            to-emerald-600
-            rounded-full
-          "
+    absolute left-4 md:left-1/2
+    transform md:-translate-x-1/2
+    w-4 h-4 md:w-5 md:h-5
+    border-2 border-white
+    bg-[#7a8740]
+    rounded-full
+  "
                 ></div>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* ================= FEATURES SECTION ================= */}
-
-      {/* <section className="py-16 bg-[#FeFFF1]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="text-4xl md:text-5xl font-bold text-center"
-          >
-            Our Venue Highlights
-          </motion.h2>
-
-  
-
-          {features.map((feature, index) => (
-            <FeatureBlock
-              key={index}
-              label={feature.label}
-              title={feature.title}
-              description={feature.description}
-              image={feature.image}
-              reverse={index % 2 !== 0}
-            />
-          ))}
-        </div>
-      </section> */}
 
       {/* ================= WHY CHOOSE US ================= */}
 
@@ -663,7 +629,8 @@ export default function About() {
             variants={fadeInUp}
             className="text-4xl md:text-5xl font-bold"
           >
-            Why Choose <b>Chhaya Party Plot</b>
+            Why Choose{" "}
+            <b className="text-[#7a8740] drop-shadow-sm">Chhaya Party Plot</b>
           </motion.h2>
 
           {/* Decorative Line */}
@@ -673,7 +640,7 @@ export default function About() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            className="w-full h-[2px] mb-3 bg-gradient-to-r from-green-600 to-emerald-600 mx-auto mt-6"
+            className="w-full h-[2px] mb-3 bg-gradient-to-r from-[#c3ca6d]/80 to-[#7a8740] mx-auto mt-6"
           />
 
           {/* Subtitle */}
@@ -803,14 +770,14 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-        text-2xl md:text-4xl
-        leading-relaxed
-        font-semibold
-        tracking-wide
-      "
+    text-2xl md:text-4xl
+    leading-relaxed
+    font-semibold
+    tracking-wide
+  "
           >
             "આપના પ્રસંગ માટેનું એકમાત્ર સ્થળ એટલે
-            <span className="text-emerald-600 font-bold">
+            <span className="text-[#7a8740] font-bold drop-shadow-sm">
               {" "}
               છાયા પાર્ટી પ્લોટ
             </span>
@@ -837,30 +804,31 @@ export default function About() {
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-        text-2xl sm:text-3xl md:text-5xl
-        font-bold
-      "
+    text-2xl sm:text-3xl md:text-5xl
+    font-bold
+  "
           >
-            Google Reviews
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c3ca6d] to-[#7a8740]">
+              Google Reviews
+            </span>
           </motion.h2>
 
           {/* Decorative Line */}
-
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
             className="
-w-[180px] md:w-full
-        h-[2px]
-        bg-gradient-to-r
-        from-green-600
-        to-emerald-600
-        mx-auto
-        mt-4 md:mt-6
-        mb-6
-      "
+    w-[180px] md:w-full
+    h-[2px]
+    bg-gradient-to-r
+    from-[#c3ca6d]/80
+    to-[#7a8740]
+    mx-auto
+    mt-4 md:mt-6
+    mb-6
+  "
           />
 
           {/* Subtitle */}

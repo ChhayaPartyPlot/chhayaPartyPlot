@@ -11,6 +11,19 @@ import "react-calendar/dist/Calendar.css";
 import { FaWhatsapp } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { Footer } from "../components/footer";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
@@ -57,6 +70,8 @@ export default function Reservation() {
   // State for login status
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const [inquiryEventType, setInquiryEventType] = useState("Wedding");
+  const [eventType, setEventType] = useState("Wedding");
   useEffect(() => {
     // Check login status by reading session_token cookie
     const token = getCookie("session_token");
@@ -123,11 +138,9 @@ export default function Reservation() {
         if (booking) {
           setSelectedBooking(booking); // Store the booking
           setShowUpdateDelete(true); // Show popup
-          // console.log(showUpdateDelete);
-          // console.log(selectedBooking);
         }
       } else {
-        alert("Sorry, this date is already reserved!");
+        toast.error("Sorry, this date is already reserved!");
       }
       return;
     }
@@ -135,6 +148,12 @@ export default function Reservation() {
     if (!loggedIn) return;
 
     setSelectedDate(date);
+    setName("");
+    setMobNumber("");
+    setEmail("");
+    setMobNumber2("");
+    setBookingDays(1);
+    setEventType("Wedding");
     setShowForm(true);
   };
 
@@ -174,12 +193,12 @@ export default function Reservation() {
     if (!selectedDate) return;
 
     if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
-      alert("Please enter a valid 10-digit mobile number.");
+      toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
 
     if (!name || !mobNumber || !selectedDate) {
-      alert("Please fill in all required fields.");
+      toast.warning("Please fill in all required fields.");
       return;
     }
 
@@ -205,17 +224,24 @@ export default function Reservation() {
           mobNumber2,
           startDate: format(selectedDate, "yyyy-MM-dd"),
           totalBookingDays: bookingDays,
+          eventType: eventType,
         }),
       });
 
       if (res.ok) {
-        alert("Reservation successful!");
+        toast.success("Reservation successful!");
         setShowForm(false);
         setSelectedDate(null);
+        setName("");
+        setMobNumber("");
+        setEmail("");
+        setMobNumber2("");
+        setBookingDays(1);
+        setEventType("Wedding");
         fetchBookings();
       } else {
         const error = await res.json();
-        alert(`Reservation failed: ${error.message}`);
+        toast.error(`Reservation failed: ${error.message}`);
       }
     } catch (err) {
       console.error("Error making reservation:", err);
@@ -226,12 +252,12 @@ export default function Reservation() {
     e.preventDefault();
 
     if (!MOB_NUMBER_PATTERN.test(inquiryPhone)) {
-      alert("Please enter a valid 10-digit mobile number.");
+      toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
 
     if (!inquiryName || !inquiryPhone || !inquiryDate) {
-      alert("Please fill in all required fields.");
+      toast.warning("Please fill in all required fields.");
       return;
     }
 
@@ -246,6 +272,7 @@ export default function Reservation() {
           phone: inquiryPhone,
           startingDate: inquiryDate,
           totalBookingDays: inquiryDays,
+          eventType: inquiryEventType,
         }),
       });
 
@@ -258,13 +285,14 @@ export default function Reservation() {
         setInquiryPhone("");
         setInquiryDate("");
         setInquiryDays(1);
+        setInquiryEventType("Wedding");
 
         // Auto hide message
         setTimeout(() => {
           setInquirySuccess(false);
         }, 4000);
       } else {
-        alert(`Inquiry failed: ${result.error}`);
+        toast.error(`Inquiry failed: ${result.error}`);
       }
     } catch (err) {
       console.error("Inquiry submission error:", err);
@@ -276,11 +304,13 @@ export default function Reservation() {
   const exportToPDF = () => {
     const doc = new jsPDF();
     autoTable(doc, {
-      head: [["Name", "Mobile", "Start Date", "Days"]],
+      head: [["Name", "Mobile", "Start Date", "Event Type", "Days"]],
+
       body: bookingList.map((b) => [
         b.user?.name,
         b.user?.mobNumber,
         format(new Date(b.startDate), "yyyy-MM-dd"),
+        b.eventType, // ✅ ADD
         b.totalBookingDays,
       ]),
     });
@@ -303,10 +333,6 @@ export default function Reservation() {
     saveAs(data, "bookings.xlsx");
   };
 
-  // // Disable tiles if date is reserved (for all users)
-  // const tileDisabled = ({ date }: { date: Date }) =>
-  //   reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
-
   // Style reserved dates for all users
   const tileClassName = ({ date }: { date: Date }) =>
     reservedDates.some(
@@ -314,67 +340,6 @@ export default function Reservation() {
     )
       ? "reserved-date"
       : "";
-
-  // console.log("under", showUpdateDelete);
-
-  //       {showUpdateDelete && selectedBooking && (
-  //   <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
-  //     <h3 className="text-xl font-bold mb-4 text-center">Manage Booking</h3>
-  //     <p><strong>Name:</strong> {selectedBooking.user?.name}</p>
-  //     <p><strong>Mobile:</strong> {selectedBooking.user?.mobNumber}</p>
-  //     <p><strong>Start Date:</strong> {format(new Date(selectedBooking.startDate), 'yyyy-MM-dd')}</p>
-  //     <p><strong>Days:</strong> {selectedBooking.totalBookingDays}</p>
-
-  //     <div className="flex justify-between mt-6">
-  //       <button
-  //         className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-  //         onClick={() => setShowUpdateDelete(false)}
-  //       >
-  //         Cancel
-  //       </button>
-  //       <button
-  //         className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-  //         onClick={() => {
-  //           // Prefill reservation form with this booking's data
-  //           setMobNumber(selectedBooking.user?.mobNumber || '');
-  //           setMobNumber2(selectedBooking.mobNumber2 || '');
-  //           setName(selectedBooking.user?.name || '');
-  //           setEmail(selectedBooking.user?.email || '');
-  //           setBookingDays(selectedBooking.totalBookingDays);
-  //           setSelectedDate(new Date(selectedBooking.startDate));
-  //           setShowForm(true);
-  //           setShowUpdateDelete(false);
-  //         }}
-  //       >
-  //         Update
-  //       </button>
-  //       <button
-  //         className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-  //         onClick={async () => {
-  //           if (confirm("Are you sure you want to delete this booking?")) {
-  //             try {
-  //               const res = await fetch(`/api/booking/${selectedBooking._id}`, {
-  //                 method: 'DELETE',
-  //               });
-  //               if (res.ok) {
-  //                 alert("Booking deleted successfully.");
-  //                 fetchBookings();
-  //                 setShowUpdateDelete(false);
-  //               } else {
-  //                 alert("Failed to delete booking.");
-  //               }
-  //             } catch (err) {
-  //               console.error(err);
-  //               alert("Error deleting booking.");
-  //             }
-  //           }
-  //         }}
-  //       >
-  //         Delete
-  //       </button>
-  //     </div>
-  //   </div>
-  // )}
 
   return (
     <main className=" pt-15 mb-3 ">
@@ -411,7 +376,10 @@ export default function Reservation() {
                 <strong>Event Date:</strong>{" "}
                 {format(new Date(selectedBooking.startDate), "dd-MM-yyyy")}
               </p>
-
+              <p>
+                <strong>Event Type:</strong>{" "}
+                {selectedBooking.eventType || "N/A"}
+              </p>
               <p>
                 <strong>Days:</strong> {selectedBooking.totalBookingDays}
               </p>
@@ -446,6 +414,7 @@ export default function Reservation() {
                   setEditPhone(selectedBooking.user?.mobNumber || "");
 
                   setEditingBooking(selectedBooking);
+                  setEventType(selectedBooking.eventType || "Wedding");
 
                   setShowUpdateDelete(false);
                 }}
@@ -454,37 +423,56 @@ export default function Reservation() {
               </button>
 
               {/* Delete */}
-              <button
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                onClick={async () => {
-                  if (
-                    confirm("Are you sure you want to delete this booking?")
-                  ) {
-                    try {
-                      const res = await fetch(
-                        `/api/booking/${selectedBooking._id}`,
-                        {
-                          method: "DELETE",
-                        },
-                      );
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Delete
+                  </button>
+                </AlertDialogTrigger>
 
-                      if (res.ok) {
-                        alert("Booking deleted successfully.");
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Booking?</AlertDialogTitle>
 
-                        fetchBookings();
-                        setShowUpdateDelete(false);
-                      } else {
-                        alert("Failed to delete booking.");
-                      }
-                    } catch (err) {
-                      console.error(err);
-                      alert("Error deleting booking.");
-                    }
-                  }
-                }}
-              >
-                Delete
-              </button>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      the selected booking.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                    <AlertDialogAction
+                      className="bg-red-600! hover:bg-red-700!"
+                      onClick={async () => {
+                        try {
+                          const res = await fetch(
+                            `/api/booking/${selectedBooking._id}`,
+                            {
+                              method: "DELETE",
+                            },
+                          );
+
+                          if (res.ok) {
+                            toast.success("Booking deleted successfully.");
+
+                            fetchBookings();
+                            setShowUpdateDelete(false);
+                          } else {
+                            toast.error("Failed to delete booking.");
+                          }
+                        } catch (err) {
+                          console.error(err);
+                          toast.error("Error deleting booking.");
+                        }
+                      }}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </div>
@@ -556,6 +544,26 @@ export default function Reservation() {
               required
             />
 
+            {/* Event Type */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">
+                Event Type
+              </label>
+
+              <select
+                value={eventType}
+                onChange={(e) => setEventType(e.target.value)}
+                className="w-full border rounded p-2"
+                required
+              >
+                <option value="Wedding">Wedding</option>
+                <option value="Birthday">Birthday</option>
+                <option value="Corporate Event">Corporate Event</option>
+                <option value="Engagement">Engagement</option>
+                <option value="Reception">Reception</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
             {/* Buttons */}
             <div className="flex justify-between gap-4 mt-4">
               <button
@@ -583,6 +591,7 @@ export default function Reservation() {
                     updateData: {
                       startDate: editStartDate, // ✅ FIXED
                       totalBookingDays: Number(editDays),
+                      eventType: eventType,
                     },
                   };
 
@@ -680,7 +689,26 @@ export default function Reservation() {
                     required
                   />
                 </div>
+                {/* Event Type */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    Event Type
+                  </label>
 
+                  <select
+                    value={eventType}
+                    onChange={(e) => setEventType(e.target.value)}
+                    className="w-full border rounded p-2"
+                    required
+                  >
+                    <option value="Wedding">Wedding</option>
+                    <option value="Birthday">Birthday</option>
+                    <option value="Corporate Event">Corporate Event</option>
+                    <option value="Engagement">Engagement</option>
+                    <option value="Reception">Reception</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
                 {/* Booking Days */}
                 <div className="mb-6">
                   <label className="block text-sm font-medium mb-1">
@@ -702,7 +730,17 @@ export default function Reservation() {
                   <button
                     type="button"
                     className="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-                    onClick={() => setShowForm(false)}
+                    onClick={() => {
+                      setShowForm(false);
+
+                      // ✅ Reset form
+                      setName("");
+                      setMobNumber("");
+                      setEmail("");
+                      setMobNumber2("");
+                      setBookingDays(1);
+                      setEventType("Wedding");
+                    }}
                   >
                     Cancel
                   </button>
@@ -743,7 +781,7 @@ export default function Reservation() {
                 Check Date Availability
               </h3>
 
-              <p className="text-center text-sm text-gray-600 mb-5">
+              <p className="text-center text-sm text-gray-600 mb-2">
                 Select your preferred event date to check availability.
               </p>
 
@@ -764,7 +802,7 @@ export default function Reservation() {
                 }
               />
 
-              <p className="mt-5 text-center text-sm text-gray-500">
+              <p className="mt-2 text-center text-sm text-gray-500">
                 Dates marked in{" "}
                 <span className="font-semibold text-red-600">red</span> are
                 already booked.
@@ -793,7 +831,7 @@ export default function Reservation() {
                     type="text"
                     value={inquiryName}
                     onChange={(e) => setInquiryName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
                     placeholder="Enter your full name"
                     required
                   />
@@ -812,13 +850,12 @@ export default function Reservation() {
                       setInquiryPhone(value);
                     }}
                     maxLength={10}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
                     placeholder="Enter 10-digit mobile number"
                     required
                   />
                 </div>
 
-                {/* Event Date */}
                 {/* Event Date */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -834,9 +871,29 @@ export default function Reservation() {
                       if (!e.target.value) e.target.type = "text";
                     }}
                     onChange={(e) => setInquiryDate(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
                     required
                   />
+                </div>
+                {/* Event Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Event Type
+                  </label>
+
+                  <select
+                    value={inquiryEventType}
+                    onChange={(e) => setInquiryEventType(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
+                    required
+                  >
+                    <option value="Wedding">Wedding</option>
+                    <option value="Birthday">Birthday</option>
+                    <option value="Corporate Event">Corporate Event</option>
+                    <option value="Engagement">Engagement</option>
+                    <option value="Reception">Reception</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
 
                 {/* Number of Days */}
@@ -849,7 +906,7 @@ export default function Reservation() {
                     value={inquiryDays}
                     min={1}
                     onChange={(e) => setInquiryDays(Number(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
                     placeholder="Enter number of days"
                     required
                   />
@@ -862,58 +919,18 @@ export default function Reservation() {
                   </div>
                 )}
 
-                {/* Submit Button */}
-                <button
+                <Button
                   type="submit"
                   disabled={inquiryLoading}
                   className={`w-full py-4 px-6 rounded-2xl font-semibold text-lg transition-all duration-300
   ${
     inquiryLoading
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white hover:scale-[1.02] hover:shadow-lg"
+      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+      : "bg-[#c3ca6d] hover:bg-[#7a8740] text-white hover:scale-[1.02] hover:shadow-lg"
   }`}
                 >
                   {inquiryLoading ? "Sending..." : "Send Event Enquiry"}
-                </button>
-
-                {/* Divider */}
-                {/* <div className="flex items-center my-5">
-                  <hr className="flex-grow border-gray-200" />
-                  <span className="mx-3 text-gray-500 text-sm font-medium">
-                    OR
-                  </span>
-                  <hr className="flex-grow border-gray-200" />
-                </div> */}
-
-                {/* Alternate Contact */}
-                {/* <div className="flex flex-col gap-3">
-            
-                  <button
-                    type="button"
-                    onClick={() =>
-                      window.open(
-                        "https://wa.me/917600616660?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20booking%20Chhaya%20Party%20Plot.",
-                        "_blank",
-                      )
-                    }
-                    className="flex items-center justify-center gap-2 w-full border border-[#25D366] text-[#25D366] hover:bg-[#e6fff0] font-semibold py-3 px-4 rounded-xl transition-all duration-200 hover:shadow-md"
-                  >
-                    <FaWhatsapp size={20} />
-                    Chat on WhatsApp
-                  </button>
-
-               
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(`+91 7600616660`);
-                    }}
-                    className="flex items-center justify-center gap-2 w-full border border-[#34B7F1] text-[#34B7F1] hover:bg-[#e6f7ff] font-semibold py-3 px-4 rounded-xl transition-all duration-200"
-                  >
-                    <FaPhone size={18} />
-                    Call Us
-                  </button>
-                </div> */}
+                </Button>
               </form>
             </div>
           </div>
@@ -922,12 +939,12 @@ export default function Reservation() {
             /* Call to Action Section */
             <div className="w-full mt-12 px-4">
               <div className="text-center">
-                <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl max-w-4xl mx-auto">
+                <div className="bg-gradient-to-r from-[#c3ca6d] to-[#7a8740] rounded-3xl px-6 md:px-12 py-10 md:py-12 text-white shadow-xl max-w-4xl mx-auto">
                   <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
                     Plan Your Special Event at Chhaya Party Plot
                   </h3>
 
-                  <p className="text-sm md:text-lg text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+                  <p className="text-sm md:text-lg text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
                     Check available dates and reserve your venue today. From
                     weddings to celebrations, we make every moment memorable
                     with elegant spaces and seamless service.
@@ -938,7 +955,7 @@ export default function Reservation() {
                       href="https://wa.me/917600616660?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20booking%20Chhaya%20Party%20Plot."
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                      className="inline-flex items-center justify-center gap-2 bg-white! text-[#7a8740]! hover:bg-gray-100! px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
                     >
                       <FaWhatsapp size={20} />
                       Chat on WhatsApp
@@ -946,7 +963,7 @@ export default function Reservation() {
 
                     <a
                       href="tel:+917600616660"
-                      className="inline-block bg-green-800 text-white hover:bg-green-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+                      className="inline-block bg-[#7a8740]! text-white! hover:bg-[#6a7538]! px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105"
                     >
                       Call Now
                     </a>
@@ -970,6 +987,7 @@ export default function Reservation() {
                     <th className="border p-2 text-left">Name</th>
                     <th className="border p-2 text-left">Mobile</th>
                     <th className="border p-2 text-left">Event Date</th>
+                    <th className="border p-2 text-left">Event Date</th>
                     <th className="border p-2 text-center">Days</th>
                   </tr>
                 </thead>
@@ -989,6 +1007,7 @@ export default function Reservation() {
                             ? format(new Date(b.startDate), "dd-MM-yyyy")
                             : "N/A"}
                         </td>
+                        <td className="border p-2">{b.eventType || "N/A"}</td>
 
                         <td className="border p-2 text-center">
                           {b.totalBookingDays || 0}
@@ -1008,19 +1027,19 @@ export default function Reservation() {
 
             {/* Export Buttons */}
             <div className="flex flex-col sm:flex-row justify-end mt-4 gap-3">
-              <button
+              <Button
                 onClick={exportToPDF}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
               >
                 Export PDF
-              </button>
+              </Button>
 
-              <button
+              <Button
                 onClick={exportToExcel}
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
               >
                 Export Excel
-              </button>
+              </Button>
             </div>
           </div>
         )}

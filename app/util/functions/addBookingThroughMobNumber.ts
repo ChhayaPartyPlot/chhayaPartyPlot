@@ -9,37 +9,40 @@ import { Booking } from "@/app/models/Booking";
  * Create booking using mobile number.
  */
 export async function addBookingThroughMobNumber(
-    mobNumber: number,
-    startDate: Date,
-    totalBookingDays: number
+  mobNumber: number,
+  startDate: Date,
+  totalBookingDays: number,
+  eventType: string,
 ): Promise<NextResponse> {
-    const user = await User.findOne({
-        $or: [
-            { mobNumber: mobNumber },
-            { altNumber: mobNumber }
-        ]
-    });
-    if (!user) {
-        return NextResponse.json({ message: 'User Not Found' }, { status: 404 });
+  const user = await User.findOne({
+    $or: [{ mobNumber: mobNumber }, { altNumber: mobNumber }],
+  });
+  if (!user) {
+    return NextResponse.json({ message: "User Not Found" }, { status: 404 });
+  }
+  const isValid = await validateDate(startDate, totalBookingDays);
+  if (!isValid) {
+    return NextResponse.json(
+      { message: "Date conflicts with existing booking" },
+      { status: 409 },
+    );
+  }
 
-    }
-    const isValid = await validateDate(startDate, totalBookingDays);
-    if (!isValid) {
-        return NextResponse.json({ message: 'Date conflicts with existing booking' }, { status: 409 });
-    }
+  const newBooking = new Booking({
+    user: user._id,
+    startDate: startDate,
+    totalBookingDays: totalBookingDays,
+    eventType: eventType,
+  });
 
-    const newBooking = new Booking({
-        user: user._id,
-        startDate:startDate,
-        totalBookingDays:totalBookingDays,
-    });
-
-
-    try {
-        await newBooking.save();
-        return NextResponse.json({ message: 'Booking Saved' }, { status: 200 });
-    } catch (error) {
-        console.log(error)
-        return NextResponse.json({ message: 'Error in Booking', error }, { status: 500 });
-    }
+  try {
+    await newBooking.save();
+    return NextResponse.json({ message: "Booking Saved" }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "Error in Booking", error },
+      { status: 500 },
+    );
+  }
 }
