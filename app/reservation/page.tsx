@@ -11,6 +11,18 @@ import "react-calendar/dist/Calendar.css";
 import { FaWhatsapp } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { Footer } from "../components/footer";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
@@ -123,11 +135,9 @@ export default function Reservation() {
         if (booking) {
           setSelectedBooking(booking); // Store the booking
           setShowUpdateDelete(true); // Show popup
-          // console.log(showUpdateDelete);
-          // console.log(selectedBooking);
         }
       } else {
-        alert("Sorry, this date is already reserved!");
+        toast.error("Sorry, this date is already reserved!");
       }
       return;
     }
@@ -174,12 +184,12 @@ export default function Reservation() {
     if (!selectedDate) return;
 
     if (!MOB_NUMBER_PATTERN.test(mobNumber)) {
-      alert("Please enter a valid 10-digit mobile number.");
+      toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
 
     if (!name || !mobNumber || !selectedDate) {
-      alert("Please fill in all required fields.");
+      toast.warning("Please fill in all required fields.");
       return;
     }
 
@@ -209,13 +219,13 @@ export default function Reservation() {
       });
 
       if (res.ok) {
-        alert("Reservation successful!");
+        toast.success("Reservation successful!");
         setShowForm(false);
         setSelectedDate(null);
         fetchBookings();
       } else {
         const error = await res.json();
-        alert(`Reservation failed: ${error.message}`);
+        toast.error(`Reservation failed: ${error.message}`);
       }
     } catch (err) {
       console.error("Error making reservation:", err);
@@ -226,12 +236,12 @@ export default function Reservation() {
     e.preventDefault();
 
     if (!MOB_NUMBER_PATTERN.test(inquiryPhone)) {
-      alert("Please enter a valid 10-digit mobile number.");
+      toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
 
     if (!inquiryName || !inquiryPhone || !inquiryDate) {
-      alert("Please fill in all required fields.");
+      toast.warning("Please fill in all required fields.");
       return;
     }
 
@@ -264,7 +274,7 @@ export default function Reservation() {
           setInquirySuccess(false);
         }, 4000);
       } else {
-        alert(`Inquiry failed: ${result.error}`);
+        toast.error(`Inquiry failed: ${result.error}`);
       }
     } catch (err) {
       console.error("Inquiry submission error:", err);
@@ -303,10 +313,6 @@ export default function Reservation() {
     saveAs(data, "bookings.xlsx");
   };
 
-  // // Disable tiles if date is reserved (for all users)
-  // const tileDisabled = ({ date }: { date: Date }) =>
-  //   reservedDates.some(d => format(d, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
-
   // Style reserved dates for all users
   const tileClassName = ({ date }: { date: Date }) =>
     reservedDates.some(
@@ -314,67 +320,6 @@ export default function Reservation() {
     )
       ? "reserved-date"
       : "";
-
-  // console.log("under", showUpdateDelete);
-
-  //       {showUpdateDelete && selectedBooking && (
-  //   <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-2xl p-6 m-4 rounded-xl w-[90%] max-w-xl mx-auto">
-  //     <h3 className="text-xl font-bold mb-4 text-center">Manage Booking</h3>
-  //     <p><strong>Name:</strong> {selectedBooking.user?.name}</p>
-  //     <p><strong>Mobile:</strong> {selectedBooking.user?.mobNumber}</p>
-  //     <p><strong>Start Date:</strong> {format(new Date(selectedBooking.startDate), 'yyyy-MM-dd')}</p>
-  //     <p><strong>Days:</strong> {selectedBooking.totalBookingDays}</p>
-
-  //     <div className="flex justify-between mt-6">
-  //       <button
-  //         className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
-  //         onClick={() => setShowUpdateDelete(false)}
-  //       >
-  //         Cancel
-  //       </button>
-  //       <button
-  //         className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-  //         onClick={() => {
-  //           // Prefill reservation form with this booking's data
-  //           setMobNumber(selectedBooking.user?.mobNumber || '');
-  //           setMobNumber2(selectedBooking.mobNumber2 || '');
-  //           setName(selectedBooking.user?.name || '');
-  //           setEmail(selectedBooking.user?.email || '');
-  //           setBookingDays(selectedBooking.totalBookingDays);
-  //           setSelectedDate(new Date(selectedBooking.startDate));
-  //           setShowForm(true);
-  //           setShowUpdateDelete(false);
-  //         }}
-  //       >
-  //         Update
-  //       </button>
-  //       <button
-  //         className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-  //         onClick={async () => {
-  //           if (confirm("Are you sure you want to delete this booking?")) {
-  //             try {
-  //               const res = await fetch(`/api/booking/${selectedBooking._id}`, {
-  //                 method: 'DELETE',
-  //               });
-  //               if (res.ok) {
-  //                 alert("Booking deleted successfully.");
-  //                 fetchBookings();
-  //                 setShowUpdateDelete(false);
-  //               } else {
-  //                 alert("Failed to delete booking.");
-  //               }
-  //             } catch (err) {
-  //               console.error(err);
-  //               alert("Error deleting booking.");
-  //             }
-  //           }
-  //         }}
-  //       >
-  //         Delete
-  //       </button>
-  //     </div>
-  //   </div>
-  // )}
 
   return (
     <main className=" pt-15 mb-3 ">
@@ -454,37 +399,56 @@ export default function Reservation() {
               </button>
 
               {/* Delete */}
-              <button
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                onClick={async () => {
-                  if (
-                    confirm("Are you sure you want to delete this booking?")
-                  ) {
-                    try {
-                      const res = await fetch(
-                        `/api/booking/${selectedBooking._id}`,
-                        {
-                          method: "DELETE",
-                        },
-                      );
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Delete
+                  </button>
+                </AlertDialogTrigger>
 
-                      if (res.ok) {
-                        alert("Booking deleted successfully.");
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Booking?</AlertDialogTitle>
 
-                        fetchBookings();
-                        setShowUpdateDelete(false);
-                      } else {
-                        alert("Failed to delete booking.");
-                      }
-                    } catch (err) {
-                      console.error(err);
-                      alert("Error deleting booking.");
-                    }
-                  }
-                }}
-              >
-                Delete
-              </button>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      the selected booking.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                    <AlertDialogAction
+                      className="bg-red-600 hover:bg-red-700"
+                      onClick={async () => {
+                        try {
+                          const res = await fetch(
+                            `/api/booking/${selectedBooking._id}`,
+                            {
+                              method: "DELETE",
+                            },
+                          );
+
+                          if (res.ok) {
+                            toast.success("Booking deleted successfully.");
+
+                            fetchBookings();
+                            setShowUpdateDelete(false);
+                          } else {
+                            toast.error("Failed to delete booking.");
+                          }
+                        } catch (err) {
+                          console.error(err);
+                          toast.error("Error deleting booking.");
+                        }
+                      }}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </div>
@@ -743,7 +707,7 @@ export default function Reservation() {
                 Check Date Availability
               </h3>
 
-              <p className="text-center text-sm text-gray-600 mb-5">
+              <p className="text-center text-sm text-gray-600 mb-2">
                 Select your preferred event date to check availability.
               </p>
 
@@ -764,7 +728,7 @@ export default function Reservation() {
                 }
               />
 
-              <p className="mt-5 text-center text-sm text-gray-500">
+              <p className="mt-2 text-center text-sm text-gray-500">
                 Dates marked in{" "}
                 <span className="font-semibold text-red-600">red</span> are
                 already booked.
