@@ -24,6 +24,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import FAQSection from "../components/faq";
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
@@ -67,15 +69,66 @@ export default function Reservation() {
 
   const [inquirySuccess, setInquirySuccess] = useState(false);
   const [inquiryLoading, setInquiryLoading] = useState(false);
+  const [showInquiryPopup, setShowInquiryPopup] = useState(false);
   // State for login status
   const [loggedIn, setLoggedIn] = useState(false);
+  const [fadeIn, setFadeIn] = useState(false);
 
   const [inquiryEventType, setInquiryEventType] = useState("Wedding");
   const [eventType, setEventType] = useState("Wedding");
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowInquiryPopup(false);
+        setInquiryDate("");
+        setSelectedDate(null);
+      }
+    };
+
+    if (showInquiryPopup) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showInquiryPopup]);
+  useEffect(() => {
+    if (showInquiryPopup) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showInquiryPopup]);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowForm(false);
+        setSelectedDate(null);
+      }
+    };
+
+    if (showForm) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showForm]);
+  useEffect(() => {
+    if (showForm) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showForm]);
+  useEffect(() => {
     // Check login status by reading session_token cookie
     const token = getCookie("session_token");
     setLoggedIn(!!token);
+    // Trigger fade-in animation on mount
+    setFadeIn(true);
   }, []);
 
   useEffect(() => {
@@ -83,7 +136,50 @@ export default function Reservation() {
     // console.log(selectedBooking);
     fetchBookings();
   }, [activeStartDate]);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setEditingBooking(null);
+      }
+    };
 
+    if (editingBooking) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [editingBooking]);
+  useEffect(() => {
+    if (editingBooking) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [editingBooking]);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowUpdateDelete(false);
+      }
+    };
+
+    if (showUpdateDelete) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showUpdateDelete]);
+  useEffect(() => {
+    if (showUpdateDelete) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showUpdateDelete]);
   const fetchBookings = async () => {
     try {
       const month = activeStartDate.getMonth() + 1;
@@ -120,14 +216,11 @@ export default function Reservation() {
 
     if (isReserved) {
       if (loggedIn) {
-        // console.log("reached");
-        // Find the booking that contains this date
         const booking = bookingList.find((b) => {
           const start = new Date(b.startDate);
           for (let i = 0; i < b.totalBookingDays; i++) {
             const checkDate = new Date(start);
             checkDate.setDate(start.getDate() + i);
-            // console.log(checkDate);
             if (format(checkDate, "yyyy-MM-dd") === formattedDate) {
               return true;
             }
@@ -145,8 +238,12 @@ export default function Reservation() {
       return;
     }
 
-    if (!loggedIn) return;
-
+    if (!loggedIn) {
+      setSelectedDate(date);
+      setInquiryDate(formattedDate);
+      setShowInquiryPopup(true);
+      return;
+    }
     setSelectedDate(date);
     setName("");
     setMobNumber("");
@@ -281,9 +378,15 @@ export default function Reservation() {
       if (res.ok) {
         setInquirySuccess(true);
 
+        setTimeout(() => {
+          setShowInquiryPopup(false);
+          setInquirySuccess(false);
+        }, 2000);
+
         setInquiryName("");
         setInquiryPhone("");
         setInquiryDate("");
+        setSelectedDate(null);
         setInquiryDays(1);
         setInquiryEventType("Wedding");
 
@@ -352,18 +455,47 @@ export default function Reservation() {
           background: #ff4d4d !important;
           color: white !important;
         }
+        /* Remove underline under weekday names */
+        .react-calendar__month-view__weekdays abbr {
+          text-decoration: none !important;
+          border-bottom: none !important;
+        }
+
+        /* Weekday header styling using theme */
+        .react-calendar__month-view__weekdays {
+          text-transform: uppercase;
+          font-weight: 600;
+          font-size: 0.75rem;
+          color: #7a8740 !important; /* theme dark primary */
+        }
+
+        /* Optional spacing */
+        .react-calendar__month-view__weekdays__weekday {
+          padding: 8px 0;
+        }
       `}</style>
 
       {showUpdateDelete && selectedBooking && !editingBooking && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="bg-white shadow-2xl p-6 rounded-xl w-full max-w-xl">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 overflow-y-auto"
+          onClick={() => setShowUpdateDelete(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white shadow-2xl p-4 sm:p-6 rounded-2xl w-full max-w-xl relative max-h-[90vh] overflow-y-auto"
+          >
             <h3 className="text-xl font-bold mb-6 text-center">
               Manage Booking
             </h3>
-
+            <button
+              className="absolute top-2 right-2 w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 text-lg"
+              onClick={() => setShowUpdateDelete(false)}
+            >
+              ✕
+            </button>
             {/* Booking Details */}
 
-            <div className="space-y-2 text-gray-700">
+            <div className="space-y-2 text-gray-700 text-sm sm:text-base">
               <p>
                 <strong>Name:</strong> {selectedBooking.user?.name}
               </p>
@@ -387,7 +519,7 @@ export default function Reservation() {
 
             {/* Buttons */}
 
-            <div className="flex justify-between gap-4 mt-6">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
               {/* Cancel */}
               <button
                 className="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
@@ -398,7 +530,7 @@ export default function Reservation() {
 
               {/* Update */}
               <button
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+                className="w-full bg-[#c3ca6d] hover:bg-[#7a8740] text-white font-bold py-2 px-4 rounded"
                 onClick={() => {
                   // ⭐ IMPORTANT FIX
                   setuserid(selectedBooking.user?._id || "");
@@ -425,7 +557,7 @@ export default function Reservation() {
               {/* Delete */}
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition">
                     Delete
                   </button>
                 </AlertDialogTrigger>
@@ -480,9 +612,21 @@ export default function Reservation() {
 
       {/* EDIT FORM */}
       {editingBooking && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="bg-white shadow-2xl p-6 rounded-xl w-full max-w-xl">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 overflow-y-auto"
+          onClick={() => setEditingBooking(null)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white shadow-2xl p-4 sm:p-6 rounded-2xl w-full max-w-xl relative max-h-[90vh] overflow-y-auto"
+          >
             <h3 className="text-xl font-bold mb-6 text-center">Edit Booking</h3>
+            <button
+              className="absolute top-2 right-2 w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 text-lg"
+              onClick={() => setEditingBooking(null)}
+            >
+              ✕
+            </button>
 
             {/* Name */}
             <label className="block mb-2 font-medium">Name:</label>
@@ -492,7 +636,7 @@ export default function Reservation() {
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
               placeholder="Enter name"
-              className="border p-2 w-full rounded mb-4"
+              className="w-full border border-gray-300 rounded px-4 py-2 mb-4"
               required
             />
 
@@ -515,7 +659,7 @@ export default function Reservation() {
               maxLength={10}
               inputMode="numeric"
               placeholder="Enter 10-digit number"
-              className="border p-2 w-full rounded mb-4"
+              className="w-full border border-gray-300 rounded px-4 py-2 mb-4"
               required
             />
 
@@ -526,7 +670,7 @@ export default function Reservation() {
               type="date"
               value={editStartDate}
               onChange={(e) => setEditStartDate(e.target.value)}
-              className="border p-2 w-full rounded mb-4"
+              className="w-full border border-gray-300 rounded px-4 py-2 mb-4"
               required
             />
 
@@ -553,7 +697,7 @@ export default function Reservation() {
               <select
                 value={eventType}
                 onChange={(e) => setEventType(e.target.value)}
-                className="w-full border rounded p-2"
+                className="w-full border border-gray-300 rounded px-4 py-2"
                 required
               >
                 <option value="Wedding">Wedding</option>
@@ -574,7 +718,7 @@ export default function Reservation() {
               </button>
 
               <button
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                className="w-full bg-[#c3ca6d] hover:bg-[#7a8740] text-white font-bold py-2 px-4 rounded"
                 onClick={async () => {
                   // Validation
                   if (editPhone.length !== 10) {
@@ -632,8 +776,17 @@ export default function Reservation() {
       <div className="relative min-h-screen bg-[#FeFFF1]">
         {/* Form Popup */}
         {showForm && loggedIn && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-            <div className="bg-white shadow-2xl p-6 rounded-xl w-full max-w-xl">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 overflow-y-auto"
+            onClick={() => {
+              setShowForm(false);
+              setSelectedDate(null);
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white shadow-2xl p-4 sm:p-6 rounded-2xl w-full max-w-xl relative max-h-[90vh] overflow-y-auto"
+            >
               <h3 className="text-xl font-bold mb-4 text-center">
                 Complete Your Reservation
               </h3>
@@ -642,6 +795,22 @@ export default function Reservation() {
                 {/* Starting Date */}
                 {selectedDate && (
                   <div className="mb-4">
+                    <button
+                      className="absolute top-2 right-2 w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 text-lg"
+                      onClick={() => {
+                        setShowForm(false);
+                        setSelectedDate(null);
+
+                        setName("");
+                        setMobNumber("");
+                        setEmail("");
+                        setMobNumber2("");
+                        setBookingDays(1);
+                        setEventType("Wedding");
+                      }}
+                    >
+                      ✕
+                    </button>
                     <label className="block text-sm font-medium mb-1">
                       Event Date
                     </label>
@@ -672,7 +841,7 @@ export default function Reservation() {
                     maxLength={10}
                     inputMode="numeric"
                     placeholder="Enter 10-digit mobile number"
-                    className="w-full border rounded p-2"
+                    className="w-full border border-gray-300 rounded px-4 py-2"
                     required
                   />
                 </div>
@@ -685,7 +854,7 @@ export default function Reservation() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Enter name"
-                    className="w-full border rounded p-2"
+                    className="w-full border border-gray-300 rounded px-4 py-2"
                     required
                   />
                 </div>
@@ -698,7 +867,7 @@ export default function Reservation() {
                   <select
                     value={eventType}
                     onChange={(e) => setEventType(e.target.value)}
-                    className="w-full border rounded p-2"
+                    className="w-full border border-gray-300 rounded px-4 py-2"
                     required
                   >
                     <option value="Wedding">Wedding</option>
@@ -720,7 +889,7 @@ export default function Reservation() {
                     value={bookingDays}
                     min={1}
                     onChange={(e) => setBookingDays(Number(e.target.value))}
-                    className="w-full border rounded p-2"
+                    className="w-full border border-gray-300 rounded px-4 py-2"
                     required
                   />
                 </div>
@@ -732,8 +901,8 @@ export default function Reservation() {
                     className="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded"
                     onClick={() => {
                       setShowForm(false);
+                      setSelectedDate(null);
 
-                      // ✅ Reset form
                       setName("");
                       setMobNumber("");
                       setEmail("");
@@ -747,7 +916,7 @@ export default function Reservation() {
 
                   <button
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="w-full bg-[#c3ca6d] hover:bg-[#7a8740] text-white font-bold py-2 px-4 rounded"
                   >
                     Reserve Now
                   </button>
@@ -757,26 +926,31 @@ export default function Reservation() {
           </div>
         )}
 
-        <section className="flex flex-col items-center justify-center py-12">
-          <motion.div
-            initial={{ y: -40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className=" text-center"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold mb-3 mt-5 text-gray-900">
-              Plan Your Celebration With Us
-            </h1>
+        <section className="flex flex-col items-center justify-center pb-12">
+          <div className="w-full bg-gradient-to-r from-[#c3ca6d] to-[#7a8740] py-12 sm:py-14 md:py-16 px-4">
+            <div className="flex items-center justify-center text-white text-center">
+              <h1
+                className={`
+        text-2xl 
+        sm:text-3xl 
+        md:text-4xl 
+        lg:text-5xl 
+        font-bold 
+        italic 
+        leading-tight
+        transition-all 
+        duration-700
+        ${fadeIn ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6"}
+      `}
+              >
+                Plan Your Perfect Celebration
+              </h1>
+            </div>
+          </div>
 
-            <p className="text-lg text-gray-600 max-w-xl mx-auto">
-              Explore available dates and share your event details to begin
-              planning.
-            </p>
-          </motion.div>
-
-          <div className="flex flex-col md:flex-row justify-center items-start gap-8 mt-2 px-4">
+          <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-6 md:gap-8 mt-4 px-4">
             {/* Calendar section (always visible) */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100 w-full max-w-[340px] sm:max-w-sm mx-auto">
               <h3 className="text-2xl font-semibold mb-3 text-center text-gray-900">
                 Check Date Availability
               </h3>
@@ -786,6 +960,8 @@ export default function Reservation() {
               </p>
 
               <Calendar
+                className="w-full"
+                value={selectedDate}
                 onClickDay={handleDateClick}
                 tileClassName={tileClassName}
                 tileDisabled={({ date, view }) => {
@@ -808,132 +984,166 @@ export default function Reservation() {
                 already booked.
               </p>
             </div>
+
             {/* Event Enquiry Form */}
-
-            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md border border-gray-100">
-              {/* Premium Heading */}
-              <h2 className="text-xl font-semibold mb-2 text-center text-gray-900">
-                Share Your Event Details
-              </h2>
-
-              <p className="text-sm text-gray-600 text-center mb-6">
-                Select your preferred dates and our team will contact you to
-                confirm availability.
-              </p>
-
-              <form onSubmit={handleInquirySubmit} className="space-y-5">
-                {/* Full Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={inquiryName}
-                    onChange={(e) => setInquiryName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
-                    placeholder="Enter your full name"
-                    required
-                  />
-                </div>
-
-                {/* Phone */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    value={inquiryPhone}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, ""); // allow numbers only
-                      setInquiryPhone(value);
+            {showInquiryPopup && !loggedIn && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 overflow-y-auto"
+                onClick={() => {
+                  setShowInquiryPopup(false);
+                  setInquiryDate("");
+                  setSelectedDate(null);
+                }}
+              >
+                <div
+                  id="inquiry-form"
+                  onClick={(e) => e.stopPropagation()}
+                  className={`
+  bg-white
+  rounded-xl
+  shadow-xl
+  p-4 sm:p-2
+  w-full
+  max-w-md
+  border border-gray-100
+  relative
+  max-h-[90vh]
+  overflow-y-auto
+`}
+                >
+                  <button
+                    className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
+                    onClick={() => {
+                      setShowInquiryPopup(false);
+                      setInquiryDate("");
+                      setSelectedDate(null);
                     }}
-                    maxLength={10}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
-                    placeholder="Enter 10-digit mobile number"
-                    required
-                  />
-                </div>
-
-                {/* Event Date */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Event Date
-                  </label>
-
-                  <input
-                    type="text"
-                    placeholder="Choose your event date"
-                    value={inquiryDate}
-                    onFocus={(e) => (e.target.type = "date")}
-                    onBlur={(e) => {
-                      if (!e.target.value) e.target.type = "text";
-                    }}
-                    onChange={(e) => setInquiryDate(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
-                    required
-                  />
-                </div>
-                {/* Event Type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Event Type
-                  </label>
-
-                  <select
-                    value={inquiryEventType}
-                    onChange={(e) => setInquiryEventType(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
-                    required
                   >
-                    <option value="Wedding">Wedding</option>
-                    <option value="Birthday">Birthday</option>
-                    <option value="Corporate Event">Corporate Event</option>
-                    <option value="Engagement">Engagement</option>
-                    <option value="Reception">Reception</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
+                    ✕
+                  </button>
+                  {/* Premium Heading */}
+                  <h2 className="text-xl font-semibold mb-2 text-center text-gray-900">
+                    Share Your Event Details
+                  </h2>
 
-                {/* Number of Days */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Number of Event Days
-                  </label>
-                  <input
-                    type="number"
-                    value={inquiryDays}
-                    min={1}
-                    onChange={(e) => setInquiryDays(Number(e.target.value))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl  "
-                    placeholder="Enter number of days"
-                    required
-                  />
-                </div>
+                  <p className="text-sm text-gray-600 text-center mb-6">
+                    Select your preferred date and provide your event details.
+                    Our team will reach out to guide you through the booking
+                    process.
+                  </p>
 
-                {/* Success Message */}
-                {inquirySuccess && (
-                  <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl text-center">
-                    Enquiry submitted successfully! We will contact you soon.
-                  </div>
-                )}
+                  <form onSubmit={handleInquirySubmit} className="space-y-5">
+                    {/* Full Name */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        value={inquiryName}
+                        onChange={(e) => setInquiryName(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded  "
+                        placeholder="Enter your full name"
+                        required
+                      />
+                    </div>
 
-                <Button
-                  type="submit"
-                  disabled={inquiryLoading}
-                  className={`w-full py-4 px-6 rounded-2xl font-semibold text-lg transition-all duration-300
+                    {/* Phone */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        value={inquiryPhone}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, "");
+                          setInquiryPhone(value);
+                        }}
+                        maxLength={10}
+                        className="w-full px-4 py-3 border border-gray-300 rounded  "
+                        placeholder="Enter 10-digit mobile number"
+                        required
+                      />
+                    </div>
+
+                    {/* Event Date */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Event Date
+                      </label>
+
+                      <input
+                        type="date"
+                        value={inquiryDate}
+                        readOnly
+                        className="w-full px-4 py-3 border border-gray-300 rounded bg-gray-100 cursor-not-allowed"
+                        required
+                      />
+                    </div>
+                    {/* Event Type */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Event Type
+                      </label>
+
+                      <select
+                        value={inquiryEventType}
+                        onChange={(e) => setInquiryEventType(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded"
+                        required
+                      >
+                        <option value="Wedding">Wedding</option>
+                        <option value="Birthday">Birthday</option>
+                        <option value="Corporate Event">Corporate Event</option>
+                        <option value="Engagement">Engagement</option>
+                        <option value="Reception">Reception</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+
+                    {/* Number of Days */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Number of Event Days
+                      </label>
+                      <input
+                        type="number"
+                        value={inquiryDays}
+                        min={1}
+                        onChange={(e) => setInquiryDays(Number(e.target.value))}
+                        className="w-full px-4 py-3 border border-gray-300 rounded  "
+                        placeholder="Enter number of days"
+                        required
+                      />
+                    </div>
+
+                    {/* Success Message */}
+                    {inquirySuccess && (
+                      <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded text-center">
+                        Enquiry submitted successfully! We will contact you
+                        soon.
+                      </div>
+                    )}
+
+                    <Button
+                      type="submit"
+                      disabled={inquiryLoading}
+                      className={`w-full py-4 px-6 rounded-xl! font-semibold text-lg transition-all duration-300
   ${
     inquiryLoading
       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
       : "bg-[#c3ca6d] hover:bg-[#7a8740] text-white hover:scale-[1.02] hover:shadow-lg"
   }`}
-                >
-                  {inquiryLoading ? "Sending..." : "Send Event Enquiry"}
-                </Button>
-              </form>
-            </div>
+                    >
+                      {inquiryLoading ? "Sending..." : "Send Event Enquiry"}
+                    </Button>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
+          {/* <FAQSection /> */}
           {/* Hide CTA if logged in */}
           {!loggedIn && (
             /* Call to Action Section */
@@ -975,19 +1185,19 @@ export default function Reservation() {
         </section>
 
         {loggedIn && bookingList.length > 0 && (
-          <div className="bg-white rounded-xl shadow-lg p-6 mt-10 w-full max-w-5xl mx-auto mb-3">
-            <h2 className="text-xl font-bold mb-4 text-center">
+          <div className="bg-white rounded shadow-lg p-4 sm:p-6 mt-8 sm:mt-10 w-full max-w-5xl mx-auto mb-3">
+            <h2 className="text-lg sm:text-xl font-bold mb-4 text-center text-[#7a8740]!">
               This Month’s Bookings
             </h2>
 
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-300">
+            <div className="overflow-x-auto rounded">
+              <table className="min-w-full border border-gray-300 text-sm sm:text-base">
                 <thead className="bg-gray-100">
                   <tr>
                     <th className="border p-2 text-left">Name</th>
                     <th className="border p-2 text-left">Mobile</th>
                     <th className="border p-2 text-left">Event Date</th>
-                    <th className="border p-2 text-left">Event Date</th>
+                    <th className="border p-2 text-left">Event Type</th>
                     <th className="border p-2 text-center">Days</th>
                   </tr>
                 </thead>
@@ -1029,14 +1239,14 @@ export default function Reservation() {
             <div className="flex flex-col sm:flex-row justify-end mt-4 gap-3">
               <Button
                 onClick={exportToPDF}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded w-full sm:w-auto"
               >
                 Export PDF
               </Button>
 
               <Button
                 onClick={exportToExcel}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto"
+                className="bg-[#c3ca6d] hover:bg-[#7a8740] text-white px-4 py-2 rounded w-full sm:w-auto"
               >
                 Export Excel
               </Button>

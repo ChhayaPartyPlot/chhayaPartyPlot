@@ -441,9 +441,12 @@ export default function About() {
 
             <div
               className="
-    absolute left-4 md:left-1/2
-    transform md:-translate-x-1/2
-    h-full w-[2px]
+    absolute
+    left-[18px] md:left-1/2
+    top-0
+    bottom-0
+    md:-translate-x-1/2
+    w-[2px]
     bg-[#c3ca6d]
   "
             ></div>
@@ -460,7 +463,11 @@ export default function About() {
               >
                 <div
                   className="
-            ml-10 md:ml-0
+        ml-12 md:ml-0
+bg-white
+rounded-xl
+shadow-sm
+p-4 md:p-0
             md:w-5/12
             md:text-right
             md:pr-8
@@ -477,12 +484,16 @@ export default function About() {
                 {/* Dot */}
                 <div
                   className="
-    absolute left-4 md:left-1/2
-    transform md:-translate-x-1/2
-    w-4 h-4 md:w-5 md:h-5
-    border-2 border-white
+    absolute
+    left-[10px] md:left-1/2
+    md:-translate-x-1/2
+
+    w-5 h-5
+    border-4 border-white
     bg-[#7a8740]
+
     rounded-full
+    shadow-md shadow-[#7a8740]/40
   "
                 ></div>
               </div>
@@ -502,7 +513,11 @@ export default function About() {
 
                 <div
                   className="
-            ml-10 md:ml-0
+          ml-12 md:ml-0
+bg-white
+rounded-xl
+shadow-sm
+p-4 md:p-0
             md:w-5/12
             md:pl-8
           "
@@ -519,12 +534,16 @@ export default function About() {
 
                 <div
                   className="
-    absolute left-4 md:left-1/2
-    transform md:-translate-x-1/2
-    w-4 h-4 md:w-5 md:h-5
-    border-2 border-white
+    absolute
+    left-[10px] md:left-1/2
+    md:-translate-x-1/2
+
+    w-5 h-5
+    border-4 border-white
     bg-[#7a8740]
+
     rounded-full
+    shadow-md shadow-[#7a8740]/40
   "
                 ></div>
               </div>
@@ -542,7 +561,11 @@ export default function About() {
               >
                 <div
                   className="
-            ml-10 md:ml-0
+           ml-12 md:ml-0
+bg-white
+rounded-xl
+shadow-sm
+p-4 md:p-0
             md:w-5/12
             md:text-right
             md:pr-8
@@ -560,12 +583,16 @@ export default function About() {
 
                 <div
                   className="
-    absolute left-4 md:left-1/2
-    transform md:-translate-x-1/2
-    w-4 h-4 md:w-5 md:h-5
-    border-2 border-white
+    absolute
+    left-[10px] md:left-1/2
+    md:-translate-x-1/2
+
+    w-5 h-5
+    border-4 border-white
     bg-[#7a8740]
+
     rounded-full
+    shadow-md shadow-[#7a8740]/40
   "
                 ></div>
               </div>
@@ -585,7 +612,11 @@ export default function About() {
 
                 <div
                   className="
-            ml-10 md:ml-0
+ ml-12 md:ml-0
+bg-white
+rounded-xl
+shadow-sm
+p-4 md:p-0
             md:w-5/12
             md:pl-8
           "
@@ -602,12 +633,16 @@ export default function About() {
 
                 <div
                   className="
-    absolute left-4 md:left-1/2
-    transform md:-translate-x-1/2
-    w-4 h-4 md:w-5 md:h-5
-    border-2 border-white
+    absolute
+    left-[10px] md:left-1/2
+    md:-translate-x-1/2
+
+    w-5 h-5
+    border-4 border-white
     bg-[#7a8740]
+
     rounded-full
+    shadow-md shadow-[#7a8740]/40
   "
                 ></div>
               </div>
@@ -630,7 +665,9 @@ export default function About() {
             className="text-4xl md:text-5xl font-bold"
           >
             Why Choose{" "}
-            <b className="text-[#7a8740] drop-shadow-sm">Chhaya Party Plot</b>
+            <span className="text-transparent font-bold bg-clip-text bg-gradient-to-r from-[#c3ca6d] to-[#7a8740]">
+              Chhaya Party Plot
+            </span>
           </motion.h2>
 
           {/* Decorative Line */}
@@ -667,7 +704,7 @@ export default function About() {
               initial="hidden"
               whileInView="visible"
               whileHover={{ scale: 1.05 }}
-              className="bg-[#FeFFF1] p-10 rounded-2xl  hover:shadow-2xl transition duration-300"
+              className="bg-[#FeFFF1] p-10 rounded-2xl  hover:shadow-xl transition duration-300"
             >
               {/* Icon */}
 
@@ -699,7 +736,7 @@ export default function About() {
               whileInView="visible"
               transition={{ delay: 0.2 }}
               whileHover={{ scale: 1.05 }}
-              className="bg-[#FeFFF1] p-10 rounded-2xl  hover:shadow-2xl transition duration-300"
+              className="bg-[#FeFFF1] p-10 rounded-2xl  hover:shadow-xl  transition duration-300"
             >
               {/* Icon */}
 
@@ -731,7 +768,7 @@ export default function About() {
               whileInView="visible"
               transition={{ delay: 0.4 }}
               whileHover={{ scale: 1.05 }}
-              className="bg-[#FeFFF1] p-10 rounded-2xl  hover:shadow-2xl transition duration-300"
+              className="bg-[#FeFFF1] p-10 rounded-2xl  hover:shadow-xl transition duration-300"
             >
               {/* Icon */}
 
@@ -777,7 +814,7 @@ export default function About() {
   "
           >
             "આપના પ્રસંગ માટેનું એકમાત્ર સ્થળ એટલે
-            <span className="text-[#7a8740] font-bold drop-shadow-sm">
+            <span className="text-transparent font-extrabold bg-clip-text bg-gradient-to-r from-[#c3ca6d] to-[#7a8740]">
               {" "}
               છાયા પાર્ટી પ્લોટ
             </span>

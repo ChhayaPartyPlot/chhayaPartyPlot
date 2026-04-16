@@ -132,7 +132,7 @@ export default function Dock({
     <>
       {/* Mobile Toggle Button */}
 
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {!isOpen && (
           <motion.div
             className="
@@ -160,7 +160,7 @@ export default function Dock({
             <FaWhatsapp className="text-white text-3xl" />
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
 
       {/* Dock Panel */}
 
