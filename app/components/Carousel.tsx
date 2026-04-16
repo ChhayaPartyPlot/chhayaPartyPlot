@@ -6,14 +6,14 @@ import Link from "next/link";
 
 const images = [
   {
-    src: "/D2.JPG",
+    src: "/D3.JPG",
     alt: "Chhaya Party Plot Grand Entrance",
     caption: "Grand Entrance",
     description:
       "A welcoming entrance designed to create the perfect first impression for your special events.",
   },
   {
-    src: "/D3.JPG",
+    src: "/D2.JPG",
     alt: "Spacious Lawn at Chhaya Party Plot",
     caption: "Spacious Green Lawn",
     description:
@@ -50,6 +50,7 @@ function Carousel1() {
         data-bs-theme="dark"
         interval={8000}
         pause={false}
+        touch={true}
         onSelect={(selectedIndex) => setActiveIndex(selectedIndex)}
       >
         {images.map((image, index) => (
@@ -64,7 +65,7 @@ function Carousel1() {
               />
 
               {/* Overlay on image only */}
-              <div className="absolute inset-0 bg-black/20 z-[1] pointer-events-none"></div>
+              <div className="absolute inset-0 bg-black/40 z-[1] pointer-events-none"></div>
 
               {/* Carousel Caption */}
 
@@ -81,7 +82,7 @@ function Carousel1() {
                   <h1
                     className="
     text-white
-    text-3xl sm:text-4xl md:text-6xl lg:text-7xl
+text-2xl sm:text-3xl md:text-5xl lg:text-6xl
     font-playfair
     tracking-wide
     font-bold
@@ -91,10 +92,10 @@ function Carousel1() {
   "
                   >
                     Your Perfect Venue for{" "}
-                    <span className="text-[#f5e6a8]">Grand Celebrations</span>
+                    <span className="text-[#c3ca6d]">Grand Celebrations</span>
                     <br className="hidden md:block" />
                     Create Timeless{" "}
-                    <span className="text-[#f5e6a8]">Memories</span>
+                    <span className="text-[#c3ca6d]">Memories</span>
                   </h1>
 
                   {/* Subtitle */}

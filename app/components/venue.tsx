@@ -1,3 +1,4 @@
+import { scale } from "framer-motion";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -66,6 +67,35 @@ const VenueShowcase = () => {
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null);
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+
+    const distance = touchStartX - touchEndX;
+
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    }
+
+    if (isRightSwipe) {
+      prevSlide();
+    }
+  };
 
   return (
     <section className="py-2 bg-[#FEFFF1]">
@@ -80,7 +110,12 @@ const VenueShowcase = () => {
         </div>
 
         <div className="relative max-w-6xl mx-auto">
-          <div className="relative h-96 md:h-[500px]  rounded-3xl overflow-hidden shadow-2xl">
+          <div
+            className="relative h-72 sm:h-80 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl touch-pan-y"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             {venueImages.map((image, index) => (
               <div
                 key={index}
@@ -210,7 +245,7 @@ const VenueShowcase = () => {
 
         ${
           index === currentSlide
-            ? "ring-2 ring-green-600 scale-105 shadow-lg"
+            ? "ring-2 ring-[#c3ca6d] bg-[#c3ca6d]/20 scale-105 shadow-lg"
             : "opacity-70 hover:opacity-100 hover:scale-105"
         }
       `}

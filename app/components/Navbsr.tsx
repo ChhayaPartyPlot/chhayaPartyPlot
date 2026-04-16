@@ -81,7 +81,7 @@ lg:hidden
     w-10 h-10
     rounded-full
     text-black
-    hover:bg-[#c3ca6d]
+    hover:bg-[#c3ca6d]!
     hover:text-white
     transition-all duration-200
 
@@ -114,8 +114,8 @@ lg:hidden
                 transition
                 ${
                   pathname === item.path
-                    ? "text-[#c3ca6d]! font-semibold"
-                    : "text-black hover:text-[#aab45a]!"
+                    ? "text-[#7a8740]! font-semibold"
+                    : "text-black hover:text-[#c3ca6d]!"
                 }
               `}
             >
@@ -234,9 +234,10 @@ lg:hidden
                 transition
                 ${
                   pathname === item.path
-                    ? "bg-[#c3ca6d] text-white"
-                    : "text-black hover:bg-gray-100"
+                    ? "bg-[#7a8740]! text-white"
+                    : "text-black hover:bg-[#c3ca6d]/20!"
                 }
+              
               `}
             >
               {item.name}

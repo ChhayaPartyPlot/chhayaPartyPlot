@@ -288,7 +288,7 @@ const Services = () => {
                     "
                           >
                             <Star
-                              className="text-green-500 fill-current"
+                              className="text-[#7a8740]/80 fill-[#7a8740]/80"
                               size={12}
                             />
                             <span>{feature}</span>
@@ -348,11 +348,11 @@ const Services = () => {
           rounded-full
           transition-all
           duration-300
-          ${
-            index === currentSlide
-              ? "w-8 bg-green-600 shadow-md shadow-green-600/40"
-              : "w-2 bg-gray-300 hover:bg-gray-400"
-          }
+      ${
+        index === currentSlide
+          ? "w-8 bg-[#c3ca6d] shadow-md shadow-[#c3ca6d]/40"
+          : "w-2 bg-gray-300 hover:bg-gray-400"
+      }
         `}
               />
             ))}

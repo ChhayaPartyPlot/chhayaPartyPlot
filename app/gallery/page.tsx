@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Footer } from "../components/footer";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { toast } from "sonner";
 /* ================= Cookie Helper ================= */
 
 function getCookie(name: string) {
@@ -82,7 +83,7 @@ const Gallery = () => {
       });
 
       if (!res.ok) {
-        alert("Delete failed");
+        toast.error("Delete failed");
         return;
       }
 
@@ -93,7 +94,6 @@ const Gallery = () => {
       alert("Image deleted successfully!");
     } catch (error) {
       alert("Error deleting image");
-      console.error(error);
     }
   };
 
@@ -126,7 +126,7 @@ const Gallery = () => {
         return;
       }
 
-      alert("Image uploaded successfully!");
+      toast.success("Image uploaded successfully!");
 
       const updatedImages = await (await fetch("/api/image")).json();
 
@@ -153,6 +153,28 @@ const Gallery = () => {
     if (selectedIndex === null) return;
 
     setSelectedIndex((selectedIndex - 1 + images.length) % images.length);
+  };
+
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].screenX;
+
+    if (touchStartX.current !== null && touchEndX.current !== null) {
+      const distance = touchStartX.current - touchEndX.current;
+
+      if (distance > 50) {
+        handleNext(); // swipe left → next
+      }
+
+      if (distance < -50) {
+        handlePrev(); // swipe right → prev
+      }
+    }
   };
 
   return (
@@ -191,19 +213,18 @@ const Gallery = () => {
 
       {/* ================= Upload ================= */}
 
-      <div className="px-4 sm:px-6 lg:px-8 py-4 max-w-7xl mx-auto flex justify-end">
+      <div className="px-4 sm:px-6 lg:px-8 py-4 max-w-7xl mx-auto flex justify-center sm:justify-end">
         {loggedIn && (
           <>
             <button
               onClick={handleUploadClick}
               disabled={uploading}
               className="
-                bg-blue-600
-                hover:bg-blue-700
+              bg-[#c3ca6d] hover:bg-[#7a8740]
                 text-white
                 text-sm sm:text-base
                 py-2 px-4 sm:px-5
-                rounded-lg
+                rounded
                 shadow
                 transition
               "
@@ -226,7 +247,14 @@ const Gallery = () => {
 
       <div className="px-4 sm:px-6 lg:px-8 pb-6 max-w-7xl mx-auto">
         {loading ? (
-          <div className="text-center text-lg py-10">Loading images...</div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="h-40 bg-gray-200 animate-pulse rounded-xl"
+              />
+            ))}
+          </div>
         ) : (
           <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
             {images.map((img, index) => (
@@ -260,11 +288,10 @@ const Gallery = () => {
                       bg-red-600
                       hover:bg-red-700
                       text-white
-                      text-xs
-                      px-2 py-1
-                      rounded-md
+                     rounded
                       shadow
                       transition
+                      text-xs px-2.5 py-1.5 
                     "
                   >
                     Delete
@@ -311,7 +338,8 @@ const Gallery = () => {
               absolute
               left-4
               text-white
-              text-3xl sm:text-5xl
+         text-4xl sm:text-5xl
+         
               font-bold
             "
             onClick={(e) => {
@@ -328,13 +356,16 @@ const Gallery = () => {
             src={images[selectedIndex].url}
             alt="Full view"
             className="
-              max-h-[85vh]
-              max-w-[95vw]
-              object-contain
-              rounded-lg
-              shadow-2xl
-            "
+    max-h-[85vh]
+    max-w-[95vw]
+    object-contain
+    rounded-lg
+    shadow-2xl
+    touch-pan-y
+  "
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           />
 
           {/* Next */}
@@ -344,7 +375,7 @@ const Gallery = () => {
               absolute
               right-4
               text-white
-              text-3xl sm:text-5xl
+                text-4xl sm:text-5xl
               font-bold
             "
             onClick={(e) => {
