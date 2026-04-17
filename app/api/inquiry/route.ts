@@ -1,4 +1,5 @@
 import { connectToDatabase } from "@/app/lib/mongodb";
+import { sendInquiryEmail } from "@/app/lib/sendInquiryEmail";
 import { Inquiry } from "@/app/models/Inquiry";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -25,26 +26,31 @@ export async function POST(req: NextRequest) {
       totalBookingDays,
       eventType,
       customEvent,
-    } = InquiryValidationSchema.parse(body); // ✅ updated destructuring
+    } = InquiryValidationSchema.parse(body);
 
-    // ✅ added logic for "Other"
+    // Handle "Other" event type
     if (eventType === "Other" && customEvent) {
       eventType = customEvent;
     }
 
     await connectToDatabase();
+
     let inq = await Inquiry.create({
       name,
       phone,
       startingDate,
       totalBookingDays,
-      eventType, // ✅ added
+      eventType,
     });
 
-    // saveContactSubmission?.({ name, phone, startingDate, totalBookingDays }); // optional
-
-    // console.log(inq);
-    // await sendDailyEmail([inq]);
+    // ✅ SEND EMAIL IMMEDIATELY
+    await sendInquiryEmail({
+      name,
+      phone,
+      startingDate,
+      totalBookingDays,
+      eventType,
+    });
 
     return NextResponse.json({ success: true });
   } catch (err: any) {
@@ -56,6 +62,7 @@ export async function POST(req: NextRequest) {
     }
 
     console.error("Error:", err);
+
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 },

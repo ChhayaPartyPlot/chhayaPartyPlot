@@ -45,6 +45,21 @@ const Gallery = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex]);
 
+  useEffect(() => {
+    if (selectedIndex !== null) {
+      // Lock scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore scroll
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup safety
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedIndex]);
+
   /* ================= Check Login ================= */
 
   useEffect(() => {
@@ -308,12 +323,13 @@ const Gallery = () => {
       {selectedIndex !== null && (
         <div
           className="
-            fixed inset-0
-            backdrop-blur-lg
-            bg-black/40
-            flex items-center justify-center
-            z-50
-          "
+  fixed inset-0
+  backdrop-blur-lg
+  bg-black/40
+  flex items-center justify-center
+  z-50
+  overflow-hidden
+"
           onClick={() => setSelectedIndex(null)}
         >
           {/* Close */}
@@ -326,7 +342,9 @@ const Gallery = () => {
               text-3xl sm:text-4xl
               font-bold
             "
-            onClick={() => setSelectedIndex(null)}
+            onClick={() => {
+              setSelectedIndex(null);
+            }}
           >
             ×
           </button>
