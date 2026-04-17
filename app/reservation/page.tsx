@@ -1,17 +1,4 @@
 "use client";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { format } from "date-fns";
-import { saveAs } from "file-saver";
-import { motion } from "framer-motion";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import { useEffect, useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import { FaWhatsapp } from "react-icons/fa";
-import * as XLSX from "xlsx";
-import { Footer } from "../components/footer";
-import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,8 +11,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import FAQSection from "../components/faq";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { format } from "date-fns";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { useEffect, useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { FaWhatsapp } from "react-icons/fa";
+import { toast } from "sonner";
+import { Footer } from "../components/footer";
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 const MOB_NUMBER_PATTERN = /^[0-9]{10}$/;
@@ -359,7 +354,7 @@ export default function Reservation() {
     }
 
     try {
-      setInquiryLoading(true); // ✅ Start loading
+      setInquiryLoading(true); //  Start loading
 
       const res = await fetch("/api/inquiry", {
         method: "POST",
@@ -401,39 +396,120 @@ export default function Reservation() {
       console.error("Inquiry submission error:", err);
       alert("Error submitting inquiry.");
     } finally {
-      setInquiryLoading(false); // ✅ Stop loading
+      setInquiryLoading(false); // Stop loading
     }
   };
+
   const exportToPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF("landscape"); // Landscape layout
+
+    // ===== Logo (optional) =====
+    const logo = "/logo.png";
+    doc.addImage(logo, "PNG", 14, 8, 30, 15);
+
+    // ===== Company Header =====
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.setTextColor(122, 135, 64); // #7a8740
+
+    doc.text("Chhaya Party Plot", 148, 15, { align: "center" });
+
+    // Month Name
+    const monthName = format(activeStartDate, "MMMM yyyy");
+
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+
+    doc.text(`Booking Report - ${monthName}`, 148, 23, { align: "center" });
+
+    // ===== Calculate Summary =====
+    const totalBookings = bookingList.length;
+
+    const eventSummary: Record<string, number> = {};
+
+    bookingList.forEach((b) => {
+      const type = b.eventType || "Other";
+
+      if (!eventSummary[type]) {
+        eventSummary[type] = 0;
+      }
+
+      eventSummary[type]++;
+    });
+
+    // ===== Summary Section =====
+    let summaryY = 35;
+
+    doc.setFontSize(11);
+    doc.setTextColor(0);
+
+    doc.text(`Total Bookings: ${totalBookings}`, 14, summaryY);
+
+    summaryY += 8;
+
+    doc.text("Event Summary:", 14, summaryY);
+
+    summaryY += 6;
+
+    Object.entries(eventSummary).forEach(([type, count]) => {
+      doc.text(`${type}: ${count}`, 18, summaryY);
+
+      summaryY += 6;
+    });
+
+    // ===== Table =====
     autoTable(doc, {
-      head: [["Name", "Mobile", "Start Date", "Event Type", "Days"]],
+      startY: summaryY + 4,
+
+      head: [["Name", "Mobile", "Event Date", "Event Type", "Days", "Amount"]],
 
       body: bookingList.map((b) => [
         b.user?.name,
         b.user?.mobNumber,
-        format(new Date(b.startDate), "yyyy-MM-dd"),
-        b.eventType, // ✅ ADD
+        format(new Date(b.startDate), "dd-MM-yyyy"),
+        b.eventType,
         b.totalBookingDays,
       ]),
-    });
-    doc.save("bookings.pdf");
-  };
 
-  const exportToExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(
-      bookingList.map((b) => ({
-        Name: b.user?.name,
-        Mobile: b.user?.mobNumber,
-        "Start Date": format(new Date(b.startDate), "yyyy-MM-dd"),
-        Days: b.totalBookingDays,
-      })),
-    );
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Bookings");
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(data, "bookings.xlsx");
+      styles: {
+        fontSize: 10,
+        cellPadding: 4,
+      },
+
+      headStyles: {
+        fillColor: [195, 202, 109], // #c3ca6d
+        textColor: 255,
+        fontStyle: "bold",
+      },
+
+      alternateRowStyles: {
+        fillColor: [245, 245, 245],
+      },
+
+      theme: "grid",
+
+      didDrawPage: (data) => {
+        // Footer
+        const pageCount = doc.getNumberOfPages();
+
+        doc.setFontSize(9);
+        doc.setTextColor(150);
+
+        doc.text(
+          `Generated on: ${format(new Date(), "dd-MM-yyyy")}`,
+          14,
+          doc.internal.pageSize.height - 10,
+        );
+
+        doc.text(
+          `Page ${data.pageNumber} of ${pageCount}`,
+          doc.internal.pageSize.width - 40,
+          doc.internal.pageSize.height - 10,
+        );
+      },
+    });
+
+    doc.save(`booking-report-${monthName}.pdf`);
   };
 
   // Style reserved dates for all users
@@ -733,10 +809,17 @@ export default function Reservation() {
 
                   const bodyData = {
                     updateData: {
-                      startDate: editStartDate, // ✅ FIXED
+                      startDate: editStartDate,
                       totalBookingDays: Number(editDays),
                       eventType: eventType,
                     },
+
+                    userData: {
+                      name: editName,
+                      mobNumber: editPhone,
+                    },
+
+                    userId: userid,
                   };
 
                   try {
@@ -752,17 +835,17 @@ export default function Reservation() {
                     );
 
                     if (res.ok) {
-                      alert("Booking updated successfully ✅");
+                      toast.success("Booking updated successfully");
 
                       fetchBookings();
                       setEditingBooking(null);
                       setShowUpdateDelete(false);
                     } else {
-                      alert("Failed to update booking ❌");
+                      toast.error("Failed to update booking");
                     }
                   } catch (err) {
                     console.error(err);
-                    alert("Error updating booking ❌");
+                    toast.error("Error updating booking");
                   }
                 }}
               >
@@ -971,6 +1054,12 @@ export default function Reservation() {
                   const maxDate = new Date();
                   maxDate.setFullYear(maxDate.getFullYear() + 2);
 
+                  //  Admin can see past dates
+                  if (loggedIn) {
+                    return view === "month" && date > maxDate;
+                  }
+
+                  //  Users cannot select past dates
                   return view === "month" && (date < today || date > maxDate);
                 }}
                 onActiveStartDateChange={({ activeStartDate }) =>
@@ -1239,17 +1328,17 @@ export default function Reservation() {
             <div className="flex flex-col sm:flex-row justify-end mt-4 gap-3">
               <Button
                 onClick={exportToPDF}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded w-full sm:w-auto"
+                className="bg-[#c3ca6d] hover:bg-[#7a8740] text-white px-4 py-2 rounded w-full sm:w-auto"
               >
                 Export PDF
               </Button>
 
-              <Button
+              {/* <Button
                 onClick={exportToExcel}
                 className="bg-[#c3ca6d] hover:bg-[#7a8740] text-white px-4 py-2 rounded w-full sm:w-auto"
               >
                 Export Excel
-              </Button>
+              </Button> */}
             </div>
           </div>
         )}
