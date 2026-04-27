@@ -3,31 +3,32 @@ import { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 
 import Link from "next/link";
+import Image from "next/image";
 
 const images = [
   {
-    src: "/D3.JPG",
+    src: "/WEBP/D3.webp",
     alt: "Chhaya Party Plot Grand Entrance",
     caption: "Grand Entrance",
     description:
       "A welcoming entrance designed to create the perfect first impression for your special events.",
   },
   {
-    src: "/D2.JPG",
+    src: "/WEBP/D4.webp",
     alt: "Spacious Lawn at Chhaya Party Plot",
     caption: "Spacious Green Lawn",
     description:
       "Expansive open lawn ideal for weddings, receptions, and large celebrations under the sky.",
   },
   {
-    src: "/D4.JPG",
+    src: "/WEBP/D1.webp",
     alt: "Elegant Banquet Setup at Chhaya Party Plot",
     caption: "Elegant Event Setup",
     description:
       "Beautifully arranged decor and seating to make every celebration truly memorable.",
   },
   {
-    src: "/D1.JPG",
+    src: "/WEBP/D2.webp",
     alt: "Night View of Chhaya Party Plot",
     caption: "Stunning Night Ambience",
     description:
@@ -57,11 +58,15 @@ function Carousel1() {
           <Carousel.Item key={index}>
             <div className="relative w-screen h-screen overflow-hidden">
               {/* Background Image */}
-              <img
-                className={`d-block w-full h-full object-cover transition-transform duration-[1s] ease-in-out 
-        ${activeIndex === index ? "scale-110" : "scale-100"}`}
+              <Image
                 src={image.src}
                 alt={image.alt}
+                fill
+                priority={index === 0}
+                quality={80}
+                sizes="100vw"
+                className={`object-cover transition-transform duration-[1s] ease-in-out 
+  ${activeIndex === index ? "scale-110" : "scale-100"}`}
               />
 
               {/* Overlay on image only */}

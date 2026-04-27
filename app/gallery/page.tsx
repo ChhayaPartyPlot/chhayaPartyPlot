@@ -193,7 +193,7 @@ const Gallery = () => {
   };
 
   return (
-    <main className="bg-[#FEFFF1] pt-16 min-h-screen">
+    <main className=" pt-16 min-h-screen">
       {/* ================= HERO ================= */}
 
       <div className="relative h-[35vh] sm:h-[40vh] md:h-[45vh] w-full">
@@ -279,8 +279,8 @@ const Gallery = () => {
                   break-inside-avoid
                   rounded-lg
                   overflow-hidden
-                  shadow-lg
-                  bg-white
+                
+                
                   hover:scale-[1.02]
                   transition
                   relative
@@ -378,7 +378,6 @@ const Gallery = () => {
     max-w-[95vw]
     object-contain
     rounded-lg
-    shadow-2xl
     touch-pan-y
   "
             onClick={(e) => e.stopPropagation()}
