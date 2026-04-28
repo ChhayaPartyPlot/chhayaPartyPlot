@@ -80,7 +80,7 @@ const NewAdmin = () => {
     return (
       <div className="max-w-md mx-auto mt-24 p-6 bg-white rounded shadow-md text-center">
         <h2 className="text-2xl font-bold mb-4 text-green-600">
-          Admin registered successfully! 🎉
+          Admin registered successfully!
         </h2>
 
         <p className="mb-6">You can now proceed to the reservation page.</p>

@@ -322,6 +322,41 @@ export default function Reservation() {
 
       if (res.ok) {
         toast.success("Reservation successful!");
+        // Generate simple booking reference
+        const bookingRef = `CPP-${format(selectedDate, "ddMMyyyy")}-${Date.now().toString().slice(-3)}`;
+
+        // WhatsApp Confirmation Message
+        const message = `Chhaya Party Plot Reservation Confirmation
+
+Dear ${name},
+
+Thank you for choosing Chhaya Party Plot for your upcoming event.
+
+We are pleased to confirm your reservation with the following details:
+
+Booking Reference: ${bookingRef}
+
+Event Date: ${format(selectedDate, "dd-MM-yyyy")}
+Duration: ${bookingDays} day(s)
+Event Type: ${eventType}
+
+Our team looks forward to hosting your special occasion and ensuring a memorable experience for you and your guests.
+
+For any assistance or enquiries, please feel free to contact us.
+
+Contact: +91 76006 16660
+
+With Best Regards,
+Chhaya Party Plot`;
+
+        // Encode properly
+        const whatsappUrl = `https://wa.me/91${mobNumber}?text=${encodeURIComponent(message)}`;
+
+        // Open WhatsApp safely
+        setTimeout(() => {
+          window.open(whatsappUrl, "_blank");
+        }, 500);
+
         setShowForm(false);
         setSelectedDate(null);
         setName("");
@@ -1044,6 +1079,7 @@ export default function Reservation() {
 
               <Calendar
                 className="w-full"
+                locale="en-IN"
                 value={selectedDate}
                 onClickDay={handleDateClick}
                 tileClassName={tileClassName}
