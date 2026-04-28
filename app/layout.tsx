@@ -4,6 +4,7 @@ import Navbar from "./components/Navbsr";
 import "./globals.css";
 import { AuthProvider } from "./src/context/AuthContext";
 import { Toaster } from "sonner";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -124,11 +125,11 @@ export default function RootLayout({
           {children}
           <Toaster position="top-center" richColors />
         </AuthProvider>
-        <script
-          defer
+        <Script
           src="https://cloud.umami.is/script.js"
           data-website-id="3a9d5d7b-32b0-4e43-8c0a-b6afe4151e2d"
-        ></script>
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
