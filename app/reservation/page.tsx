@@ -349,8 +349,19 @@ Contact: +91 76006 16660
 With Best Regards,
 Chhaya Party Plot`;
 
-        // Encode properly
-        const whatsappUrl = `https://wa.me/91${mobNumber}?text=${encodeURIComponent(message)}`;
+        // Encode message
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=91${mobNumber}&text=${encodeURIComponent(message)}`;
+
+        // Detect mobile device
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        if (isMobile) {
+          // Mobile redirect
+          window.location.href = whatsappUrl;
+        } else {
+          // Desktop open new tab
+          window.open(whatsappUrl, "_blank");
+        }
 
         // Open WhatsApp safely
         setTimeout(() => {
