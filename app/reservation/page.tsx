@@ -355,18 +355,14 @@ Chhaya Party Plot`;
         // Detect mobile device
         const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+        // Open WhatsApp
         if (isMobile) {
-          // Mobile redirect
+          // Mobile redirect (iPhone safe)
           window.location.href = whatsappUrl;
         } else {
-          // Desktop open new tab
+          // Desktop
           window.open(whatsappUrl, "_blank");
         }
-
-        // Open WhatsApp safely
-        setTimeout(() => {
-          window.open(whatsappUrl, "_blank");
-        }, 500);
 
         setShowForm(false);
         setSelectedDate(null);
